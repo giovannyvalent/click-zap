@@ -1,0 +1,997 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="theme-color" content="#080908">
+<title>ClickZap | Seu catálogo. Seu carrinho. Seu WhatsApp.</title>
+<meta name="description" content="Crie seu catálogo online, deixe o cliente montar o pedido e receba tudo organizado no WhatsApp.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600&display=swap" rel="stylesheet">
+<style>
+:root{
+  --bg:#080908;
+  --bg2:#0d100e;
+  --panel:#111412;
+  --panel2:#151916;
+  --paper:#f4f5f2;
+  --white:#ffffff;
+  --ink:#0b0d0c;
+  --muted:#98a09a;
+  --mutedDark:#667068;
+  --green:#00cf89;
+  --green2:#00b978;
+  --greenSoft:#e3f8ef;
+  --line:rgba(255,255,255,.09);
+  --lineDark:#dde1dc;
+  --shadow:0 34px 90px rgba(0,0,0,.30);
+  --r:26px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  font-family:"Inter",Arial,sans-serif;
+  background:var(--bg);
+  color:var(--white);
+  -webkit-font-smoothing:antialiased;
+  text-rendering:optimizeLegibility;
+}
+button,a,input{font:inherit}
+b,strong,h1,h2,h3,h4,h5,h6{font-weight:600}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+img{max-width:100%;display:block}
+.emoji{font-family:"Apple Color Emoji","Segoe UI Emoji","Noto Color Emoji",sans-serif}
+.wa-svg{width:1em;height:1em;display:block}
+.container{width:min(1240px,calc(100% - 96px));margin:auto}
+.kicker{
+  display:inline-flex;align-items:center;gap:0;
+  text-transform:uppercase;letter-spacing:.14em;font-weight:600;font-size:11px;color:var(--green)
+}
+.kicker:before{display:none!important;content:none!important}
+.section-title{
+  margin:12px 0 0;
+  font-size:clamp(38px,5.2vw,68px);
+  line-height:.98;
+  letter-spacing:-.06em;
+  font-weight:600;
+}
+.section-copy{
+  margin-top:18px;max-width:720px;color:var(--muted);
+  font-size:15px;line-height:1.75;font-weight:500
+}
+.btn{
+  min-height:46px;padding:0 17px;border-radius:13px;border:1px solid transparent;
+  display:inline-flex;align-items:center;justify-content:center;gap:8px;
+  font-size:13px;font-weight:600;transition:.2s ease
+}
+.btn-primary{background:var(--green);color:#06120c}
+.btn-primary:hover{background:#17dc98;transform:translateY(-1px)}
+.btn-dark{background:#0b0d0c;color:#fff;border-color:#202421}
+.btn-light{background:#fff;color:#0b0d0c;border-color:#e1e4df}
+.btn-outline{background:transparent;color:#fff;border-color:rgba(255,255,255,.18)}
+.btn-outline:hover{border-color:rgba(255,255,255,.35);background:rgba(255,255,255,.04)}
+.pill{
+  display:inline-flex;align-items:center;gap:6px;padding:7px 10px;border-radius:999px;
+  font-size:10px;font-weight:600
+}
+.pill-green{background:rgba(0,207,137,.12);color:#52eab4;border:1px solid rgba(0,207,137,.20)}
+.pill-soft{background:#edf0ed;color:#4b554e}
+.small{font-size:10px;color:var(--muted);line-height:1.55}
+
+/* NAV */
+.nav{
+  height:76px;position:sticky;top:0;z-index:60;background:#fff;color:#0a0c0b;
+  border-bottom:1px solid #e5e8e4
+}
+.nav-inner{height:100%;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.brand{display:flex;align-items:center;gap:11px;font-size:21px;font-weight:600;letter-spacing:-.045em}
+.brand-box{
+  width:40px;height:40px;border-radius:12px;background:#080908;
+  display:flex;align-items:center;justify-content:center;gap:0;font-size:14px;font-weight:600;letter-spacing:-.08em;white-space:nowrap
+}
+.brand-box .c{color:#fff}.brand-box .z{color:var(--green)}
+.brand-word .click{color:#090b0a}.brand-word .zap{color:var(--green)}
+.nav-links{display:flex;gap:28px;align-items:center;font-size:12px;font-weight:700}
+.nav-links a{color:#2b312d}.nav-links a:hover{color:#00895a}
+.nav-actions{display:flex;gap:8px;align-items:center}
+.nav-actions .btn{font-weight:700}
+.nav .btn-outline{color:#111;border-color:#dfe2de;background:#fff}
+.nav .btn-outline:hover{background:#f5f7f4}
+
+/* HERO */
+.hero{
+  position:relative;overflow:hidden;padding:78px 0 58px;
+  background:
+    radial-gradient(circle at 79% 7%,rgba(0,207,137,.13),transparent 27%),
+    radial-gradient(circle at 40% 42%,rgba(255,255,255,.025),transparent 30%),
+    var(--bg)
+}
+.hero:before{
+  content:"";position:absolute;inset:0;opacity:.15;pointer-events:none;
+  background-image:
+    linear-gradient(rgba(255,255,255,.05) 1px,transparent 1px),
+    linear-gradient(90deg,rgba(255,255,255,.05) 1px,transparent 1px);
+  background-size:52px 52px;
+  mask-image:linear-gradient(to bottom,#000,transparent 83%)
+}
+.hero-grid{position:relative;z-index:2;display:grid;grid-template-columns:1fr 1fr;gap:54px;align-items:center}
+.hero h1{
+  margin:18px 0 0;font-size:clamp(61px,7.1vw,106px);line-height:.89;
+  letter-spacing:-.072em;font-weight:600
+}
+.hero h1 .green{color:var(--green)}
+.hero-copy{margin-top:24px;max-width:640px;color:#b3bbb5;font-size:16px;line-height:1.72;font-weight:500}
+.hero-actions{display:flex;gap:9px;flex-wrap:wrap;margin-top:28px}
+.hero-note{display:flex;align-items:center;gap:10px;margin-top:16px;color:#858d87;font-size:10px;font-weight:600}
+.hero-note i{width:7px;height:7px;border-radius:50%;background:var(--green);box-shadow:0 0 0 5px rgba(0,207,137,.08)}
+.hero-visual{position:relative;min-height:565px}
+.hero-glow{position:absolute;width:450px;height:450px;border-radius:50%;background:rgba(0,207,137,.10);filter:blur(75px);right:-15px;top:10px}
+.browser{
+  position:absolute;right:0;top:14px;width:93%;overflow:hidden;border-radius:25px;
+  background:#f3f4f1;color:#111;border:1px solid rgba(255,255,255,.12);
+  box-shadow:0 50px 100px rgba(0,0,0,.48);transform:rotate(1deg)
+}
+.browser-top{height:44px;background:#fff;border-bottom:1px solid #e6e8e5;display:flex;align-items:center;gap:7px;padding:0 14px}
+.dot{width:8px;height:8px;border-radius:50%;background:#d4d7d3}
+.browser-url{margin-left:6px;flex:1;background:#f3f4f2;border-radius:9px;padding:7px 10px;color:#818984;font-size:9px;font-weight:600}
+.store-demo{padding:18px}
+.demo-top{display:flex;align-items:center;justify-content:space-between}
+.demo-logo{display:flex;align-items:center;gap:9px;font-size:11px;font-weight:600}
+.demo-logo-mark{
+  width:32px;height:32px;border-radius:9px;background:#111;color:#fff;display:flex;align-items:center;justify-content:center;gap:0;
+  font-size:10px;font-weight:600;letter-spacing:-.08em;white-space:nowrap
+}
+.demo-logo-mark .z{color:var(--green)}
+.demo-cart{font-size:9px;background:#111;color:#fff;padding:9px 11px;border-radius:9px;font-weight:600}
+.demo-hero{margin-top:14px;min-height:128px;background:#111;color:#fff;border-radius:16px;padding:18px;display:flex;justify-content:space-between;align-items:flex-end}
+.demo-hero small{font-size:10px;font-weight:600}
+.demo-hero h3{font-size:22px;line-height:1;letter-spacing:-.055em;margin:6px 0 0}
+.demo-hero h3 span{color:var(--green)}
+.demo-search{margin-top:11px;background:#fff;border:1px solid #e0e4df;border-radius:10px;padding:10px 11px;font-size:9px;color:#7d857f}
+.demo-cats{display:flex;gap:6px;margin-top:9px;overflow:hidden}
+.demo-cats span{white-space:nowrap;background:#e8ece8;border-radius:999px;padding:7px 9px;font-size:8px;font-weight:600}
+.demo-products{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.demo-product{background:#fff;border:1px solid #e0e4df;border-radius:12px;padding:8px}
+.demo-photo{height:84px;border-radius:9px;background:linear-gradient(135deg,#c9f6e5,#f1fff9);display:flex;align-items:flex-end;padding:7px;font-size:19px}
+.demo-product:nth-child(2) .demo-photo{background:linear-gradient(135deg,#eff1ef,#dadeda)}
+.demo-product b{display:block;font-size:9px;margin-top:7px;font-weight:600}
+.demo-product small{display:block;font-size:7.5px;color:#737b75;margin-top:2px}
+.demo-price{display:flex;justify-content:space-between;align-items:center;margin-top:8px;font-size:9px;font-weight:600}
+.demo-add{background:var(--green);border-radius:7px;padding:6px 8px;font-size:7.5px}
+.whatsapp-badge{
+  position:absolute;right:22px;top:116px;width:46px;height:46px;border-radius:50%;
+  background:#25D366;border:3px solid #fff;display:grid;place-items:center;color:#fff;
+  box-shadow:0 12px 28px rgba(0,0,0,.25);font-size:23px;font-weight:600
+}
+.whatsapp-badge .wa-svg{width:23px;height:23px}
+.phone-btn .wa-svg{width:13px;height:13px}
+.whatsapp-icon .wa-svg{width:18px;height:18px}
+.phone{
+  position:absolute;left:-10px;bottom:0;width:208px;background:#111;border-radius:37px;padding:8px;
+  box-shadow:0 30px 65px rgba(0,0,0,.45);border:1px solid #2f3430;transform:rotate(-4deg)
+}
+.phone-screen{border-radius:30px;background:#f2f4f1;color:#111;padding:14px 10px 12px;min-height:370px}
+.phone-notch{width:66px;height:16px;background:#111;border-radius:0 0 10px 10px;margin:-14px auto 14px}
+.phone-title{text-align:center;color:#747d76;font-size:9px;font-weight:600}
+.phone-total{text-align:center;font-size:25px;font-weight:600;letter-spacing:-.055em;margin:6px 0 13px}
+.order-line{background:#fff;border:1px solid #dfe3de;border-radius:10px;padding:9px;margin-top:7px;display:flex;justify-content:space-between;gap:8px;font-size:8px;font-weight:600}
+.phone-btn{margin-top:11px;background:var(--green);border-radius:10px;padding:11px;text-align:center;font-size:8px;font-weight:600;display:flex;align-items:center;justify-content:center;gap:5px}
+.float-card{
+  position:absolute;right:2px;bottom:33px;width:186px;border-radius:16px;
+  background:#101310;border:1px solid rgba(255,255,255,.12);padding:14px;
+  box-shadow:0 20px 45px rgba(0,0,0,.36);transform:rotate(3deg)
+}
+.float-card small{font-size:8px;color:#95a097;text-transform:uppercase;letter-spacing:.12em;font-weight:600}
+.float-card strong{display:block;font-size:24px;letter-spacing:-.05em;margin:5px 0}
+.float-card span{font-size:8.5px;color:#57e9b6;font-weight:600}
+
+/* PROOF */
+.proof{
+  padding:34px 0;
+  background:linear-gradient(120deg,#00cf89 0%,#39e3aa 52%,#00c982 100%);
+  color:#07110c;
+  position:relative;
+  overflow:hidden
+}
+.proof:before{
+  content:"";position:absolute;inset:-120% -20%;
+  background:linear-gradient(105deg,transparent 38%,rgba(255,255,255,.30) 50%,transparent 62%);
+  transform:translateX(-35%);
+  animation:proofShine 7s ease-in-out infinite
+}
+.proof:after{
+  content:"";position:absolute;width:420px;height:420px;border-radius:50%;
+  background:rgba(255,255,255,.18);filter:blur(70px);right:-160px;top:-250px
+}
+@keyframes proofShine{
+  0%,18%{transform:translateX(-42%)}
+  58%,100%{transform:translateX(42%)}
+}
+.proof-grid{
+  position:relative;z-index:2;border-top:1px solid rgba(7,17,12,.16);
+  border-bottom:1px solid rgba(7,17,12,.16);
+  display:grid;grid-template-columns:repeat(4,1fr)
+}
+.proof-item{padding:27px 20px;border-right:1px solid rgba(7,17,12,.16)}
+.proof-item:last-child{border-right:0}
+.proof-item strong{display:block;font-size:27px;letter-spacing:-.05em;font-weight:600;color:#07110c}
+.proof-item span{display:block;margin-top:6px;color:#184a38;font-size:10px;line-height:1.55;font-weight:500}
+
+/* SECTION 2 */
+.steps-section{
+  padding:96px 0;background:var(--paper);color:#111;position:relative;overflow:hidden
+}
+.steps-section:before{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:
+    radial-gradient(circle at 12% 22%,rgba(0,207,137,.09),transparent 20%),
+    radial-gradient(circle at 84% 25%,rgba(0,0,0,.025),transparent 20%),
+    linear-gradient(to bottom,rgba(255,255,255,.55),rgba(255,255,255,0));
+}
+.steps-header{position:relative;z-index:2;text-align:center}
+.steps-section .kicker{color:#008f5e}
+.steps-section .kicker:before{display:none!important;content:none!important}
+.steps-section .section-copy{color:#6f7771;margin-left:auto;margin-right:auto}
+.steps-grid{
+  position:relative;z-index:2;display:grid;grid-template-columns:repeat(3,1fr);gap:12px;
+  margin-top:38px;text-align:left
+}
+.step-card{
+  border:1px solid #dfe3de;border-radius:22px;padding:22px;background:#fff;min-height:250px;
+  transition:.2s ease;position:relative;overflow:hidden;box-shadow:0 12px 34px rgba(22,42,30,.05)
+}
+.step-card:hover{transform:translateY(-3px);box-shadow:0 18px 42px rgba(20,40,28,.08)}
+.step-badge{width:58px;height:58px;border-radius:15px;background:#0b0d0c;color:var(--green);display:grid;place-items:center;font-size:20px;font-weight:600}
+.step-card h3{font-size:22px;letter-spacing:-.04em;margin:39px 0 10px;font-weight:600}
+.step-card p{font-size:12px;color:#687169;line-height:1.65;margin:0}
+.step-emoji{position:absolute;right:18px;top:18px;font-size:28px;filter:saturate(1.05)}
+.steps-showcase{
+  position:relative;z-index:2;margin-top:46px;background:#0a0d0b;color:#fff;border-radius:30px;
+  padding:28px;border:1px solid #1b211d;box-shadow:0 28px 60px rgba(0,0,0,.18)
+}
+.steps-showcase:after{
+  content:"";position:absolute;width:340px;height:340px;border-radius:50%;
+  background:rgba(0,207,137,.10);filter:blur(55px);right:-80px;top:-130px
+}
+.showcase-grid{position:relative;z-index:2;display:grid;grid-template-columns:1.05fr .95fr;gap:20px;align-items:center}
+.mini-browser{
+  background:#f4f5f2;color:#111;border-radius:22px;overflow:hidden;border:1px solid rgba(255,255,255,.12)
+}
+.mini-browser-top{height:34px;background:#fff;border-bottom:1px solid #e6e8e5;display:flex;align-items:center;gap:6px;padding:0 12px}
+.mini-browser-url{height:18px;flex:1;background:#f2f4f1;border-radius:999px}
+.mini-browser-body{padding:14px}
+.mini-browser-hero{height:76px;border-radius:15px;background:#111;display:flex;align-items:flex-end;justify-content:space-between;color:#fff;padding:14px}
+.mini-browser-hero b{font-size:17px;line-height:1;letter-spacing:-.05em}
+.mini-browser-hero b span{color:var(--green)}
+.mini-browser-search{margin-top:10px;height:34px;border-radius:10px;border:1px solid #e0e4df;background:#fff}
+.mini-browser-cards{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:10px}
+.mini-browser-card{background:#fff;border:1px solid #e0e4df;border-radius:12px;padding:8px}
+.mini-browser-card i{display:block;height:66px;border-radius:9px;background:linear-gradient(135deg,#cdf7e7,#f2fff9)}
+.mini-browser-card:nth-child(2) i{background:linear-gradient(135deg,#f0f1ef,#dddedd)}
+.mini-browser-card b{display:block;font-size:9px;margin-top:7px;color:#111}
+.mini-browser-card small{display:block;font-size:7px;color:#6f7771;margin-top:2px}
+.mini-browser-card .cta{display:flex;justify-content:space-between;align-items:center;margin-top:7px;font-size:8px;font-weight:600}
+.mini-browser-card .cta span:last-child{background:var(--green);padding:5px 7px;border-radius:7px}
+.showcase-panel{
+  background:#121613;border:1px solid #1f2520;border-radius:22px;padding:18px
+}
+.showcase-panel h3{margin:0;font-size:22px;letter-spacing:-.05em;font-weight:600}
+.showcase-panel p{margin:10px 0 0;color:#a8b1ab;font-size:12px;line-height:1.65}
+.showcase-panel .tags{display:flex;gap:8px;flex-wrap:wrap;margin-top:18px}
+.showcase-panel .tags span{background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.07);color:#d5ddd8;border-radius:999px;padding:8px 10px;font-size:10px;font-weight:600}
+.showcase-panel .funnel{
+  margin-top:18px;background:#0d100e;border:1px solid #202621;border-radius:18px;padding:12px
+}
+.funnel-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px}
+.funnel-col{background:#171b18;border-radius:12px;padding:9px}
+.funnel-col b{display:block;color:#7eecc3;font-size:8px;text-transform:uppercase;letter-spacing:.1em}
+.funnel-card{background:#fff;color:#111;border-radius:9px;padding:8px;margin-top:8px;font-size:8px;font-weight:600}
+.funnel-card small{display:block;margin-top:4px;color:#6c756f;font-weight:600}
+.whatsapp-row{
+  display:flex;align-items:center;gap:10px;margin-top:18px;padding:12px 14px;border-radius:14px;
+  background:rgba(37,211,102,.08);border:1px solid rgba(37,211,102,.20)
+}
+.whatsapp-icon{
+  width:34px;height:34px;border-radius:50%;background:#25D366;color:#fff;display:grid;place-items:center;
+  font-weight:600;font-size:16px
+}
+.whatsapp-row span{font-size:11px;color:#dce6df;font-weight:600}
+
+/* LIGHT PROBLEM */
+.light{background:#fff;color:var(--ink);padding:96px 0}
+.light .kicker{color:#008f5e}.light .section-copy{color:#687169}
+.problem-grid{display:grid;grid-template-columns:.82fr 1.18fr;gap:62px;align-items:start}
+.problem-copy{position:sticky;top:110px}
+.problem-list{display:grid;gap:10px}
+.problem-item{
+  width:100%;border:1px solid var(--lineDark);background:#fff;border-radius:18px;padding:16px;
+  display:grid;grid-template-columns:42px 1fr auto;gap:12px;align-items:center;text-align:left;
+  transition:.2s ease;color:#111
+}
+.problem-item:hover,.problem-item.active{border-color:#9bddc2;box-shadow:0 13px 34px rgba(30,65,48,.08);transform:translateY(-1px)}
+.problem-num{width:46px;height:46px;border-radius:13px;background:#eef1ed;display:grid;place-items:center;font-size:15px;font-weight:600}
+.problem-item.active .problem-num{background:#0a0c0b;color:var(--green)}
+.problem-item b{display:block;font-size:13px}.problem-item p{font-size:10px;color:#727b74;line-height:1.5;margin:4px 0 0}
+.problem-arrow{font-size:18px;color:#a3aaa5}
+.flow-stage{
+  margin-top:13px;border-radius:23px;background:#0b0e0c;color:#fff;border:1px solid #1c211d;
+  min-height:330px;position:relative;overflow:hidden;padding:22px
+}
+.flow-stage:after{content:"";position:absolute;width:260px;height:260px;border-radius:50%;background:rgba(0,207,137,.13);filter:blur(55px);right:-60px;top:-80px}
+.flow-head{position:relative;z-index:2;display:flex;align-items:center;justify-content:space-between;gap:10px}
+.flow-head b{font-size:12px}.flow-head span{font-size:9px;color:#7eecc3}
+.flow-demo{position:relative;z-index:2;margin-top:22px}
+.flow-slide{display:none;animation:fadein .25s ease}.flow-slide.active{display:block}
+@keyframes fadein{from{opacity:0;transform:translateY(5px)}to{opacity:1;transform:none}}
+.product-window{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.product-window div{background:#fff;color:#111;border-radius:12px;padding:10px}
+.product-window i{display:block;height:72px;border-radius:9px;background:linear-gradient(135deg,#c8f7e5,#f3fffa)}
+.product-window b{display:block;font-size:9px;margin-top:8px}
+.product-window small{font-size:8px;color:#717a73}
+.cart-window{background:#fff;color:#111;border-radius:15px;padding:14px}
+.cart-row{display:flex;justify-content:space-between;gap:12px;padding:10px 0;border-bottom:1px solid #e9ece8;font-size:9px}
+.cart-total{display:flex;justify-content:space-between;font-size:12px;font-weight:600;margin-top:12px}
+.central-mini{display:grid;grid-template-columns:repeat(3,1fr);gap:7px}
+.central-col{background:#171b18;border:1px solid #222822;border-radius:11px;padding:8px}
+.central-col span{font-size:7px;text-transform:uppercase;color:#879088;font-weight:600}
+.central-card{margin-top:7px;background:#fff;color:#111;border-radius:8px;padding:8px;font-size:8px;font-weight:600}
+.chat-mini{background:#dff0dc;color:#1f3025;border-radius:15px;padding:14px}
+.chat-mini-bubble{width:82%;margin-left:auto;background:#d3ffc2;border-radius:11px 3px 11px 11px;padding:12px;font-size:9px;line-height:1.55}
+
+/* VITRINE */
+.vitrine{padding:96px 0;background:#090b0a}
+.vitrine-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:56px;align-items:center}
+.vitrine-list{display:grid;gap:12px;margin-top:28px}
+.vitrine-check{display:flex;gap:11px;align-items:center;font-size:12px;font-weight:600}
+.check-icon{width:31px;height:31px;border-radius:50%;background:var(--green);color:#07110c;display:grid;place-items:center;font-weight:600}
+.message-card{
+  background:#fff;color:#111;border-radius:25px;padding:24px;box-shadow:var(--shadow);position:relative;overflow:hidden
+}
+.message-card:before{content:"";position:absolute;width:180px;height:180px;background:#ddf9ef;border-radius:50%;right:-75px;top:-75px}
+.message-head{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-start;gap:10px}
+.message-head h3{font-size:28px;letter-spacing:-.04em;margin:5px 0 0;font-weight:600}
+.message-box{position:relative;z-index:2;margin-top:20px;background:#e5f8f0;border:1px solid #bcebd7;border-radius:17px;padding:22px;font-size:13px;line-height:1.8;font-weight:600}
+.message-box b{font-weight:700}
+
+/* BENTO */
+.bento-section{padding:96px 0;background:var(--paper);color:#111}
+.bento-section .kicker{color:#008f5e}.bento-section .section-copy{color:#687169}
+.bento{display:grid;grid-template-columns:1.2fr .8fr;gap:12px;margin-top:38px}
+.bento-col{display:grid;gap:12px}
+.feature{border:1px solid #dfe3de;border-radius:24px;background:#fff;padding:22px;overflow:hidden;position:relative}
+.feature.dark{background:#101310;color:#fff;border-color:#202521}
+.feature.green{background:var(--green);color:#07110c;border-color:var(--green)}
+.feature h3{font-size:24px;letter-spacing:-.045em;max-width:410px;font-weight:600}
+.feature p{font-size:10px;line-height:1.65;color:#6e776f;max-width:450px;margin-top:8px}
+.feature.dark p{color:#929b94}.feature.green p{color:#205b47}
+.feature-big{min-height:420px}.feature-half{min-height:204px}
+.central-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-top:24px}
+.central-box{background:#f3f5f2;border-radius:13px;padding:8px;color:#111}
+.central-title{font-size:7px;font-weight:600;color:#7d857f;margin-bottom:7px;text-transform:uppercase}
+.central-item{background:#fff;border:1px solid #e0e3df;border-radius:9px;padding:8px;margin-top:6px}
+.central-item b{font-size:7px}.central-item span{display:block;font-size:6px;color:#8b928d;margin-top:4px}
+.central-item.green-card{border-left:3px solid var(--green)}
+.customizer{display:grid;grid-template-columns:120px 1fr;gap:12px;margin-top:20px}
+.custom-options{display:grid;gap:6px}.custom-options span{display:block;background:#e9ece8;border-radius:8px;height:24px}.custom-options span:first-child{background:#111}
+.custom-preview{border-radius:13px;background:#f3f5f2;padding:10px}.preview-hero{height:38px;background:#111;border-radius:8px}
+.preview-products{display:grid;grid-template-columns:1fr 1fr;gap:5px;margin-top:6px}.preview-products i{height:48px;border-radius:7px;background:#fff;border:1px solid #dfe2de}
+.delivery-list{margin-top:18px;display:grid;gap:7px}.delivery-row{display:flex;justify-content:space-between;background:rgba(0,0,0,.07);border-radius:10px;padding:9px 10px;font-size:8px;font-weight:600}
+.feature.dark .delivery-row{background:rgba(255,255,255,.06)}
+.metrics{display:grid;grid-template-columns:1fr 1fr;gap:7px;margin-top:19px}.metric{background:rgba(255,255,255,.07);border-radius:11px;padding:10px}
+.metric strong{display:block;font-size:20px;font-weight:600}.metric small{font-size:7px;color:#98a099}
+
+/* WHATSAPP DETAIL */
+.order-section{padding:96px 0;background:#0b0d0c}
+.order-grid{display:grid;grid-template-columns:.9fr 1.1fr;gap:66px;align-items:center}
+.chat-shell{width:min(470px,100%);margin-left:auto;background:#dde8da;border-radius:28px;padding:14px;box-shadow:var(--shadow)}
+.chat-top{height:52px;background:#0e2018;border-radius:18px 18px 10px 10px;color:#fff;display:flex;align-items:center;gap:10px;padding:0 13px}
+.chat-avatar{width:31px;height:31px;border-radius:50%;background:var(--green);display:grid;place-items:center;color:#072015;font-size:9px;font-weight:600}
+.chat-top b{font-size:12px;font-weight:700}.chat-top small{display:block;font-size:8px;color:#87a496;margin-top:2px;font-weight:600}
+.chat-area{padding:18px 10px;min-height:420px;background:#dce6da;border-radius:0 0 18px 18px}
+.bubble{background:#d7ffc7;border-radius:12px 3px 12px 12px;padding:16px;margin-left:auto;width:84%;color:#203021;font-size:11px;line-height:1.72;font-weight:600;box-shadow:0 2px 4px rgba(0,0,0,.05)}
+.bubble .line{border-top:1px solid rgba(0,0,0,.08);margin:9px 0}.bubble .total{font-weight:700;font-size:13px}.chat-caption{font-size:8px;color:#718075;text-align:right;margin-top:6px;font-weight:600}
+
+/* CASES */
+.usecases{padding:96px 0;background:var(--paper);color:#111}
+.usecases .kicker{color:#008f5e}.usecases .section-copy{color:#687169}
+.case-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;margin-top:32px}
+.case{background:#fff;border:1px solid #dfe2de;border-radius:18px;padding:18px}
+.case .emoji{font-size:25px}.case h3{font-size:14px;margin:12px 0 5px;font-weight:600}.case p{font-size:9px;color:#747d76;line-height:1.55}
+
+/* PRICING */
+.pricing{padding:96px 0;background:#0b0d0c}
+.pricing-grid{display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:36px}
+.plan{border:1px solid var(--line);border-radius:24px;padding:24px;background:#101310;position:relative}
+.plan.pro{background:#fff;color:#111;border-color:#fff}
+.plan h3{font-size:20px;font-weight:600}.price{font-size:43px;font-weight:600;letter-spacing:-.055em;margin:21px 0 5px}.price small{font-size:11px;font-weight:600;letter-spacing:0;color:#717973}
+.plan p{font-size:10px;color:#8d968f;line-height:1.55}.plan.pro p{color:#717973}
+.plan ul{list-style:none;padding:0;margin:20px 0;display:grid;gap:9px}
+.plan li{font-size:10px;display:flex;gap:8px;align-items:flex-start}.plan li:before{content:"✓";color:var(--green);font-weight:600}.plan.pro li:before{color:#008d5c}
+.recommended{position:absolute;right:18px;top:18px;background:var(--green);color:#08110c;padding:6px 8px;border-radius:999px;font-size:7px;font-weight:600;text-transform:uppercase;letter-spacing:.08em}
+
+/* FAQ */
+.faq{padding:96px 0;background:var(--paper);color:#111}
+.faq .kicker{color:#008f5e}.faq-grid{display:grid;grid-template-columns:.8fr 1.2fr;gap:60px}
+.faq-list{border-top:1px solid #daddd9}.faq-item{border-bottom:1px solid #daddd9}
+.faq-q{width:100%;border:0;background:transparent;padding:18px 0;display:flex;justify-content:space-between;gap:20px;text-align:left;font-size:12px;font-weight:600;color:#111}
+.faq-a{display:none;padding:0 35px 18px 0;font-size:10px;color:#69716b;line-height:1.65}
+.faq-item.open .faq-a{display:block}.faq-q span{font-size:18px;transition:.2s}.faq-item.open .faq-q span{transform:rotate(45deg)}
+
+/* CTA FOOTER */
+.final-cta{padding:30px 0 88px;background:var(--paper)}
+.final-box{background:#090b0a;color:#fff;border-radius:30px;padding:48px;position:relative;overflow:hidden}
+.final-box:after{content:"";position:absolute;width:430px;height:430px;border-radius:50%;background:rgba(0,207,137,.15);filter:blur(60px);right:-140px;top:-220px}
+.final-inner{position:relative;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:30px}
+.final-box h2{font-size:clamp(40px,5vw,70px);line-height:.95;letter-spacing:-.055em;max-width:760px;margin:8px 0 0;font-weight:600}.final-box h2 span{color:var(--green)}
+.final-actions{display:flex;gap:8px;flex-wrap:wrap}
+.footer{background:#070807;border-top:1px solid var(--line);padding:30px 0 38px}
+.footer-inner{display:flex;align-items:center;justify-content:space-between;gap:18px}
+.footer .brand-word .click{color:#fff}.footer-links{display:flex;gap:18px;color:#7d867f;font-size:9px;font-weight:600}
+
+@media(max-width:980px){
+  .nav-links{display:none}
+  .hero-grid,.problem-grid,.vitrine-grid,.order-grid,.faq-grid,.showcase-grid{grid-template-columns:1fr}
+  .problem-copy{position:static}
+  .hero{padding-top:55px}
+  .hero-visual{min-height:540px;margin-top:18px}
+  .browser{width:86%}
+  .proof-grid{grid-template-columns:1fr 1fr}
+  .proof-item:nth-child(2){border-right:0}.proof-item:nth-child(-n+2){border-bottom:1px solid rgba(7,17,12,.16)}
+  .steps-grid{grid-template-columns:1fr}
+  .bento{grid-template-columns:1fr}
+  .case-grid{grid-template-columns:1fr 1fr}
+  .pricing-grid{grid-template-columns:1fr}
+  .problem-grid,.vitrine-grid,.order-grid,.faq-grid{gap:36px}
+  .final-inner{display:block}.final-actions{margin-top:24px}
+}
+@media(max-width:680px){
+  .container{width:min(calc(100% - 28px),1240px)}
+  .nav{height:66px}.nav-actions .btn-outline{display:none}.nav-actions .btn-primary{min-height:40px;padding:0 12px}
+  .brand{font-size:18px}.brand-box{width:36px;height:36px;border-radius:11px;font-size:13px}
+  .hero{padding:42px 0 24px}.hero h1{font-size:clamp(54px,16.4vw,76px)}
+  .hero-copy{font-size:14px}.hero-actions{display:grid;grid-template-columns:1fr}.hero-actions .btn{width:100%}
+  .hero-visual{min-height:465px;margin-top:30px}.browser{width:95%;right:-8px}.phone{width:164px;left:-5px}.phone-screen{min-height:292px}
+  .float-card{width:150px;right:-3px;bottom:18px}.store-demo{padding:12px}.demo-photo{height:62px}.demo-hero h3{font-size:18px}
+  .whatsapp-badge{width:36px;height:36px;right:14px;top:105px;font-size:15px}
+  .proof{padding-bottom:24px}.proof-item{padding:18px 12px}.proof-item strong{font-size:20px}
+  .steps-section,.light,.vitrine,.bento-section,.order-section,.usecases,.pricing,.faq{padding:70px 0}
+  .section-title{font-size:clamp(39px,12.5vw,55px)}.section-copy{font-size:13px}
+  .problem-item{grid-template-columns:42px 1fr}.problem-arrow{display:none}.problem-num{width:42px;height:42px;font-size:14px}
+  .flow-stage{min-height:300px}
+  .vitrine-list{margin-top:22px}.message-card{padding:18px}.message-head h3{font-size:20px}
+  .step-card{min-height:220px}.step-card h3{margin-top:30px}
+  .steps-showcase{padding:18px}
+  .feature{padding:18px}.feature h3{font-size:21px}.feature-big{min-height:360px}
+  .central-grid{grid-template-columns:repeat(3,1fr);gap:4px}.central-box{padding:5px}.central-item{padding:6px}
+  .customizer{grid-template-columns:90px 1fr}
+  .chat-shell{margin:0}.case-grid{grid-template-columns:1fr 1fr;gap:8px}.case{padding:14px}
+  .final-cta{padding:16px 0 68px}.final-box{padding:28px 20px;border-radius:24px}.final-box h2{font-size:44px}.final-actions{display:grid;grid-template-columns:1fr}
+  .footer-inner{align-items:flex-start;flex-direction:column}
+}
+@media(max-width:430px){
+  .hero h1{font-size:52px}
+  .hero-visual{min-height:420px}.browser{width:98%}.phone{width:145px}.float-card{width:132px}
+  .proof-grid{grid-template-columns:1fr}.proof-item{border-right:0;border-bottom:1px solid rgba(7,17,12,.16)}.proof-item:last-child{border-bottom:0}
+  .case-grid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<header class="nav">
+  <div class="container nav-inner">
+    <a href="#" class="brand">
+      <span class="brand-box" aria-label="CZ"><span class="c">C</span><span class="z">Z</span></span>
+      <span class="brand-word"><span class="click">Click</span><span class="zap">Zap</span></span>
+    </a>
+    <nav class="nav-links">
+      <a href="#como-funciona">Como funciona</a>
+      <a href="#recursos">Recursos</a>
+      <a href="#planos">Planos</a>
+      <a href="#faq">Dúvidas</a>
+    </nav>
+    <div class="nav-actions">
+      <a class="btn btn-outline" href="#demo">Ver demonstração</a>
+      <a class="btn btn-primary" href="#planos">Criar meu catálogo</a>
+    </div>
+  </div>
+</header>
+
+<main>
+
+<section class="hero">
+  <div class="container hero-grid">
+    <div>
+      <span class="kicker">Venda por conversa, com mais organização</span>
+      <h1>Seu catálogo.<br>Seu carrinho.<br><span class="green">Seu WhatsApp.</span></h1>
+      <p class="hero-copy">O ClickZap transforma seu WhatsApp em um canal de vendas mais profissional. Publique produtos, deixe o cliente montar o pedido e receba a conversa já com itens, valores e entrega organizados.</p>
+      <div class="hero-actions">
+        <a href="#planos" class="btn btn-primary">Criar meu catálogo</a>
+        <a href="#demo" class="btn btn-outline">Ver como funciona</a>
+      </div>
+      <div class="hero-note"><i></i> Loja pública sem login para o cliente. Pedido salvo antes de abrir o WhatsApp.</div>
+    </div>
+
+    <div class="hero-visual" id="demo">
+      <div class="hero-glow"></div>
+
+      <div class="browser">
+        <div class="browser-top">
+          <i class="dot"></i><i class="dot"></i><i class="dot"></i>
+          <div class="browser-url">clickzap.com.br/loja/minhaloja</div>
+        </div>
+        <div class="store-demo">
+          <div class="demo-top">
+            <div class="demo-logo"><span class="demo-logo-mark" aria-label="CZ"><span>C</span><span class="z">Z</span></span> Minha Loja</div>
+            <div class="demo-cart">Sacola · 2</div>
+          </div>
+          <div class="demo-hero">
+            <div><small>COLEÇÃO NOVA</small><h3>Escolha.<br><span>Peça pelo WhatsApp.</span></h3></div>
+            <small>Entrega local</small>
+          </div>
+          <div class="demo-search">Buscar produtos...</div>
+          <div class="demo-cats"><span>Todos</span><span>Mais vendidos</span><span>Presentes</span><span>Acessórios</span></div>
+          <div class="demo-products">
+            <article class="demo-product"><div class="demo-photo"><span class="emoji">🎁</span></div><b>Kit Essencial</b><small>Presente, pronta entrega</small><div class="demo-price"><strong>R$ 89</strong><span class="demo-add">Adicionar</span></div></article>
+            <article class="demo-product"><div class="demo-photo"><span class="emoji">👜</span></div><b>Bolsa Minimal</b><small>Acessórios, lançamento</small><div class="demo-price"><strong>R$ 129</strong><span class="demo-add">Adicionar</span></div></article>
+          </div>
+        </div>
+      </div>
+
+      <div class="whatsapp-badge" aria-label="WhatsApp"><svg class="wa-svg" viewBox="0 0 24 24" aria-hidden="true">
+<path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.009-.371-.011-.57-.011-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479s1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.693.625.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 017.021 2.91 9.825 9.825 0 012.9 7.028c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.055 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.69 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+</svg></div>
+
+      <div class="phone">
+        <div class="phone-screen">
+          <div class="phone-notch"></div>
+          <div class="phone-title">Seu pedido</div>
+          <div class="phone-total">R$ 218</div>
+          <div class="order-line"><span>1x Kit Essencial</span><b>R$ 89</b></div>
+          <div class="order-line"><span>1x Bolsa Minimal</span><b>R$ 129</b></div>
+          <div class="order-line"><span>Retirada</span><b>R$ 0</b></div>
+          <div class="phone-btn"><svg class="wa-svg" viewBox="0 0 24 24" aria-hidden="true">
+<path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.009-.371-.011-.57-.011-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479s1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.693.625.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 017.021 2.91 9.825 9.825 0 012.9 7.028c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.055 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.69 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+</svg> Enviar pedido no WhatsApp</div>
+        </div>
+      </div>
+
+      <div class="float-card">
+        <small>Pedido recebido</small>
+        <strong>#1048</strong>
+        <span>● Novo pedido na central de pedidos</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="steps-section" id="como-funciona">
+  <div class="container">
+    <div class="steps-header">
+      <span class="kicker">3 passos. Só isso.</span>
+      <h2 class="section-title">Transforme conversa no <span style="color:var(--green)">WhatsApp</span> em pedido organizado.</h2>
+      <p class="section-copy">O ClickZap fica entre o catálogo e o WhatsApp. Seu cliente escolhe sozinho e você recebe a conversa com o pedido montado.</p>
+    </div>
+
+    <div class="steps-grid">
+      <article class="step-card">
+        <span class="step-badge">01</span>
+        <span class="step-emoji emoji">📦</span>
+        <h3>Cadastre seus produtos</h3>
+        <p>Nome, fotos, preço, descrição e categoria. Em poucos minutos sua vitrine está pronta.</p>
+      </article>
+      <article class="step-card">
+        <span class="step-badge">02</span>
+        <span class="step-emoji emoji">🔗</span>
+        <h3>Compartilhe o link</h3>
+        <p>Coloque na bio, Instagram, anúncios, Google ou envie direto para seus clientes no WhatsApp.</p>
+      </article>
+      <article class="step-card">
+        <span class="step-badge">03</span>
+        <span class="step-emoji emoji">💬</span>
+        <h3>Receba o pedido pronto</h3>
+        <p>O cliente adiciona ao carrinho e o ClickZap abre o WhatsApp com todos os itens organizados.</p>
+      </article>
+    </div>
+
+    <div class="steps-showcase">
+      <div class="showcase-grid">
+        <div class="mini-browser">
+          <div class="mini-browser-top">
+            <i class="dot"></i><i class="dot"></i><i class="dot"></i>
+            <div class="mini-browser-url"></div>
+          </div>
+          <div class="mini-browser-body">
+            <div class="mini-browser-hero">
+              <b>Escolha.<br><span>Peça no WhatsApp.</span></b>
+              <small>Entrega local</small>
+            </div>
+            <div class="mini-browser-search"></div>
+            <div class="mini-browser-cards">
+              <div class="mini-browser-card">
+                <i></i>
+                <b>Kit Essencial</b>
+                <small>Presentes, pronta entrega</small>
+                <div class="cta"><span>R$ 89</span><span>+</span></div>
+              </div>
+              <div class="mini-browser-card">
+                <i></i>
+                <b>Bolsa Minimal</b>
+                <small>Acessórios, lançamento</small>
+                <div class="cta"><span>R$ 129</span><span>+</span></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <div class="showcase-panel">
+          <h3>O catálogo vira pedido. O pedido vira conversa organizada.</h3>
+          <p>Sem complicar a operação do seu negócio. O cliente encontra o produto, monta o carrinho, confirma a entrega e segue para o WhatsApp com tudo estruturado.</p>
+
+          <div class="tags">
+            <span>Catálogo público</span>
+            <span>Carrinho simples</span>
+            <span>Pedido registrado</span>
+            <span>WhatsApp pronto</span>
+          </div>
+
+          <div class="funnel">
+            <div class="funnel-grid">
+              <div class="funnel-col">
+                <b>Novos</b>
+                <div class="funnel-card">#1048<small>2 itens, R$ 218</small></div>
+              </div>
+              <div class="funnel-col">
+                <b>Em conversa</b>
+                <div class="funnel-card">#1047<small>1 item, R$ 129</small></div>
+              </div>
+              <div class="funnel-col">
+                <b>Concluídos</b>
+                <div class="funnel-card">#1045<small>Vendido, R$ 180</small></div>
+              </div>
+            </div>
+          </div>
+
+          <div class="whatsapp-row">
+            <span class="whatsapp-icon"><svg class="wa-svg" viewBox="0 0 24 24" aria-hidden="true">
+<path fill="currentColor" d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.198-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.009-.371-.011-.57-.011-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479s1.065 2.876 1.213 3.074c.149.198 2.095 3.2 5.076 4.487.709.306 1.262.489 1.693.625.712.226 1.36.194 1.872.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.981.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884a9.82 9.82 0 017.021 2.91 9.825 9.825 0 012.9 7.028c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.055 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.69 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/>
+</svg></span>
+            <span>A conversa abre no WhatsApp com itens, total, entrega e observação.</span>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="proof">
+  <div class="container proof-grid">
+    <div class="proof-item"><strong>1 link</strong><span>para divulgar seu catálogo no WhatsApp, Instagram, Google e onde quiser.</span></div>
+    <div class="proof-item"><strong>3 passos</strong><span>o cliente escolhe, monta o carrinho e continua a conversa com você.</span></div>
+    <div class="proof-item"><strong>0 login</strong><span>para o comprador navegar pela loja pública e iniciar o pedido.</span></div>
+    <div class="proof-item"><strong>1 painel</strong><span>para acompanhar novos pedidos, conversas e vendas concluídas.</span></div>
+  </div>
+</section>
+
+<section class="light">
+  <div class="container problem-grid">
+    <div class="problem-copy">
+      <span class="kicker">Menos atrito para vender</span>
+      <h2 class="section-title">WhatsApp é ótimo para conversar. Não para organizar catálogo e pedido.</h2>
+      <p class="section-copy">O ClickZap organiza a parte que normalmente fica espalhada entre fotos, mensagens, preços e anotações. Seu cliente escolhe com autonomia e você recebe uma conversa muito mais pronta para vender.</p>
+    </div>
+
+    <div>
+      <div class="problem-list">
+        <button class="problem-item active" data-flow="catalogo">
+          <span class="problem-num">01</span>
+          <span><b>Chega de mandar foto e preço um por um</b><p>Seu catálogo fica disponível em um link único com produtos, categorias, fotos e valores.</p></span>
+          <span class="problem-arrow">›</span>
+        </button>
+        <button class="problem-item" data-flow="carrinho">
+          <span class="problem-num">02</span>
+          <span><b>O cliente monta o próprio pedido</b><p>Ele escolhe os itens, ajusta quantidades e vê subtotal, entrega e total antes de falar com você.</p></span>
+          <span class="problem-arrow">›</span>
+        </button>
+        <button class="problem-item" data-flow="central">
+          <span class="problem-num">03</span>
+          <span><b>O pedido entra na central de pedidos antes do WhatsApp</b><p>O ClickZap mantém número, itens, valor, cliente e estágio do pedido registrados.</p></span>
+          <span class="problem-arrow">›</span>
+        </button>
+        <button class="problem-item" data-flow="whatsapp">
+          <span class="problem-num">04</span>
+          <span><b>Você sabe o que virou venda</b><p>Organize o funil em Novo, Em conversa e Concluído. Marque o resultado como Vendido ou Não vendido.</p></span>
+          <span class="problem-arrow">›</span>
+        </button>
+      </div>
+
+      <div class="flow-stage">
+        <div class="flow-head"><b id="flowTitle">Catálogo público em um único link</b><span>interaja com os cards acima</span></div>
+        <div class="flow-demo">
+          <div class="flow-slide active" data-slide="catalogo">
+            <div class="product-window">
+              <div><i></i><b>Kit Essencial</b><small>R$ 89, Presentes</small></div>
+              <div><i></i><b>Bolsa Minimal</b><small>R$ 129, Acessórios</small></div>
+            </div>
+          </div>
+          <div class="flow-slide" data-slide="carrinho">
+            <div class="cart-window">
+              <div class="cart-row"><span>1x Kit Essencial</span><b>R$ 89</b></div>
+              <div class="cart-row"><span>1x Bolsa Minimal</span><b>R$ 129</b></div>
+              <div class="cart-row"><span>Retirada</span><b>R$ 0</b></div>
+              <div class="cart-total"><span>Total</span><strong>R$ 218</strong></div>
+            </div>
+          </div>
+          <div class="flow-slide" data-slide="central">
+            <div class="central-mini">
+              <div class="central-col"><span>Novo</span><div class="central-card">#1048<br>Bianca<br>R$ 218</div></div>
+              <div class="central-col"><span>Em conversa</span><div class="central-card">#1047<br>Marcos<br>R$ 129</div></div>
+              <div class="central-col"><span>Concluído</span><div class="central-card">#1045<br>Vendido<br>R$ 180</div></div>
+            </div>
+          </div>
+          <div class="flow-slide" data-slide="whatsapp">
+            <div class="chat-mini"><div class="chat-mini-bubble">Olá! Quero fazer um pedido pela Minha Loja. <span class="emoji">👋</span><br><br><b>Pedido #1048</b><br>1x Kit Essencial<br>1x Bolsa Minimal<br><br><b>Total: R$ 218</b></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="vitrine">
+  <div class="container vitrine-grid">
+    <div>
+      <span class="kicker">Menos “quanto custa?”. Mais pedido.</span>
+      <h2 class="section-title">Uma vitrine que já prepara a conversa.</h2>
+      <p class="section-copy">Você não precisa de gateway, checkout, antifraude, integração fiscal ou uma operação completa de e-commerce para começar a vender melhor. O ClickZap organiza o catálogo e prepara o pedido para a conversa continuar no WhatsApp.</p>
+
+      <div class="vitrine-list">
+        <div class="vitrine-check"><span class="check-icon">✓</span> Catálogo responsivo e compartilhável</div>
+        <div class="vitrine-check"><span class="check-icon">✓</span> Carrinho com quantidade e observação</div>
+        <div class="vitrine-check"><span class="check-icon">✓</span> Mensagem automática com o pedido</div>
+        <div class="vitrine-check"><span class="check-icon">✓</span> Gestão de produtos, categorias e pedidos</div>
+        <div class="vitrine-check"><span class="check-icon">✓</span> Retirada ou entrega configurável</div>
+      </div>
+    </div>
+
+    <div class="message-card">
+      <div class="message-head">
+        <div><span class="kicker" style="color:#008f5e">Mensagem gerada automaticamente</span><h3>Pedido #1042</h3></div>
+        <span class="pill" style="background:#e2f9ef;color:#008a5a">WhatsApp</span>
+      </div>
+      <div class="message-box">
+        Olá! Quero fazer um pedido pela <b>Mimo & Co.</b> <span class="emoji">👋</span><br><br>
+        <span class="emoji">🛍️</span> <b>Pedido #1042</b><br><br>
+        2x Caneca Personalizada, R$ 179,80<br>
+        1x Kit Verde, R$ 74,90<br><br>
+        <span class="emoji">💰</span> <b>Total: R$ 254,70</b><br><br>
+        <span class="emoji">👤</span> Marina Souza<br>
+        <span class="emoji">📍</span> Entrega<br>
+        <span class="emoji">📝</span> Obs.: embalagem para presente<br><br>
+        Pedido montado pelo ClickZap.
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="bento-section" id="recursos">
+  <div class="container">
+    <span class="kicker">Produto completo sem ficar pesado</span>
+    <h2 class="section-title">Tudo que você precisa para vender por conversa.</h2>
+    <p class="section-copy">A loja é simples para o cliente. Nos bastidores, você ganha organização para operar os pedidos e entender melhor as vendas.</p>
+
+    <div class="bento">
+      <div class="bento-col">
+        <article class="feature feature-big">
+          <span class="pill pill-soft">Central de pedidos</span>
+          <h3 style="margin-top:14px">Um funil para saber exatamente onde cada pedido está.</h3>
+          <p>Visualize novos pedidos, conversas em andamento e concluídos. Avance, volte, arraste e marque se a negociação virou venda.</p>
+          <div class="central-grid">
+            <div class="central-box"><div class="central-title">Novo</div><div class="central-item green-card"><b>#1048 · Bianca</b><span>2 itens, R$ 218</span></div><div class="central-item"><b>#1047 · Marcos</b><span>1 item, R$ 129</span></div></div>
+            <div class="central-box"><div class="central-title">Em conversa</div><div class="central-item"><b>#1046 · Ana</b><span>3 itens, R$ 327</span></div></div>
+            <div class="central-box"><div class="central-title">Concluído</div><div class="central-item"><b>#1045 · Lucas</b><span>Vendido, R$ 180</span></div></div>
+          </div>
+        </article>
+        <article class="feature green feature-half">
+          <span class="pill" style="background:rgba(0,0,0,.08)">WhatsApp</span>
+          <h3 style="margin-top:14px">A conversa continua onde seu cliente já está.</h3>
+          <p>O ClickZap organiza o pedido e leva o cliente até o WhatsApp no momento certo.</p>
+        </article>
+      </div>
+
+      <div class="bento-col">
+        <article class="feature feature-half">
+          <span class="pill pill-soft">Minha Loja</span>
+          <h3 style="margin-top:14px">Seu catálogo com a cara do seu negócio.</h3>
+          <p>Logo, cor, tema, estilo dos cards, formato das fotos, botões, chamada principal e faixa promocional.</p>
+          <div class="customizer"><div class="custom-options"><span></span><span></span><span></span><span></span></div><div class="custom-preview"><div class="preview-hero"></div><div class="preview-products"><i></i><i></i></div></div></div>
+        </article>
+
+        <article class="feature dark feature-half">
+          <span class="pill pill-green">Entrega</span>
+          <h3 style="margin-top:14px">Frete simples ou valor por bairro.</h3>
+          <p>Configure retirada, taxa única de entrega ou bairros com preços diferentes. O valor entra automaticamente no pedido.</p>
+          <div class="delivery-list"><div class="delivery-row"><span>Centro</span><b>R$ 8</b></div><div class="delivery-row"><span>Marco</span><b>R$ 15</b></div></div>
+        </article>
+
+        <article class="feature dark feature-half">
+          <span class="pill pill-green">Visão comercial</span>
+          <h3 style="margin-top:14px">Dados que nascem dos pedidos reais.</h3>
+          <p>Ao registrar o pedido antes do WhatsApp, o ClickZap pode mostrar volume, valor, conversão e comportamento da operação.</p>
+          <div class="metrics"><div class="metric"><strong>24</strong><small>pedidos</small></div><div class="metric"><strong>68%</strong><small>vendidos</small></div></div>
+        </article>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="order-section">
+  <div class="container order-grid">
+    <div>
+      <span class="kicker">A ponte entre catálogo e atendimento</span>
+      <h2 class="section-title">O cliente já chega no WhatsApp sabendo o que quer.</h2>
+      <p class="section-copy">A mensagem pode carregar o número do pedido, produtos, quantidades, subtotal, entrega, frete, total e observação. Você começa a conversa muito mais perto de fechar.</p>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;margin-top:20px">
+        <span class="pill pill-green">✓ Pedido registrado</span>
+        <span class="pill pill-green">✓ Total calculado</span>
+        <span class="pill pill-green">✓ Cliente identificado</span>
+      </div>
+    </div>
+
+    <div class="chat-shell">
+      <div class="chat-top"><span class="chat-avatar">ML</span><div><b>Minha Loja</b><small>online agora</small></div></div>
+      <div class="chat-area">
+        <div class="bubble">
+          Olá! Quero fazer um pedido pela <b>Minha Loja</b>. <span class="emoji">👋</span>
+          <div class="line"></div>
+          <b style="font-size:12px"><span class="emoji">🛍️</span> Pedido #1048</b><br><br>
+          1x Kit Essencial, R$ 89,00<br>
+          1x Bolsa Minimal, R$ 129,00
+          <div class="line"></div>
+          Subtotal: R$ 218,00<br>
+          Frete: R$ 0,00<br>
+          <span class="total"><span class="emoji">💰</span> Total: R$ 218,00</span>
+          <div class="line"></div>
+          <span class="emoji">👤</span> Bianca Rodrigues<br>
+          <span class="emoji">📍</span> Retirada na loja<br><br>
+          <span class="emoji">📝</span> Obs.: separar para presente.
+        </div>
+        <div class="chat-caption">Pedido montado pelo ClickZap, agora</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="usecases">
+  <div class="container">
+    <span class="kicker">Feito para negócios que vendem pelo WhatsApp</span>
+    <h2 class="section-title">Se o pedido termina em conversa, o ClickZap pode entrar antes.</h2>
+    <p class="section-copy">Uma estrutura leve para negócios locais e operações que precisam vender sem implantar um e-commerce completo.</p>
+
+    <div class="case-grid">
+      <article class="case"><span class="emoji">👗</span><h3>Moda e acessórios</h3><p>Catálogo visual, preços, novidades e pedidos organizados por conversa.</p></article>
+      <article class="case"><span class="emoji">🎁</span><h3>Presentes e personalizados</h3><p>Produtos sob encomenda, kits e observações já dentro do pedido.</p></article>
+      <article class="case"><span class="emoji">💄</span><h3>Cosméticos</h3><p>Organize linhas, categorias e produtos sem mandar foto por foto.</p></article>
+      <article class="case"><span class="emoji">🏪</span><h3>Comércio local</h3><p>Link rápido para clientes recorrentes, Instagram e divulgação regional.</p></article>
+    </div>
+  </div>
+</section>
+
+<section class="pricing" id="planos">
+  <div class="container">
+    <span class="kicker">Comece simples</span>
+    <h2 class="section-title">Um plano para começar. Outro para crescer.</h2>
+    <p class="section-copy">Comece gratuitamente e evolua quando precisar de mais produtos e recursos para sua operação.</p>
+
+    <div class="pricing-grid">
+      <article class="plan">
+        <span class="pill pill-green">Start</span>
+        <div class="price">Grátis</div>
+        <p>Para colocar sua primeira vitrine no ar.</p>
+        <ul>
+          <li>1 loja</li>
+          <li>Até 10 produtos</li>
+          <li>Carrinho para WhatsApp</li>
+          <li>Pedidos registrados</li>
+          <li>Entrega ou retirada</li>
+          <li>Marca ClickZap na loja</li>
+        </ul>
+        <a href="#" class="btn btn-outline" style="width:100%">Começar grátis</a>
+      </article>
+
+      <article class="plan pro">
+        <span class="recommended">Mais completo</span>
+        <span class="pill pill-soft">Pro</span>
+        <div class="price">R$ 54,90 <small>/ mês</small></div>
+        <p>Para quem quer transformar o ClickZap em um canal de vendas recorrente.</p>
+        <ul>
+          <li>Produtos ilimitados</li>
+          <li>Personalização completa da loja</li>
+          <li>Central de pedidos</li>
+          <li>Indicadores comerciais</li>
+          <li>Frete por bairro</li>
+          <li>Sem marca ClickZap</li>
+        </ul>
+        <a href="#" class="btn btn-primary" style="width:100%">Quero o ClickZap Pro</a>
+      </article>
+    </div>
+  </div>
+</section>
+
+<section class="faq" id="faq">
+  <div class="container faq-grid">
+    <div>
+      <span class="kicker">Perguntas frequentes</span>
+      <h2 class="section-title">O essencial antes de começar.</h2>
+      <p class="section-copy" style="color:#69716b">O ClickZap foi pensado para ser mais simples que um e-commerce e mais organizado que vender apenas pela conversa.</p>
+    </div>
+    <div class="faq-list">
+      <article class="faq-item open"><button class="faq-q">O ClickZap substitui meu WhatsApp? <span>+</span></button><div class="faq-a">Não. O ClickZap prepara o pedido antes da conversa e abre o WhatsApp com as informações organizadas. O atendimento continua no canal que você já utiliza.</div></article>
+      <article class="faq-item"><button class="faq-q">Meu cliente precisa criar uma conta? <span>+</span></button><div class="faq-a">Não. A loja pública foi pensada para o comprador navegar, montar o carrinho e iniciar o pedido sem login.</div></article>
+      <article class="faq-item"><button class="faq-q">Consigo cobrar frete diferente por bairro? <span>+</span></button><div class="faq-a">Sim. Você pode trabalhar com retirada, taxa global de entrega ou cadastrar bairros e valores diferentes.</div></article>
+      <article class="faq-item"><button class="faq-q">O ClickZap controla estoque? <span>+</span></button><div class="faq-a">Na versão inicial, não. O foco é catálogo, pedido, WhatsApp e organização comercial.</div></article>
+      <article class="faq-item"><button class="faq-q">O pedido fica salvo mesmo indo para o WhatsApp? <span>+</span></button><div class="faq-a">Sim. O pedido é criado no ClickZap antes de abrir o WhatsApp. Isso permite acompanhar o funil e os resultados da operação.</div></article>
+    </div>
+  </div>
+</section>
+
+<section class="final-cta">
+  <div class="container">
+    <div class="final-box">
+      <div class="final-inner">
+        <div>
+          <span class="kicker">Seu próximo pedido pode chegar melhor</span>
+          <h2>Transforme seu catálogo em uma experiência de compra que termina no <span>WhatsApp.</span></h2>
+        </div>
+        <div class="final-actions">
+          <a href="#" class="btn btn-primary">Criar meu ClickZap</a>
+          <a href="#demo" class="btn btn-outline">Ver demonstração</a>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer class="footer">
+  <div class="container footer-inner">
+    <div class="brand">
+      <span class="brand-box" aria-label="CZ"><span class="c">C</span><span class="z">Z</span></span>
+      <span class="brand-word"><span class="click">Click</span><span class="zap">Zap</span></span>
+    </div>
+    <div class="footer-links"><a href="#como-funciona">Como funciona</a><a href="#recursos">Recursos</a><a href="#planos">Planos</a><a href="#faq">FAQ</a></div>
+    <span class="small">© ClickZap</span>
+  </div>
+</footer>
+
+<script>
+const flowTitles={
+  catalogo:"Catálogo público em um único link",
+  carrinho:"Carrinho simples, direto e sem login",
+  central:"Pedido salvo na central de pedidos antes do WhatsApp",
+  whatsapp:"Conversa pronta para avançar"
+};
+
+document.querySelectorAll("[data-flow]").forEach(btn=>{
+  btn.addEventListener("click",()=>{
+    const key=btn.dataset.flow;
+    document.querySelectorAll("[data-flow]").forEach(x=>x.classList.toggle("active",x===btn));
+    document.querySelectorAll("[data-slide]").forEach(x=>x.classList.toggle("active",x.dataset.slide===key));
+    document.getElementById("flowTitle").textContent=flowTitles[key];
+  });
+});
+
+document.querySelectorAll(".faq-q").forEach(button=>{
+  button.addEventListener("click",()=>{
+    const item=button.closest(".faq-item");
+    document.querySelectorAll(".faq-item").forEach(i=>{if(i!==item)i.classList.remove("open")});
+    item.classList.toggle("open");
+  });
+});
+</script>
+</body>
+</html>

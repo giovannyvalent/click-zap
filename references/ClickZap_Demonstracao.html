@@ -1,0 +1,1106 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+<meta charset="utf-8"/>
+<meta name="viewport" content="width=device-width,initial-scale=1"/>
+<meta name="theme-color" content="#0a0a0a"/>
+<title>ClickZap — Seu catálogo vende pelo WhatsApp</title>
+<meta name="description" content="Crie seu catálogo, receba pedidos e leve o carrinho direto para o WhatsApp. Sem loja virtual complicada."/>
+<style>
+@import url('https://fonts.googleapis.com/css2?family=Manrope:wght@400;500;600;700;800&family=Inter:wght@400;500;600;700;800&display=swap');
+:root{
+  --bg:#f6f7f6; --card:#fff; --ink:#0b0b0b; --muted:#6f7371; --line:#e8eae9;
+  --green:#16c784; --green-dark:#0ea96e; --green-soft:#e9fff6; --black:#090909;
+  --shadow:0 18px 60px rgba(0,0,0,.08); --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{margin:0;font-family:Inter,system-ui,sans-serif;background:var(--bg);color:var(--ink)}
+button,input,textarea,select{font:inherit}
+button{cursor:pointer}
+a{text-decoration:none;color:inherit}
+h1,h2,h3,h4{font-family:Manrope,Inter,sans-serif;margin:0}
+p{margin:0}
+.wrap{width:min(1180px,calc(100% - 40px));margin:auto}
+.hidden{display:none!important}
+.btn{border:0;border-radius:12px;padding:13px 17px;font-weight:800;display:inline-flex;align-items:center;justify-content:center;gap:8px;transition:.2s}
+.btn.dark{background:#0a0a0a;color:#fff}
+.btn.green{background:var(--green);color:#071a12}
+.btn.green:hover{background:#1bd893}
+.btn.light{background:#fff;border:1px solid var(--line);color:#161616}
+.btn.ghost{background:transparent;color:#111;padding:8px 10px}
+.btn.full{width:100%}
+.pill{display:inline-flex;align-items:center;gap:7px;border-radius:999px;padding:7px 10px;font-size:12px;font-weight:800;background:#eef1ef}
+.dot{width:8px;height:8px;border-radius:50%;background:var(--green)}
+.eyebrow{font-size:11px;font-weight:800;letter-spacing:1.4px;text-transform:uppercase;color:var(--green-dark)}
+.logo{display:flex;align-items:center;gap:10px;font:800 24px Manrope}
+.logo-mark{width:38px;height:38px;border-radius:12px;background:#0a0a0a;color:var(--green);display:grid;place-items:center;font-size:20px}
+.logo b span{color:var(--green)}
+.smallmuted{font-size:12px;color:var(--muted)}
+.toast{position:fixed;right:22px;bottom:22px;z-index:9999;background:#0b0b0b;color:#fff;padding:13px 16px;border-radius:12px;box-shadow:var(--shadow);font-size:13px}
+.badge{font-size:11px;font-weight:800;padding:6px 9px;border-radius:999px;background:#eef1ef}
+.badge.green{background:var(--green-soft);color:#087d51}
+.badge.black{background:#0b0b0b;color:#fff}
+.money{font-weight:800}
+.iconbtn{border:1px solid var(--line);background:#fff;border-radius:11px;width:40px;height:40px;display:grid;place-items:center}
+input,textarea,select{width:100%;border:1px solid #dfe3e1;background:#fff;border-radius:12px;padding:12px 13px;outline:none}
+input:focus,textarea:focus,select:focus{border-color:var(--green);box-shadow:0 0 0 3px rgba(22,199,132,.12)}
+label{display:grid;gap:7px;font-size:12px;font-weight:700;color:#2e3230}
+.panel{background:#fff;border:1px solid var(--line);border-radius:18px}
+hr{border:0;border-top:1px solid var(--line)}
+
+/* LANDING */
+.landing{background:#fff}
+.landing-header{height:78px;display:flex;align-items:center;justify-content:space-between}
+.landing-header nav{display:flex;gap:26px;font-size:13px;color:#4f5451;font-weight:700}
+.hero{background:#0a0a0a;color:#fff;overflow:hidden}
+.hero-grid{min-height:620px;display:grid;grid-template-columns:1fr 1fr;align-items:center;gap:45px;position:relative}
+.hero-copy{padding:80px 0}
+.hero .eyebrow{color:#5ef0b3}
+.hero h1{font-size:clamp(42px,5vw,68px);line-height:1.03;letter-spacing:-3.2px;margin:18px 0 22px;max-width:650px}
+.hero h1 em{font-style:normal;color:var(--green)}
+.hero p{font-size:17px;line-height:1.75;color:#b7beb9;max-width:600px}
+.hero-actions{display:flex;gap:11px;margin-top:28px;flex-wrap:wrap}
+.hero-bullets{display:flex;gap:18px;margin-top:22px;flex-wrap:wrap;color:#b7beb9;font-size:12px}
+.phone-stage{position:relative;min-height:520px;display:grid;place-items:center}
+.phone-glow{position:absolute;width:380px;height:380px;border-radius:50%;background:rgba(22,199,132,.16);filter:blur(2px)}
+.phone{width:315px;background:#fff;border-radius:34px;padding:14px;box-shadow:0 30px 80px rgba(0,0,0,.4);position:relative;z-index:2;color:#111;transform:rotate(3deg)}
+.phone-top{height:24px;display:flex;justify-content:center}
+.notch{width:92px;height:20px;background:#0b0b0b;border-radius:999px}
+.phone-screen{border-radius:24px;overflow:hidden;background:#f6f7f6}
+.store-mini-head{background:#fff;padding:15px;border-bottom:1px solid var(--line)}
+.store-mini-head b{display:block}
+.store-mini-head small{color:var(--muted)}
+.mini-products{padding:10px;display:grid;grid-template-columns:1fr 1fr;gap:9px}
+.mini-product{background:#fff;border-radius:12px;padding:8px}
+.mini-img{height:82px;border-radius:9px;background:linear-gradient(135deg,#131313,#303030);margin-bottom:8px}
+.mini-product:nth-child(2) .mini-img{background:linear-gradient(135deg,#16c784,#0b7f54)}
+.mini-product:nth-child(3) .mini-img{background:linear-gradient(135deg,#efefef,#cfcfcf)}
+.mini-product:nth-child(4) .mini-img{background:linear-gradient(135deg,#222,#16c784)}
+.mini-product b{font-size:10px}.mini-product small{font-size:9px;color:var(--muted)}
+.mini-cart{margin:10px;background:var(--green);border-radius:12px;padding:12px;font-weight:800;font-size:11px;text-align:center}
+.floatmsg{position:absolute;right:-10px;bottom:70px;background:#fff;color:#111;padding:14px;border-radius:14px;z-index:4;box-shadow:0 20px 45px rgba(0,0,0,.25);width:220px}
+.floatmsg b{display:block;font-size:12px}.floatmsg small{color:var(--muted);font-size:10px}
+.section{padding:92px 0}
+.section-head{text-align:center;max-width:720px;margin:0 auto 42px}
+.section-head h2{font-size:40px;letter-spacing:-1.8px;margin:10px 0 12px}
+.section-head p{color:var(--muted);line-height:1.7}
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+.step{padding:26px;border:1px solid var(--line);border-radius:20px;background:#fff}
+.step-num{width:42px;height:42px;border-radius:12px;background:#0a0a0a;color:var(--green);display:grid;place-items:center;font-weight:800;margin-bottom:30px}
+.step h3{margin-bottom:9px}.step p{color:var(--muted);line-height:1.6;font-size:14px}
+.darkband{background:#0b0b0b;color:#fff}
+.split{display:grid;grid-template-columns:1fr 1fr;gap:50px;align-items:center}
+.split h2{font-size:46px;letter-spacing:-2px;margin:12px 0 15px}
+.split p{color:#b8beb9;line-height:1.7}
+.checklist{display:grid;gap:13px;margin-top:25px}
+.checkline{display:flex;gap:10px;align-items:center;font-size:14px}
+.check{width:24px;height:24px;border-radius:50%;background:var(--green);color:#06170f;display:grid;place-items:center;font-weight:900}
+.msgcard{background:#fff;color:#111;border-radius:22px;padding:24px;box-shadow:var(--shadow)}
+.msgcard-head{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px}
+.messagebox{background:#e7f8ef;border-radius:14px;padding:16px;white-space:pre-line;font-size:13px;line-height:1.6;border:1px solid #ccefdc}
+.pricing{display:grid;grid-template-columns:1fr 1fr;gap:18px;max-width:800px;margin:auto}
+.pricecard{border:1px solid var(--line);border-radius:22px;padding:28px;background:#fff}
+.pricecard.pro{border:2px solid var(--green);position:relative}
+.pricecard h3{font-size:24px}.price{font-size:38px;font-weight:800;margin:15px 0}.price small{font-size:13px;color:var(--muted)}
+.pricecard ul{padding-left:18px;color:#4e5350;line-height:1.9;font-size:14px}
+.cta-band{padding:38px;border-radius:24px;background:#0a0a0a;color:#fff;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.cta-band h2{font-size:34px}.cta-band p{color:#adb5af;margin-top:8px}
+.footer{padding:28px 0 45px;display:flex;justify-content:space-between;align-items:center;color:#747a76;font-size:12px}
+
+/* APP */
+.app{min-height:100vh;display:grid;grid-template-columns:245px 1fr;background:#f6f7f6}
+.sidebar{background:#0a0a0a;color:#fff;padding:20px 16px;display:flex;flex-direction:column}
+.sidebar .logo{padding:4px 7px 22px}
+.business-chip{border:1px solid #242424;background:#141414;border-radius:13px;padding:12px;display:flex;gap:10px;align-items:center;margin-bottom:22px}
+.business-avatar{width:36px;height:36px;border-radius:10px;background:var(--green);color:#052014;display:grid;place-items:center;font-weight:900}
+.business-chip small{display:block;color:#818a84;font-size:9px;text-transform:uppercase}.business-chip b{font-size:12px}
+.navlabel{font-size:9px;color:#636a66;letter-spacing:1.4px;text-transform:uppercase;font-weight:800;padding:0 9px 8px}
+.nav{display:grid;gap:4px}
+.nav button{border:0;background:transparent;color:#a8b0aa;border-radius:10px;padding:11px 12px;text-align:left;font-weight:700;font-size:13px;display:flex;gap:10px;align-items:center}
+.nav button:hover,.nav button.active{background:#171917;color:#fff}
+.nav button.active{box-shadow:inset 3px 0 0 var(--green)}
+.sidebar-foot{margin-top:auto;display:grid;gap:6px}
+.side-tip{background:#131613;border:1px solid #232923;border-radius:13px;padding:13px;margin-bottom:5px}
+.side-tip b{font-size:12px;display:block;margin:4px 0}.side-tip p{font-size:10px;color:#7d887f;line-height:1.5}
+.main{min-width:0}
+.topbar{height:70px;background:#fff;border-bottom:1px solid var(--line);display:flex;justify-content:space-between;align-items:center;padding:0 26px}
+.breadcrumb{font-size:12px;color:#8b908d}.breadcrumb b{color:#111}
+.top-actions{display:flex;align-items:center;gap:9px}
+.avatar{width:36px;height:36px;border-radius:50%;background:#0a0a0a;color:#fff;display:grid;place-items:center;font-weight:800}
+.content{padding:28px}
+.pagehead{display:flex;align-items:flex-end;justify-content:space-between;gap:20px;margin-bottom:22px}
+.pagehead h1{font-size:32px;letter-spacing:-1.4px}.pagehead p{color:var(--muted);font-size:13px;margin-top:6px}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;margin-bottom:18px}
+.stat{background:#fff;border:1px solid var(--line);border-radius:16px;padding:18px}
+.stat-top{display:flex;justify-content:space-between;align-items:center;color:var(--muted);font-size:11px;font-weight:700}
+.stat strong{display:block;font-size:27px;margin:10px 0 2px}
+.stat small{color:#8b918d;font-size:10px}
+.grid2{display:grid;grid-template-columns:1.3fr .7fr;gap:16px}
+.panel-pad{padding:18px}
+.panelhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:15px}
+.panelhead h2{font-size:17px}.panelhead p{font-size:11px;color:var(--muted);margin-top:4px}
+.orderrow{display:grid;grid-template-columns:1fr 120px 120px 90px;gap:10px;align-items:center;padding:13px 0;border-top:1px solid #f0f1f0;font-size:12px}
+.orderrow:first-child{border-top:0}
+.orderclient b{display:block}.orderclient small{color:var(--muted)}
+.status{display:inline-flex;align-items:center;justify-content:center;border-radius:999px;padding:6px 8px;font-size:10px;font-weight:800}
+.status.new{background:#e9fff6;color:#078354}
+.status.sent{background:#eef3ff;color:#365eb3}
+.status.done{background:#f1f1f1;color:#4f5551}
+.quicklink{padding:18px;background:#0a0a0a;color:#fff;border-radius:16px}
+.quicklink p{color:#919a94;font-size:12px;line-height:1.6;margin:8px 0 15px}
+.urlbox{background:#161816;color:#8cf0c1;padding:10px;border-radius:10px;font-size:10px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.products-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:14px}
+.prodcard{overflow:hidden;background:#fff;border:1px solid var(--line);border-radius:16px}
+.prodimg{height:150px;background:linear-gradient(135deg,#111,#353535);display:grid;place-items:center;color:var(--green);font-size:36px;font-weight:900}
+.prodcard:nth-child(2n) .prodimg{background:linear-gradient(135deg,#17c986,#08754e)}
+.prodcard:nth-child(3n) .prodimg{background:linear-gradient(135deg,#f0f0f0,#d7d7d7);color:#111}
+.prodinfo{padding:14px}
+.prodinfo h3{font-size:15px}.prodinfo p{color:var(--muted);font-size:11px;line-height:1.5;margin:7px 0}
+.prodmeta{display:flex;justify-content:space-between;align-items:center;margin-top:12px}
+.prodactions{display:flex;gap:7px;margin-top:12px}.prodactions button{flex:1}
+.filters{display:flex;gap:10px;margin-bottom:14px}.filters input{max-width:320px}
+.order-toolbar{display:grid;grid-template-columns:minmax(220px,1.4fr) repeat(4,minmax(130px,.65fr)) auto;gap:9px;align-items:center;margin-bottom:14px}
+.order-toolbar input,.order-toolbar select{min-height:42px}
+.viewtoggle{display:inline-flex;background:#eef0ef;padding:4px;border-radius:11px;gap:3px;justify-self:end}
+.viewtoggle button{border:0;background:transparent;padding:8px 11px;border-radius:8px;font-size:11px;font-weight:800;color:#737a76}
+.viewtoggle button.active{background:#fff;color:#0b0b0b;box-shadow:0 2px 8px rgba(0,0,0,.08)}
+.filter-summary{display:flex;justify-content:space-between;align-items:center;gap:12px;margin:8px 0 14px;font-size:11px;color:var(--muted)}
+.kanban{display:grid;grid-template-columns:repeat(3,minmax(250px,1fr));gap:14px;overflow-x:auto;padding-bottom:4px}
+.kanban-col{background:#eef1ef;border:1px solid #e2e5e3;border-radius:16px;padding:12px;min-height:430px}
+.kanban-head{display:flex;justify-content:space-between;align-items:center;padding:3px 3px 11px}
+.kanban-head h3{font-size:13px}.kanban-count{font-size:10px;font-weight:800;background:#fff;border:1px solid var(--line);padding:5px 8px;border-radius:999px}
+.kcard{background:#fff;border:1px solid var(--line);border-radius:14px;padding:13px;margin-bottom:9px;box-shadow:0 3px 10px rgba(0,0,0,.025)}
+.kcard-top{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}.kcard h4{font-size:13px}.kcard p{font-size:10px;color:var(--muted);margin-top:3px}
+.kcard-meta{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:12px 0}.kmeta{background:#f7f8f7;border-radius:9px;padding:8px}.kmeta small{display:block;color:#8b918d;font-size:8px;text-transform:uppercase;font-weight:800}.kmeta b{display:block;font-size:11px;margin-top:3px}
+.kcard-actions{display:flex;gap:7px}.kcard-actions button{flex:1;padding:9px 10px;font-size:10px}
+.kcard[draggable="true"]{cursor:grab}.kcard.dragging{opacity:.42;transform:rotate(1deg)}
+.kanban-col.drag-over{outline:2px dashed var(--green);outline-offset:-5px;background:#e8f8f0}
+.kcard-nav{display:flex;gap:6px;margin-top:7px}.kcard-nav button{flex:1}
+.outcome{display:flex;gap:6px;margin-top:9px}.outcome button{flex:1}
+.outcome .selected-sold{background:#e9fff6;border-color:#b9efd7;color:#087d51}
+.outcome .selected-lost{background:#fff0f0;border-color:#f1c7c7;color:#a33}
+.result-badge{font-size:9px;font-weight:800;padding:5px 7px;border-radius:999px;white-space:nowrap}
+.result-badge.sold{background:#e9fff6;color:#087d51}.result-badge.lost{background:#fff0f0;color:#a33}.result-badge.pending{background:#f2f3f2;color:#6d7470}
+.category-list{display:grid;gap:9px}.category-row{display:grid;grid-template-columns:1fr 130px 190px;align-items:center;gap:12px;padding:14px 0;border-top:1px solid #f0f1f0}
+.category-row:first-child{border-top:0}.category-name{display:flex;align-items:center;gap:11px}.category-dot{width:38px;height:38px;border-radius:11px;background:#0a0a0a;color:var(--green);display:grid;place-items:center;font-weight:900}
+.category-actions{display:flex;gap:7px;justify-content:flex-end}
+
+.product-gallery-upload{border:1px dashed #cbd2ce;border-radius:14px;padding:14px;background:#fafbfa}
+.product-gallery-upload>div:first-child{display:flex;justify-content:space-between;gap:12px;align-items:center}.product-gallery-upload p{font-size:10px;color:var(--muted);margin-top:4px}
+.photo-grid{display:grid;grid-template-columns:repeat(5,1fr);gap:8px;margin-top:12px}
+.photo-slot{aspect-ratio:1;border-radius:11px;border:1px solid var(--line);overflow:hidden;background:#f0f2f1;position:relative;display:grid;place-items:center;color:#a1a7a3;font-size:10px;font-weight:700}
+.photo-slot img{width:100%;height:100%;object-fit:cover}.photo-slot button{position:absolute;top:5px;right:5px;width:24px;height:24px;border:0;border-radius:50%;background:rgba(0,0,0,.72);color:#fff;font-size:11px}
+.fieldsection{border-top:1px solid var(--line);padding-top:15px;margin-top:2px}.fieldsection h3{font-size:13px;margin-bottom:11px}
+.checkfield{display:flex;gap:9px;align-items:center;border:1px solid var(--line);border-radius:12px;padding:11px 12px}.checkfield input{width:auto}.checkfield span{font-size:11px;color:#4b514d}
+.prodimg.has-photo,.storeproduct-img.has-photo{background:#eee;padding:0}.prodimg.has-photo img,.storeproduct-img.has-photo img{width:100%;height:100%;object-fit:cover}
+.tablewrap{overflow:auto}
+table{width:100%;border-collapse:collapse;font-size:12px}
+th{text-align:left;font-size:9px;letter-spacing:1px;color:#8a908c;padding:12px;border-bottom:1px solid var(--line)}
+td{padding:13px 12px;border-bottom:1px solid #f0f1f0}
+.formgrid{display:grid;grid-template-columns:1fr 1fr;gap:16px}
+.formcard{padding:20px}
+.formcard h2{font-size:18px;margin-bottom:4px}.formcard>p{font-size:11px;color:var(--muted);margin-bottom:18px}
+.fields{display:grid;gap:14px}
+.formrow{display:grid;grid-template-columns:1fr 1fr;gap:12px}
+.switchrow{display:flex;justify-content:space-between;gap:12px;align-items:center;padding:13px 0;border-top:1px solid #f0f1f0}
+.switch{width:44px;height:24px;border-radius:999px;background:#dfe4e1;padding:3px;transition:.2s}
+.switch i{display:block;width:18px;height:18px;border-radius:50%;background:#fff;box-shadow:0 2px 5px rgba(0,0,0,.15);transition:.2s}
+.switch.on{background:var(--green)}.switch.on i{transform:translateX(20px)}
+.empty{padding:30px;text-align:center;color:var(--muted)}
+
+/* STOREFRONT */
+.store{min-height:100vh;background:#f6f7f6}
+.store-head{background:#0a0a0a;color:#fff}
+.store-head-inner{min-height:95px;display:flex;align-items:center;justify-content:space-between;gap:20px}
+.store-brand{display:flex;gap:12px;align-items:center}.store-brand-logo{width:46px;height:46px;border-radius:14px;background:var(--green);color:#06180f;display:grid;place-items:center;font-weight:900;font-size:20px}
+.store-brand small{display:block;color:#8c9690;margin-top:3px}
+.store-hero{padding:36px 0 28px}
+.store-hero h1{font-size:36px;letter-spacing:-1.4px}.store-hero p{color:#6d7470;margin-top:8px;max-width:620px;line-height:1.6}
+.store-toolbar{display:flex;gap:10px;margin:22px 0}.store-toolbar input{max-width:420px}
+.chips{display:flex;gap:8px;flex-wrap:wrap}.chip{border:1px solid var(--line);background:#fff;border-radius:999px;padding:9px 12px;font-weight:700;font-size:11px}.chip.active{background:#0a0a0a;color:#fff;border-color:#0a0a0a}
+.store-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:14px;padding-bottom:120px}
+.storeproduct{background:#fff;border:1px solid var(--line);border-radius:16px;overflow:hidden}
+.storeproduct-img{height:165px;background:linear-gradient(135deg,#0a0a0a,#2d2d2d);display:grid;place-items:center;color:var(--green);font-size:42px;font-weight:900}
+.storeproduct:nth-child(2n) .storeproduct-img{background:linear-gradient(135deg,#16c784,#086340);color:#04140d}
+.storeproduct:nth-child(3n) .storeproduct-img{background:linear-gradient(135deg,#eee,#d7d7d7);color:#0d0d0d}
+.storeproduct-body{padding:14px}.storeproduct h3{font-size:15px}.storeproduct p{font-size:11px;line-height:1.5;color:var(--muted);height:34px;margin:7px 0 10px}
+.storeproduct-bottom{display:flex;justify-content:space-between;align-items:center}
+.addbtn{width:34px;height:34px;border-radius:10px;border:0;background:#0a0a0a;color:var(--green);font-weight:900;font-size:18px}
+.cartbar{position:fixed;bottom:18px;left:50%;transform:translateX(-50%);width:min(620px,calc(100% - 28px));background:#0a0a0a;color:#fff;border-radius:16px;padding:13px 15px;display:flex;align-items:center;justify-content:space-between;box-shadow:0 22px 55px rgba(0,0,0,.25);z-index:30}
+.cartbar small{color:#8c9690;display:block}.cartbar strong{font-size:15px}
+.drawerback{position:fixed;inset:0;background:rgba(0,0,0,.45);z-index:70}
+.drawer{position:fixed;right:0;top:0;bottom:0;width:min(440px,100%);background:#fff;z-index:80;padding:22px;display:flex;flex-direction:column;box-shadow:-20px 0 60px rgba(0,0,0,.18)}
+.drawerhead{display:flex;justify-content:space-between;align-items:center;margin-bottom:14px}
+.cartitems{overflow:auto;display:grid;gap:10px}
+.cartitem{display:grid;grid-template-columns:1fr auto;gap:10px;border:1px solid var(--line);border-radius:13px;padding:12px}
+.cartitem b{font-size:12px}.cartitem small{display:block;color:var(--muted);font-size:10px;margin-top:4px}
+.qty{display:flex;align-items:center;gap:7px}.qty button{width:28px;height:28px;border:1px solid var(--line);background:#fff;border-radius:8px}
+.cartfoot{margin-top:auto;padding-top:15px;border-top:1px solid var(--line)}
+.totalrow{display:flex;justify-content:space-between;margin-bottom:14px}.totalrow strong{font-size:21px}
+.msgpreview{background:#f0fbf5;border:1px solid #d8f4e5;border-radius:12px;padding:12px;font-size:11px;line-height:1.6;white-space:pre-line;margin:12px 0;max-height:165px;overflow:auto}
+.formmini{display:grid;gap:9px}
+.formmini input,.formmini textarea{padding:10px 11px;font-size:12px}
+.brandingline{text-align:center;font-size:10px;color:#959b97;padding:20px 0}.brandingline b{color:#111}
+
+
+/* PUBLIC LINK CUSTOMIZATION */
+.public-config{margin-top:16px;padding:20px}
+.config-grid{display:grid;grid-template-columns:.95fr 1.05fr;gap:22px;align-items:start}
+.color-control{display:grid;grid-template-columns:52px 1fr;gap:10px;align-items:end}
+.color-control input[type=color]{height:46px;padding:4px;border-radius:12px}
+.logo-upload{display:flex;gap:12px;align-items:center;padding:12px;border:1px dashed #dfe4e1;border-radius:14px;background:#fafbfa}
+.logo-preview{width:58px;height:58px;border-radius:14px;background:#f0f3f1;display:grid;place-items:center;overflow:hidden;font-weight:900}
+.logo-preview img{width:100%;height:100%;object-fit:cover}
+.template-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-top:10px}
+.template-card{border:1px solid var(--line);background:#fff;border-radius:14px;padding:10px;text-align:left}
+.template-card.active{border-color:var(--green);box-shadow:0 0 0 2px color-mix(in srgb,var(--green) 20%,transparent)}
+.template-card b{display:block;font-size:12px;margin-top:8px}.template-card small{font-size:9px;color:var(--muted)}
+.template-thumb{height:82px;background:#f5f6f5;border-radius:10px;padding:8px;display:grid;gap:5px}
+.template-thumb.grid{grid-template-columns:repeat(3,1fr)}
+.template-thumb.grid i{background:#fff;border:1px solid #e7e9e8;border-radius:5px}
+.template-thumb.list{grid-template-columns:1fr}
+.template-thumb.list i{background:#fff;border:1px solid #e7e9e8;border-radius:5px;min-height:17px}
+.template-thumb.showcase{grid-template-columns:1.5fr 1fr;grid-template-rows:1fr 1fr}
+.template-thumb.showcase i{background:#fff;border:1px solid #e7e9e8;border-radius:5px}.template-thumb.showcase i:first-child{grid-row:1/3}
+.preview-toolbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:10px}
+.device-toggle{display:flex;border:1px solid var(--line);border-radius:10px;padding:3px;background:#f6f7f6}
+.device-toggle button{border:0;background:transparent;padding:7px 10px;border-radius:7px;font-size:10px;font-weight:800}
+.device-toggle button.active{background:#fff;box-shadow:0 2px 6px rgba(0,0,0,.08)}
+.live-preview{background:#ecefed;border-radius:18px;padding:16px;min-height:370px;display:grid;place-items:center}
+.preview-browser{width:100%;background:#fff;border-radius:13px;overflow:hidden;box-shadow:0 12px 30px rgba(0,0,0,.08);transition:.2s}
+.preview-browser.mobile{width:245px;border-radius:25px;border:7px solid #111}
+.preview-top{background:#0a0a0a;color:#fff;padding:11px 13px;display:flex;gap:8px;align-items:center}
+.preview-logo{width:28px;height:28px;border-radius:8px;background:var(--preview-accent,#16c784);display:grid;place-items:center;font-weight:900;overflow:hidden;color:#071a12}
+.preview-logo img{width:100%;height:100%;object-fit:cover}
+.preview-body{padding:14px}
+.preview-body h4{font-size:15px;margin-bottom:4px}.preview-body p{font-size:8px;color:#747b77;margin-bottom:10px}
+.preview-products{display:grid;gap:6px}
+.preview-products.grid{grid-template-columns:repeat(3,1fr)}
+.preview-products.list{grid-template-columns:1fr}
+.preview-products.showcase{grid-template-columns:1.5fr 1fr;grid-template-rows:1fr 1fr}
+.preview-product{min-height:62px;background:#f4f6f5;border-radius:8px;border:1px solid #eceeed;position:relative;overflow:hidden}
+.preview-product:before{content:"";display:block;height:30px;background:linear-gradient(135deg,#161616,var(--preview-accent,#16c784))}
+.preview-products.list .preview-product{min-height:38px;display:grid;grid-template-columns:60px 1fr}.preview-products.list .preview-product:before{height:100%}
+.preview-products.showcase .preview-product:first-child{grid-row:1/3;min-height:132px}.preview-products.showcase .preview-product:first-child:before{height:72px}
+.shipping-box{margin-top:14px;border-top:1px solid var(--line);padding-top:14px}
+.shipping-modes{display:grid;grid-template-columns:1fr 1fr;gap:8px;margin:10px 0}
+.choice-card{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px;text-align:left;color:#161a18}
+.choice-card.active{border-color:var(--green);background:var(--green-soft);color:#0b3d2b}
+.choice-card b{display:block;font-size:11px;color:#161a18}
+.choice-card.active b{color:#0b3d2b}
+.choice-card small{font-size:9px;color:#68706b}
+.choice-card.active small{color:#47685b}
+.neighborhood-list{display:grid;gap:8px;margin-top:10px}
+.neighborhood-row{display:grid;grid-template-columns:1fr 100px 36px;gap:8px;align-items:center}
+.neighborhood-row span{font-size:11px;font-weight:700}
+.neighborhood-row .fee{color:#545a56}
+.add-neighborhood{display:grid;grid-template-columns:1fr 120px auto;gap:8px;margin-top:10px}
+.shipping-summary{background:#f7faf8;border:1px solid #e4eee8;border-radius:11px;padding:10px;font-size:10px;line-height:1.5;color:#5f6862}
+
+/* PUBLIC STORE LAYOUTS */
+.store-brand-logo.has-logo{background:#fff;padding:3px}.store-brand-logo.has-logo img{width:100%;height:100%;object-fit:cover;border-radius:10px}
+.store-grid.layout-list{grid-template-columns:1fr;max-width:860px;margin-left:auto;margin-right:auto}
+.store-grid.layout-list .storeproduct{display:grid;grid-template-columns:180px 1fr}
+.store-grid.layout-list .storeproduct-img{height:100%;min-height:150px}
+.store-grid.layout-list .storeproduct-body{padding:20px}.store-grid.layout-list .storeproduct p{height:auto;max-width:520px}
+.store-grid.layout-showcase{grid-template-columns:repeat(3,1fr)}
+.store-grid.layout-showcase .storeproduct:first-child{grid-column:span 2;display:grid;grid-template-columns:1.1fr 1fr}
+.store-grid.layout-showcase .storeproduct:first-child .storeproduct-img{height:100%;min-height:250px}
+.store-grid.layout-showcase .storeproduct:first-child .storeproduct-body{padding:24px;display:flex;flex-direction:column;justify-content:center}
+.store-grid.layout-showcase .storeproduct:first-child h3{font-size:24px}.store-grid.layout-showcase .storeproduct:first-child p{height:auto;font-size:12px}
+.shipping-line{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:#68706b;margin:8px 0}
+.shipping-line strong{color:#111}
+
+/* MODAL */
+.overlay{position:fixed;inset:0;background:rgba(0,0,0,.48);z-index:100;display:grid;place-items:center;padding:18px}
+.modal{width:min(620px,100%);max-height:92vh;overflow:auto;background:#fff;border-radius:18px;padding:22px}
+.modalhead{display:flex;justify-content:space-between;align-items:flex-start;margin-bottom:17px}.modalhead h2{font-size:21px}
+.modalactions{display:flex;justify-content:flex-end;gap:8px;margin-top:18px}
+
+@media(max-width:960px){
+  .hero-grid,.split,.grid2,.formgrid{grid-template-columns:1fr}
+  .phone-stage{min-height:470px}
+  .steps{grid-template-columns:1fr}
+  .store-grid{grid-template-columns:repeat(2,1fr)}
+  .config-grid{grid-template-columns:1fr}
+  .store-grid.layout-showcase{grid-template-columns:repeat(2,1fr)}
+  .store-grid.layout-list .storeproduct{grid-template-columns:150px 1fr}
+  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .order-toolbar{grid-template-columns:1fr 1fr 1fr}.order-toolbar input{grid-column:1/-1}.viewtoggle{justify-self:stretch}.viewtoggle button{flex:1}
+  .stats{grid-template-columns:repeat(2,1fr)}
+  .app{grid-template-columns:1fr}
+  .sidebar{display:none}
+  .landing-header nav{display:none}
+}
+@media(max-width:620px){
+  .wrap{width:min(100% - 24px,1180px)}
+  .hero-grid{min-height:auto}.hero-copy{padding:58px 0 10px}.hero h1{font-size:45px}
+  .phone{width:285px}.floatmsg{right:0}
+  .landing-header .btn.light{display:none}
+  .section{padding:62px 0}
+  .section-head h2,.split h2{font-size:34px}
+  .pricing{grid-template-columns:1fr}
+  .cta-band{flex-direction:column;align-items:flex-start}
+  .stats{grid-template-columns:1fr 1fr}
+  .content{padding:18px 12px}
+  .pagehead{align-items:flex-start;flex-direction:column}
+  .products-grid,.store-grid{grid-template-columns:1fr 1fr;gap:9px}
+  .template-grid{grid-template-columns:1fr}
+  .add-neighborhood{grid-template-columns:1fr 100px}
+  .add-neighborhood .btn{grid-column:1/-1}
+  .store-grid.layout-list,.store-grid.layout-showcase{grid-template-columns:1fr}
+  .store-grid.layout-list .storeproduct,.store-grid.layout-showcase .storeproduct:first-child{display:block;grid-template-columns:1fr;grid-column:auto}
+  .store-grid.layout-list .storeproduct-img,.store-grid.layout-showcase .storeproduct:first-child .storeproduct-img{height:130px;min-height:0}
+  .live-preview{padding:10px}
+  .storeproduct-img{height:125px}
+  .topbar{padding:0 12px}
+  .topbar .smallmuted{display:none}
+  .formrow{grid-template-columns:1fr}
+  .order-toolbar{grid-template-columns:1fr 1fr}.order-toolbar input,.viewtoggle{grid-column:1/-1}
+  .photo-grid{grid-template-columns:repeat(3,1fr)}
+  .orderrow{grid-template-columns:1fr 90px}.orderrow>*:nth-child(2),.orderrow>*:nth-child(3){display:none}
+}
+
+.btn.sm{min-height:32px;padding:7px 10px;border-radius:9px;font-size:10px}
+.btn.whatsapp{background:#e9fff6;color:#087d51;border:1px solid #c4efdb}
+.kcard-actions{display:flex;gap:6px;align-items:center}.kcard-actions button{flex:0 0 auto;padding:7px 10px;font-size:10px}
+.kcard-nav{display:flex;gap:6px;margin-top:7px;justify-content:flex-end}.kcard-nav button{flex:0 0 auto}
+.outcome{display:flex;gap:6px;margin-top:8px;flex-wrap:wrap}.outcome button{flex:0 0 auto}
+.order-custom-range{display:flex;gap:8px;align-items:center;margin:-4px 0 14px;flex-wrap:wrap}.order-custom-range label{min-width:180px}.order-custom-range input{min-height:38px;padding:9px 11px}
+.order-toolbar{grid-template-columns:minmax(220px,1.3fr) repeat(3,minmax(130px,.65fr)) minmax(130px,.6fr) auto}
+.store-custom-grid{display:grid;grid-template-columns:1.05fr .95fr;gap:18px;align-items:start}
+.custom-section{border-top:1px solid var(--line);padding-top:16px;margin-top:16px}.custom-section:first-child{border-top:0;padding-top:0;margin-top:0}
+.option-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:9px;margin-top:10px}
+.option-card{border:1px solid var(--line);background:#fff;border-radius:12px;padding:11px;text-align:left}.option-card.active{border-color:var(--green);box-shadow:0 0 0 2px rgba(22,199,132,.11)}.option-card b{font-size:11px;display:block}.option-card small{font-size:9px;color:var(--muted);display:block;margin-top:4px;line-height:1.4}
+.store-switches{display:grid;gap:0}.store-switches .switchrow:first-child{border-top:0}
+.preview-note{font-size:10px;color:var(--muted);margin-top:9px;line-height:1.5}
+.storeproduct.style-outline{box-shadow:none;border:1px solid #dfe3e1}.storeproduct.style-minimal{border-color:transparent;box-shadow:none;background:transparent}.storeproduct.style-minimal .storeproduct-body{padding-left:0;padding-right:0}
+.store-grid.ratio-portrait .storeproduct-img{height:220px}.store-grid.ratio-wide .storeproduct-img{height:120px}
+.addbtn.outline{background:#fff;border:1px solid #111;color:#111}.addbtn.rounded{border-radius:999px;background:var(--green);color:#06180f}
+.promo-strip{background:var(--green);color:#06180f;text-align:center;padding:9px 14px;font-size:11px;font-weight:800}
+@media(max-width:960px){.store-custom-grid{grid-template-columns:1fr}.option-grid{grid-template-columns:1fr 1fr 1fr}}
+@media(max-width:620px){.order-toolbar{grid-template-columns:1fr 1fr}.order-toolbar>input:first-child{grid-column:1/-1}.viewtoggle{justify-self:stretch}.viewtoggle button{flex:1}.order-custom-range{display:grid;grid-template-columns:1fr 1fr}.order-custom-range label{min-width:0}.option-grid{grid-template-columns:1fr}}
+
+</style>
+</head>
+<body>
+<div id="app"></div>
+<div id="toast" class="toast hidden"></div>
+<script>
+const $=(s)=>document.querySelector(s), $$=(s)=>[...document.querySelectorAll(s)];
+const money=v=>new Intl.NumberFormat('pt-BR',{style:'currency',currency:'BRL'}).format(Number(v)||0);
+const uid=()=>Math.random().toString(36).slice(2,10);
+
+const defaults={
+  business:{
+    name:'Mimo & Co.', slug:'mimo-co', whatsapp:'5591999999999',
+    headline:'Escolha seus favoritos e peça pelo WhatsApp.',
+    description:'Produtos feitos para deixar o dia mais leve. Escolha, monte seu carrinho e fale com a gente.',
+    delivery:true, pickup:true, minOrder:0,
+    accentColor:'#16c784', logo:'', storeLayout:'grid',
+    shippingMode:'global', globalFee:8,
+    cardStyle:'soft', imageRatio:'square', buttonStyle:'solid', showSearch:true, showCategories:true, showDescription:true, promoEnabled:false, promoText:'Peça pelo WhatsApp de forma rápida e fácil.',
+    neighborhoods:[
+      {id:'nb1',name:'Nazaré',fee:8},
+      {id:'nb2',name:'Umarizal',fee:10},
+      {id:'nb3',name:'Marco',fee:12}
+    ]
+  },
+  categories:[
+    {id:'cat1',name:'Presentes',active:true},
+    {id:'cat2',name:'Vestuário',active:true},
+    {id:'cat3',name:'Casa',active:true},
+    {id:'cat4',name:'Acessórios',active:true}
+  ],
+  products:[
+    {id:'p1',name:'Box Café da Manhã',category:'Presentes',description:'Seleção especial com café, pães, doces e carinho.',price:89.9,active:true},
+    {id:'p2',name:'Kit Verde',category:'Presentes',description:'Kit elegante com itens selecionados e embalagem premium.',price:74.9,active:true},
+    {id:'p3',name:'Camiseta Essential',category:'Vestuário',description:'Camiseta básica premium, confortável e versátil.',price:59.9,active:true},
+    {id:'p4',name:'Caneca Minimal',category:'Casa',description:'Caneca de cerâmica com acabamento minimalista.',price:34.9,active:true},
+    {id:'p5',name:'Ecobag Everyday',category:'Acessórios',description:'Ecobag resistente para acompanhar a rotina.',price:29.9,active:true},
+    {id:'p6',name:'Kit Escritório',category:'Casa',description:'Bloco, caneta e organizador em um kit prático.',price:49.9,active:true}
+  ],
+  orders:[
+    {id:'PED-1042',client:'Marina Souza',phone:'(91) 99122-3344',total:164.80,status:'new',result:null,date:'Hoje, 14:32',items:3},
+    {id:'PED-1041',client:'Carlos Lima',phone:'(91) 98444-2100',total:89.90,status:'sent',result:null,date:'Hoje, 12:08',items:1},
+    {id:'PED-1040',client:'Fernanda Alves',phone:'(91) 99315-9020',total:109.80,status:'done',result:'sold',date:'Ontem, 17:41',items:2},
+    {id:'PED-1039',client:'João Pedro',phone:'(91) 98221-4455',total:149.70,status:'done',result:'lost',date:'Ontem, 15:09',items:3}
+  ]
+};
+
+let db=JSON.parse(localStorage.getItem('clickzap_demo')||'null') || defaults;
+db.business={...defaults.business,...(db.business||{})};
+db.business.neighborhoods=Array.isArray(db.business.neighborhoods)?db.business.neighborhoods:defaults.business.neighborhoods;
+db.products=Array.isArray(db.products)?db.products:defaults.products;
+db.categories=Array.isArray(db.categories)&&db.categories.length?db.categories:[...new Set(db.products.map(p=>p.category).filter(Boolean))].map((name,i)=>({id:'cat'+(i+1),name,active:true}));
+db.orders=Array.isArray(db.orders)?db.orders:defaults.orders;
+const localISO=(d=new Date())=>{const x=new Date(d.getFullYear(),d.getMonth(),d.getDate());return `${x.getFullYear()}-${String(x.getMonth()+1).padStart(2,'0')}-${String(x.getDate()).padStart(2,'0')}`};
+const shiftISO=(days)=>{const d=new Date();d.setDate(d.getDate()+days);return localISO(d)};
+db.orders=db.orders.map((o,i)=>({...o,result:o.result??null,orderDate:o.orderDate||(String(o.date||'').startsWith('Hoje')?localISO():String(o.date||'').startsWith('Ontem')?shiftISO(-1):shiftISO(-(i+2)))}));
+let state={mode:'landing',page:'overview',cart:{},category:'Todos',query:'',drawer:false,modal:null,editProduct:null,editCategory:null,editOrder:null,photoDraft:[],orderView:'kanban',orderStatus:'all',orderPeriod:'week',orderStart:'',orderEnd:'',orderSearch:'',orderSort:'recent',orderMin:'',settingsPreview:'desktop',checkout:{name:'',delivery:'Entrega',neighborhood:'',note:''}};
+const save=()=>localStorage.setItem('clickzap_demo',JSON.stringify(db));
+const toast=(t)=>{let el=$('#toast');el.textContent=t;el.classList.remove('hidden');setTimeout(()=>el.classList.add('hidden'),2200)};
+const logo=()=>`<div class="logo"><span class="logo-mark">Z</span><b>Click<span>Zap</span></b></div>`;
+
+function go(mode,page){
+  state.mode=mode;
+  if(page) state.page=page;
+  render();
+  window.scrollTo(0,0);
+}
+
+function landing(){
+return `
+<div class="landing">
+  <header class="landing-header wrap">
+    ${logo()}
+    <nav><a href="#como">Como funciona</a><a href="#recursos">Recursos</a><a href="#planos">Planos</a></nav>
+    <div style="display:flex;gap:8px"><button class="btn light" data-act="demo">Ver demonstração</button><button class="btn green" data-act="start">Criar meu catálogo</button></div>
+  </header>
+
+  <section class="hero">
+    <div class="hero-grid wrap">
+      <div class="hero-copy">
+        <span class="eyebrow">Venda pelo WhatsApp sem virar e-commerce</span>
+        <h1>Seu catálogo.<br>Seu carrinho.<br><em>Seu WhatsApp.</em></h1>
+        <p>Mostre seus produtos em uma página bonita, deixe o cliente montar o pedido e receba tudo pronto no WhatsApp. Simples para você. Fácil para quem compra.</p>
+        <div class="hero-actions">
+          <button class="btn green" data-act="start">Criar meu ClickZap →</button>
+          <button class="btn light" data-act="store">Ver catálogo funcionando</button>
+        </div>
+        <div class="hero-bullets"><span>✓ Sem checkout complexo</span><span>✓ Sem mensalidade de loja virtual</span><span>✓ Pedido pronto no WhatsApp</span></div>
+      </div>
+      <div class="phone-stage">
+        <div class="phone-glow"></div>
+        <div class="phone">
+          <div class="phone-top"><span class="notch"></span></div>
+          <div class="phone-screen">
+            <div class="store-mini-head"><b>Mimo & Co.</b><small>Escolha e peça pelo WhatsApp</small></div>
+            <div class="mini-products">
+              <div class="mini-product"><div class="mini-img"></div><b>Box Café</b><small>R$ 89,90</small></div>
+              <div class="mini-product"><div class="mini-img"></div><b>Kit Verde</b><small>R$ 74,90</small></div>
+              <div class="mini-product"><div class="mini-img"></div><b>Camiseta</b><small>R$ 59,90</small></div>
+              <div class="mini-product"><div class="mini-img"></div><b>Caneca</b><small>R$ 34,90</small></div>
+            </div>
+            <div class="mini-cart">Ver pedido · R$ 164,80</div>
+          </div>
+        </div>
+        <div class="floatmsg"><b>Pedido pronto no WhatsApp ✓</b><small>Itens, quantidades, valores e dados do cliente.</small></div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="como">
+    <div class="section-head">
+      <span class="eyebrow">3 passos. Só isso.</span>
+      <h2>Transforme conversa em pedido organizado.</h2>
+      <p>O ClickZap fica entre o catálogo e o WhatsApp. Seu cliente escolhe sozinho, e você recebe a conversa já com o pedido montado.</p>
+    </div>
+    <div class="steps">
+      <article class="step"><span class="step-num">01</span><h3>Cadastre seus produtos</h3><p>Nome, fotos, preço, descrição e categoria. Em poucos minutos sua vitrine está pronta.</p></article>
+      <article class="step"><span class="step-num">02</span><h3>Compartilhe o link</h3><p>Coloque na bio, Instagram, anúncios ou mande direto para os clientes no WhatsApp.</p></article>
+      <article class="step"><span class="step-num">03</span><h3>Receba o pedido pronto</h3><p>O cliente adiciona ao carrinho e o ClickZap abre o WhatsApp com todos os itens organizados.</p></article>
+    </div>
+  </section>
+
+  <section class="darkband section" id="recursos">
+    <div class="wrap split">
+      <div>
+        <span class="eyebrow">Menos “quanto custa?”. Mais pedido.</span>
+        <h2>Uma vitrine que já prepara a conversa.</h2>
+        <p>Você não precisa de gateway, checkout, antifraude, integração fiscal ou operação de e-commerce para começar a vender melhor.</p>
+        <div class="checklist">
+          <div class="checkline"><span class="check">✓</span> Catálogo responsivo e compartilhável</div>
+          <div class="checkline"><span class="check">✓</span> Carrinho com quantidade e observação</div>
+          <div class="checkline"><span class="check">✓</span> Mensagem automática do pedido</div>
+          <div class="checkline"><span class="check">✓</span> Gestão de produtos, categorias e pedidos</div>
+          <div class="checkline"><span class="check">✓</span> Retirada ou entrega configurável</div>
+        </div>
+      </div>
+      <div class="msgcard">
+        <div class="msgcard-head"><div><span class="eyebrow">Mensagem gerada automaticamente</span><h3>Pedido #1042</h3></div><span class="badge green">WhatsApp</span></div>
+        <div class="messagebox">Olá! Quero fazer um pedido pela Mimo & Co. 👋
+
+🛍️ *Meu pedido*
+2x Box Café da Manhã — R$ 179,80
+1x Kit Verde — R$ 74,90
+
+💰 *Total: R$ 254,70*
+
+👤 Marina Souza
+📍 Entrega
+📝 Obs.: embalagem para presente
+
+Pedido montado pelo ClickZap.</div>
+      </div>
+    </div>
+  </section>
+
+  <section class="section wrap" id="planos">
+    <div class="section-head">
+      <span class="eyebrow">Comece simples</span>
+      <h2>Um plano para começar. Outro para crescer.</h2>
+    </div>
+    <div class="pricing">
+      <article class="pricecard"><span class="badge">GRÁTIS</span><h3 style="margin-top:12px">Start</h3><div class="price">R$ 0 <small>/mês</small></div><ul><li>Até 15 produtos</li><li>1 catálogo público</li><li>Carrinho para WhatsApp</li><li>Marca ClickZap no catálogo</li></ul><button class="btn light full" data-act="start">Começar grátis</button></article>
+      <article class="pricecard pro"><span class="badge green">MAIS POPULAR</span><h3 style="margin-top:12px">Pro</h3><div class="price">R$ 29,90 <small>/mês</small></div><ul><li>Produtos ilimitados</li><li>Categorias e produtos</li><li>Personalização da vitrine</li><li>Relatório de pedidos</li><li>Remover marca ClickZap</li></ul><button class="btn green full" data-act="start">Testar o Pro</button></article>
+    </div>
+  </section>
+
+  <section class="wrap" style="padding-bottom:70px">
+    <div class="cta-band">
+      <div><span class="eyebrow">Seu próximo pedido pode começar aqui</span><h2>Monte seu catálogo hoje.</h2><p>Publique, compartilhe e deixe o WhatsApp fazer o resto.</p></div>
+      <button class="btn green" data-act="start">Criar meu ClickZap →</button>
+    </div>
+  </section>
+
+  <footer class="footer wrap">${logo()}<span>© ${new Date().getFullYear()} ClickZap · Catálogo que vira conversa.</span></footer>
+</div>`;
+}
+
+const navItems=[
+  ['overview','◫','Visão geral'],
+  ['products','▦','Produtos'],
+  ['categories','☷','Categorias'],
+  ['orders','◎','Pedidos'],
+  ['store','◉','Minha Loja'],
+  ['settings','⚙','Configurações'],
+  ['plans','✦','Planos']
+];
+
+function sidebar(){
+return `<aside class="sidebar">
+  <div class="logo"><span class="logo-mark">Z</span><b>Click<span>Zap</span></b></div>
+  <div class="business-chip"><span class="business-avatar">${db.business.name[0]}</span><div><small>meu negócio</small><b>${db.business.name}</b></div></div>
+  <span class="navlabel">Gerencie</span>
+  <nav class="nav">${navItems.map(([id,ic,name])=>`<button data-page="${id}" class="${state.page===id?'active':''}"><span>${ic}</span>${name}</button>`).join('')}</nav>
+  <div class="sidebar-foot">
+    <div class="side-tip"><span class="eyebrow">SEU LINK</span><b>clickzap.com/${db.business.slug}</b><p>Compartilhe na bio, anúncios e status do WhatsApp.</p></div>
+    <button class="btn green full" data-act="open-store">Ver minha vitrine</button>
+    <button class="btn ghost" style="color:#7d887f" data-act="home">← Página de vendas</button>
+  </div>
+</aside>`;
+}
+
+function topbar(){
+const current=navItems.find(x=>x[0]===state.page)?.[2]||'Painel';
+return `<header class="topbar"><div class="breadcrumb">ClickZap <span> / </span> <b>${current}</b></div><div class="top-actions"><span class="smallmuted">● Catálogo publicado</span><button class="btn light" data-act="copy-link">Copiar link</button><span class="avatar">M</span></div></header>`;
+}
+
+function overview(){
+const revenue=db.orders.filter(o=>o.status==='done').reduce((a,b)=>a+b.total,0);
+return `
+<div class="pagehead"><div><span class="eyebrow">Hoje no seu ClickZap</span><h1>Seu negócio em movimento.</h1><p>Acompanhe produtos, pedidos e o desempenho do seu catálogo.</p></div><button class="btn green" data-act="new-product">+ Novo produto</button></div>
+<div class="stats">
+  <div class="stat"><div class="stat-top"><span>Pedidos hoje</span><span>◎</span></div><strong>7</strong><small>+3 desde ontem</small></div>
+  <div class="stat"><div class="stat-top"><span>Valor em pedidos</span><span>R$</span></div><strong>${money(684.40)}</strong><small>Pedidos enviados pelo catálogo</small></div>
+  <div class="stat"><div class="stat-top"><span>Produtos ativos</span><span>▦</span></div><strong>${db.products.filter(p=>p.active).length}</strong><small>${db.products.length} cadastrados</small></div>
+  <div class="stat"><div class="stat-top"><span>Concluídos</span><span>✓</span></div><strong>${money(revenue)}</strong><small>Dados demonstrativos</small></div>
+</div>
+<div class="grid2">
+  <section class="panel panel-pad">
+    <div class="panelhead"><div><h2>Pedidos recentes</h2><p>Os últimos pedidos iniciados pelo catálogo.</p></div><button class="btn ghost" data-page="orders">Ver todos →</button></div>
+    ${db.orders.slice(0,4).map(orderRow).join('')}
+  </section>
+  <div style="display:grid;gap:14px">
+    <div class="quicklink">
+      <span class="eyebrow">Compartilhe e venda</span>
+      <h2 style="font-size:21px;margin-top:7px">Seu catálogo já está no ar.</h2>
+      <p>Use este link na bio do Instagram, anúncios e mensagens automáticas.</p>
+      <div class="urlbox">https://clickzap.app/${db.business.slug}</div>
+      <button class="btn green full" style="margin-top:10px" data-act="copy-link">Copiar meu link</button>
+    </div>
+    <div class="panel panel-pad">
+      <div class="panelhead"><div><h2>Produto mais pedido</h2><p>Nos últimos 7 dias</p></div><span class="badge green">TOP 1</span></div>
+      <div style="display:flex;gap:12px;align-items:center"><div class="prodimg" style="width:72px;height:72px;border-radius:12px;font-size:20px;flex:0 0 auto">B</div><div><b>Box Café da Manhã</b><p class="smallmuted" style="margin-top:5px">18 pedidos · ${money(1618.20)}</p></div></div>
+    </div>
+  </div>
+</div>`;
+}
+
+function orderRow(o){
+const labels={new:'Novo',sent:'Em conversa',done:'Concluído'};
+return `<div class="orderrow"><div class="orderclient"><b>${o.client}</b><small>${o.id} · ${o.items} item(ns)</small></div><span>${o.date}</span><strong>${money(o.total)}</strong><span class="status ${o.status}">${labels[o.status]}</span></div>`;
+}
+
+function products(){
+const activeCats=(db.categories||[]).filter(c=>c.active!==false);
+const visible=db.products.filter(p=>(state.category==='Todos'||p.category===state.category)&&p.name.toLowerCase().includes(state.query.toLowerCase()));
+return `
+<div class="pagehead"><div><span class="eyebrow">Seu catálogo</span><h1>Produtos</h1><p>Cadastre seus itens, defina o preço e organize tudo por categorias.</p></div><button class="btn green" data-act="new-product">+ Novo produto</button></div>
+<div class="filters"><input id="prod-search" placeholder="Buscar produto..." value="${state.query}"><select id="cat-filter" style="max-width:220px"><option>Todos</option>${activeCats.map(c=>`<option ${state.category===c.name?'selected':''}>${c.name}</option>`).join('')}</select></div>
+<div class="products-grid">
+${visible.map((p,i)=>`
+<article class="prodcard">
+  <div class="prodimg ${p.photos?.[0]?'has-photo':''}">${p.photos?.[0]?`<img src="${p.photos[0]}" alt="${p.name}">`:p.name[0]}</div>
+  <div class="prodinfo"><div style="display:flex;justify-content:space-between;gap:8px"><h3>${p.name}</h3><span class="status ${p.active?'new':'done'}">${p.active?'Ativo':'Inativo'}</span></div>
+  <p>${p.description||'Sem descrição.'}</p>
+  <div class="smallmuted">${p.category}${p.sku?` · SKU ${p.sku}`:''}${p.featured?' · ★ destaque':''}</div>
+  <div class="prodmeta"><strong>${money(p.price)}</strong><span class="smallmuted">${p.photos?.length||0}/5 fotos</span></div>
+  <div class="prodactions"><button class="btn light" data-edit="${p.id}">Editar</button><button class="btn light" data-toggle="${p.id}">${p.active?'Desativar':'Ativar'}</button></div>
+  </div>
+</article>`).join('')}
+</div>`;
+}
+
+function categories(){
+const cats=db.categories||[];
+return `
+<div class="pagehead"><div><span class="eyebrow">Organize o catálogo</span><h1>Categorias</h1><p>Crie e gerencie a lista usada no cadastro dos produtos e no link público.</p></div><button class="btn green" data-act="new-category">+ Nova categoria</button></div>
+<section class="panel panel-pad">
+  <div class="panelhead"><div><h2>${cats.length} categorias</h2><p>Os produtos só podem usar categorias cadastradas aqui.</p></div></div>
+  <div class="category-list">
+    ${cats.map(c=>{const count=db.products.filter(p=>p.category===c.name).length;return `<div class="category-row"><div class="category-name"><span class="category-dot">${c.name[0]?.toUpperCase()||'C'}</span><div><b>${c.name}</b><div class="smallmuted">${count} produto(s)</div></div></div><span class="status ${c.active!==false?'new':'done'}">${c.active!==false?'Ativa':'Inativa'}</span><div class="category-actions"><button class="btn light" data-edit-category="${c.id}">Editar</button><button class="btn light" data-toggle-category="${c.id}">${c.active!==false?'Desativar':'Ativar'}</button><button class="btn ghost" data-delete-category="${c.id}">Excluir</button></div></div>`}).join('')||'<div class="empty">Nenhuma categoria cadastrada.</div>'}
+  </div>
+</section>`;
+}
+
+function filteredOrders(){
+const now=new Date(); const today=localISO(now);
+const startOfWeek=(()=>{const d=new Date(now.getFullYear(),now.getMonth(),now.getDate());const day=(d.getDay()+6)%7;d.setDate(d.getDate()-day);return localISO(d)})();
+const startOfMonth=`${today.slice(0,7)}-01`;
+let list=db.orders.filter(o=>{
+  const q=state.orderSearch.trim().toLowerCase();
+  const hit=!q||`${o.id} ${o.client} ${o.phone}`.toLowerCase().includes(q);
+  const status=state.orderStatus==='all'||o.status===state.orderStatus;
+  const d=o.orderDate||today;
+  let period=true;
+  if(state.orderPeriod==='day') period=d===today;
+  if(state.orderPeriod==='week') period=d>=startOfWeek&&d<=today;
+  if(state.orderPeriod==='month') period=d>=startOfMonth&&d<=today;
+  if(state.orderPeriod==='custom') period=(!state.orderStart||d>=state.orderStart)&&(!state.orderEnd||d<=state.orderEnd);
+  const min=!state.orderMin||Number(o.total)>=Number(state.orderMin);
+  return hit&&status&&period&&min;
+});
+if(state.orderSort==='value-desc') list.sort((a,b)=>b.total-a.total);
+if(state.orderSort==='value-asc') list.sort((a,b)=>a.total-b.total);
+if(state.orderSort==='recent') list.sort((a,b)=>(b.orderDate||'').localeCompare(a.orderDate||''));
+return list;
+}
+
+function orderResult(o){
+  if(o.status!=='done') return '';
+  if(o.result==='sold') return '<span class="result-badge sold">Vendido</span>';
+  if(o.result==='lost') return '<span class="result-badge lost">Não vendido</span>';
+  return '<span class="result-badge pending">Definir resultado</span>';
+}
+
+function orderCard(o){
+const labels={new:'Novo',sent:'Em conversa',done:'Concluído'};
+const back=o.status==='sent'||o.status==='done'?`<button class="btn light sm" data-order-back="${o.id}">← Voltar</button>`:'';
+const forward=o.status==='new'?`<button class="btn green sm" data-order-next="${o.id}">Avançar →</button>`:o.status==='sent'?`<button class="btn green sm" data-order-next="${o.id}">Concluir →</button>`:'';
+return `<article class="kcard" draggable="true" data-order-card="${o.id}">
+<div class="kcard-top"><div><h4>${o.client}</h4><p>${o.id} · ${o.phone}</p></div><div style="display:grid;gap:5px;justify-items:end"><span class="status ${o.status}">${labels[o.status]}</span>${orderResult(o)}</div></div>
+<div class="kcard-meta"><div class="kmeta"><small>Itens</small><b>${o.items}</b></div><div class="kmeta"><small>Total</small><b>${money(o.total)}</b></div><div class="kmeta"><small>Entrada</small><b>${o.date}</b></div><div class="kmeta"><small>Canal</small><b>WhatsApp</b></div></div>
+<div class="kcard-actions"><button class="btn light sm" data-order-detail="${o.id}">Ver pedido</button><button class="btn whatsapp sm" data-order-whatsapp="${o.id}">↗ WhatsApp</button></div>
+${back||forward?`<div class="kcard-nav">${back}${forward}</div>`:''}
+${o.status==='done'?`<div class="outcome"><button class="btn light sm ${o.result==='sold'?'selected-sold':''}" data-order-result="${o.id}" data-result="sold">✓ Vendido</button><button class="btn light sm ${o.result==='lost'?'selected-lost':''}" data-order-result="${o.id}" data-result="lost">✕ Não vendido</button></div>`:''}
+</article>`;
+}
+
+function orders(){
+const labels={new:'Novo',sent:'Em conversa',done:'Concluído'};
+const list=filteredOrders();
+const counts={new:list.filter(o=>o.status==='new').length,sent:list.filter(o=>o.status==='sent').length,done:list.filter(o=>o.status==='done').length};
+return `
+<div class="pagehead"><div><span class="eyebrow">Pedidos pelo WhatsApp</span><h1>Pedidos</h1><p>Kanban por padrão, com filtros, movimentação entre etapas e resultado final da venda.</p></div><button class="btn light sm" data-act="export">Exportar CSV</button></div>
+<div class="order-toolbar">
+  <input id="order-search" placeholder="Buscar pedido, cliente ou telefone..." value="${state.orderSearch}">
+  <select id="order-status"><option value="all">Todos os status</option><option value="new" ${state.orderStatus==='new'?'selected':''}>Novos</option><option value="sent" ${state.orderStatus==='sent'?'selected':''}>Em conversa</option><option value="done" ${state.orderStatus==='done'?'selected':''}>Concluídos</option></select>
+  <select id="order-period"><option value="week" ${state.orderPeriod==='week'?'selected':''}>Esta semana</option><option value="day" ${state.orderPeriod==='day'?'selected':''}>Hoje</option><option value="month" ${state.orderPeriod==='month'?'selected':''}>Este mês</option><option value="custom" ${state.orderPeriod==='custom'?'selected':''}>Período personalizado</option></select>
+  <select id="order-sort"><option value="recent" ${state.orderSort==='recent'?'selected':''}>Mais recentes</option><option value="value-desc" ${state.orderSort==='value-desc'?'selected':''}>Maior valor</option><option value="value-asc" ${state.orderSort==='value-asc'?'selected':''}>Menor valor</option></select>
+  <input id="order-min" type="number" min="0" step="1" placeholder="Valor mín. R$" value="${state.orderMin}">
+  <div class="viewtoggle"><button data-order-view="kanban" class="${state.orderView==='kanban'?'active':''}">▦ Kanban</button><button data-order-view="list" class="${state.orderView==='list'?'active':''}">☷ Lista</button></div>
+</div>
+${state.orderPeriod==='custom'?`<div class="order-custom-range"><label>Data inicial<input id="order-start" type="date" value="${state.orderStart}"></label><label>Data final<input id="order-end" type="date" value="${state.orderEnd}"></label></div>`:''}
+<div class="filter-summary"><span><b>${list.length}</b> pedido(s) encontrados · período padrão: semana atual · arraste os cards entre as colunas</span><button class="btn ghost sm" data-act="clear-order-filters">Limpar filtros</button></div>
+${state.orderView==='list'?`<section class="panel panel-pad"><div class="tablewrap"><table><thead><tr><th>PEDIDO</th><th>CLIENTE</th><th>DATA</th><th>ITENS</th><th>TOTAL</th><th>STATUS</th><th>RESULTADO</th><th></th></tr></thead><tbody>${list.map(o=>`<tr><td><b>${o.id}</b></td><td>${o.client}<small style="display:block;color:#8b918d">${o.phone}</small></td><td>${o.date}</td><td>${o.items}</td><td><b>${money(o.total)}</b></td><td><span class="status ${o.status}">${labels[o.status]}</span></td><td>${orderResult(o)||'—'}</td><td style="white-space:nowrap"><button class="btn ghost sm" data-order-detail="${o.id}">Ver</button><button class="btn whatsapp sm" data-order-whatsapp="${o.id}">WhatsApp</button>${o.status!=='new'?`<button class="btn ghost sm" data-order-back="${o.id}">←</button>`:''}${o.status!=='done'?`<button class="btn ghost sm" data-order-next="${o.id}">→</button>`:''}</td></tr>`).join('')}</tbody></table></div>${list.length?'':'<div class="empty">Nenhum pedido encontrado com estes filtros.</div>'}</section>`:`<div class="kanban">${[['new','Novos'],['sent','Em conversa'],['done','Concluídos']].map(([status,title])=>`<section class="kanban-col" data-drop-status="${status}"><div class="kanban-head"><h3>${title}</h3><span class="kanban-count">${counts[status]}</span></div>${list.filter(o=>o.status===status).map(orderCard).join('')||'<div class="empty" style="padding:22px 8px;font-size:11px">Solte um pedido aqui.</div>'}</section>`).join('')}</div>`}`;
+}
+
+function storeSettings(){
+const b=db.business; const color=b.accentColor||'#16c784'; const logoHtml=b.logo?`<img src="${b.logo}" alt="Logo">`:b.name[0];
+return `
+<div class="pagehead"><div><span class="eyebrow">Sua presença digital</span><h1>Minha Loja</h1><p>Personalize a experiência pública do catálogo e acompanhe a prévia em tempo real.</p></div><div style="display:flex;gap:8px"><button class="btn light sm" data-act="copy-link">Copiar link</button><button class="btn green sm" data-act="open-store">Abrir loja</button></div></div>
+<div class="store-custom-grid">
+<section class="panel formcard">
+  <div class="custom-section"><h2>Identidade visual</h2><p>Deixe o catálogo com a cara da sua marca.</p>
+    <div class="color-control"><label>Cor<input id="brand-color" type="color" value="${color}"></label><label>Cor principal (HEX)<input id="brand-color-hex" value="${color}" maxlength="7"></label></div>
+    <div class="logo-upload" style="margin-top:12px"><span class="logo-preview">${logoHtml}</span><div style="flex:1"><b style="font-size:12px">Logo do negócio</b><div class="smallmuted" style="margin:3px 0 8px">PNG, JPG ou WEBP.</div><label class="btn light sm" style="display:inline-flex;width:auto">Enviar logo<input id="business-logo" type="file" accept="image/png,image/jpeg,image/webp" hidden></label>${b.logo?'<button class="btn ghost sm" type="button" data-act="remove-logo">Remover</button>':''}</div></div>
+  </div>
+  <div class="custom-section"><h2>Estrutura da loja</h2><p>Escolha uma das três composições.</p><div class="template-grid">
+    <button type="button" class="template-card ${b.storeLayout==='grid'?'active':''}" data-layout="grid"><div class="template-thumb grid"><i></i><i></i><i></i><i></i><i></i><i></i></div><b>01 · Grade</b><small>Mais produtos visíveis.</small></button>
+    <button type="button" class="template-card ${b.storeLayout==='list'?'active':''}" data-layout="list"><div class="template-thumb list"><i></i><i></i><i></i></div><b>02 · Catálogo</b><small>Lista ampla e detalhada.</small></button>
+    <button type="button" class="template-card ${b.storeLayout==='showcase'?'active':''}" data-layout="showcase"><div class="template-thumb showcase"><i></i><i></i><i></i></div><b>03 · Vitrine</b><small>Produto em destaque.</small></button>
+  </div></div>
+  <div class="custom-section"><h2>Estilo dos produtos</h2><p>Mais opções para deixar o link visualmente premium.</p>
+    <div class="option-grid">${[['soft','Suave','Cards com fundo e borda discreta.'],['outline','Contorno','Visual limpo e definido.'],['minimal','Minimal','Menos elementos e mais respiro.']].map(([id,n,d])=>`<button type="button" class="option-card ${b.cardStyle===id?'active':''}" data-card-style="${id}"><b>${n}</b><small>${d}</small></button>`).join('')}</div>
+    <div class="option-grid">${[['square','Foto quadrada','Equilíbrio para qualquer produto.'],['portrait','Foto vertical','Bom para moda e presentes.'],['wide','Foto horizontal','Catálogo mais compacto.']].map(([id,n,d])=>`<button type="button" class="option-card ${b.imageRatio===id?'active':''}" data-image-ratio="${id}"><b>${n}</b><small>${d}</small></button>`).join('')}</div>
+    <div class="option-grid">${[['solid','Botão sólido','Mais destaque para adicionar.'],['outline','Botão contorno','Visual leve e elegante.'],['rounded','Botão redondo','Mais moderno e mobile.']].map(([id,n,d])=>`<button type="button" class="option-card ${b.buttonStyle===id?'active':''}" data-button-style="${id}"><b>${n}</b><small>${d}</small></button>`).join('')}</div>
+  </div>
+  <div class="custom-section"><h2>Elementos da loja</h2><p>Escolha o que aparece para o cliente.</p><div class="store-switches">
+    <div class="switchrow"><div><b>Busca de produtos</b><div class="smallmuted">Exibe o campo de busca.</div></div><button class="switch ${b.showSearch!==false?'on':''}" data-store-toggle="showSearch" type="button"><i></i></button></div>
+    <div class="switchrow"><div><b>Categorias</b><div class="smallmuted">Exibe os filtros por categoria.</div></div><button class="switch ${b.showCategories!==false?'on':''}" data-store-toggle="showCategories" type="button"><i></i></button></div>
+    <div class="switchrow"><div><b>Descrição do produto</b><div class="smallmuted">Mostra o texto abaixo do nome.</div></div><button class="switch ${b.showDescription!==false?'on':''}" data-store-toggle="showDescription" type="button"><i></i></button></div>
+    <div class="switchrow"><div><b>Faixa promocional</b><div class="smallmuted">Mensagem no topo da loja.</div></div><button class="switch ${b.promoEnabled?'on':''}" data-store-toggle="promoEnabled" type="button"><i></i></button></div>
+  </div>${b.promoEnabled?`<label style="margin-top:10px">Texto da faixa<input id="promo-text" value="${b.promoText||''}" maxlength="100"></label>`:''}</div>
+</section>
+<aside>
+  <div class="panel formcard"><div class="preview-toolbar"><div><b style="font-size:12px">Prévia da loja</b><div class="smallmuted">Desktop ou mobile</div></div><div class="device-toggle"><button type="button" class="${state.settingsPreview==='desktop'?'active':''}" data-preview-device="desktop">Desktop</button><button type="button" class="${state.settingsPreview==='mobile'?'active':''}" data-preview-device="mobile">Mobile</button></div></div>
+  <div class="live-preview" style="--preview-accent:${color}"><div class="preview-browser ${state.settingsPreview==='mobile'?'mobile':''}"><div class="preview-top"><span class="preview-logo">${logoHtml}</span><div><b style="font-size:10px">${b.name}</b><div style="font-size:7px;color:#909a94">Pedidos pelo WhatsApp</div></div></div><div class="preview-body"><span style="font-size:7px;color:${color};font-weight:900">CATÁLOGO ONLINE</span><h4>${b.headline}</h4><p>${b.description}</p><div class="preview-products ${b.storeLayout}"><i class="preview-product"></i><i class="preview-product"></i><i class="preview-product"></i><i class="preview-product"></i></div></div></div></div>
+  <div class="preview-note">As mudanças ficam salvas nesta demonstração e são aplicadas na loja pública.</div></div>
+</aside></div>`;
+}
+
+function settings(){
+const b=db.business; const neighborhoods=b.neighborhoods||[];
+return `
+<div class="pagehead"><div><span class="eyebrow">Operação</span><h1>Configurações</h1><p>Dados do negócio, WhatsApp e regras de entrega. A aparência da loja fica em <b>Minha Loja</b>.</p></div></div>
+<div class="formgrid">
+  <form class="panel formcard" id="settings-form"><h2>Informações do negócio</h2><p>Identificação e contato principal.</p><div class="fields">
+    <label>Nome do negócio<input name="name" value="${b.name}" required></label>
+    <div class="formrow"><label>Endereço do catálogo<input name="slug" value="${b.slug}" required></label><label>WhatsApp<input name="whatsapp" value="${b.whatsapp}" required></label></div>
+    <label>Chamada principal<input name="headline" value="${b.headline}"></label><label>Descrição<textarea name="description" rows="4">${b.description}</textarea></label><button class="btn green" type="submit">Salvar alterações</button>
+  </div></form>
+  <aside class="panel formcard"><h2>Opções de pedido</h2><p>Defina como seus clientes podem receber os produtos.</p>
+    <div class="switchrow"><div><b>Permitir entrega</b><div class="smallmuted">Cliente pode pedir entrega pelo WhatsApp.</div></div><button class="switch ${b.delivery?'on':''}" data-switch="delivery" type="button"><i></i></button></div>
+    <div class="switchrow"><div><b>Permitir retirada</b><div class="smallmuted">Cliente pode escolher retirada no local.</div></div><button class="switch ${b.pickup?'on':''}" data-switch="pickup" type="button"><i></i></button></div>
+    ${b.delivery?`<div class="shipping-box"><b style="font-size:13px">Configuração do frete</b><div class="shipping-modes"><button class="choice-card ${b.shippingMode==='global'?'active':''}" data-shipping-mode="global" type="button"><b>Frete único</b><small>Mesmo valor para qualquer entrega.</small></button><button class="choice-card ${b.shippingMode==='neighborhood'?'active':''}" data-shipping-mode="neighborhood" type="button"><b>Por bairro</b><small>Valor diferente por região.</small></button></div>${b.shippingMode==='global'?`<label>Valor geral do frete (R$)<input id="global-fee" type="number" min="0" step="0.01" value="${Number(b.globalFee||0).toFixed(2)}"></label>`:`<div class="neighborhood-list">${neighborhoods.length?neighborhoods.map(n=>`<div class="neighborhood-row"><span>${n.name}</span><span class="fee">${money(n.fee)}</span><button class="iconbtn" type="button" data-remove-neighborhood="${n.id}">✕</button></div>`).join(''):'<div class="smallmuted">Nenhum bairro cadastrado.</div>'}</div><div class="add-neighborhood"><input id="new-neighborhood-name" placeholder="Nome do bairro"><input id="new-neighborhood-fee" type="number" min="0" step="0.01" placeholder="Frete R$"><button class="btn dark sm" data-act="add-neighborhood" type="button">Adicionar</button></div>`}</div>`:''}
+    <hr style="margin-top:16px"><div class="smallmuted" style="line-height:1.6">O ClickZap não processa pagamento nesta versão. O fechamento acontece diretamente na conversa com o cliente.</div>
+  </aside>
+</div>`;
+}
+
+function plans(){
+return `
+<div class="pagehead"><div><span class="eyebrow">Cresça no seu ritmo</span><h1>Planos</h1><p>Comece sem custo e faça upgrade quando o catálogo crescer.</p></div></div>
+<div class="pricing" style="margin:0;max-width:780px">
+  <article class="pricecard"><span class="badge">SEU PLANO</span><h3 style="margin-top:12px">Start</h3><div class="price">R$ 0 <small>/mês</small></div><ul><li>15 produtos</li><li>Carrinho WhatsApp</li><li>1 catálogo</li></ul><button class="btn light full" disabled>Plano atual</button></article>
+  <article class="pricecard pro"><span class="badge green">RECOMENDADO</span><h3 style="margin-top:12px">Pro</h3><div class="price">R$ 29,90 <small>/mês</small></div><ul><li>Produtos ilimitados</li><li>Categorias e produtos</li><li>Relatórios</li><li>Sem marca ClickZap</li></ul><button class="btn green full" data-act="upgrade">Quero o Pro</button></article>
+</div>`;
+}
+
+function appPage(){
+const pages={overview,products,categories,orders,store:storeSettings,settings,plans};
+return `<div class="app">${sidebar()}<main class="main">${topbar()}<div class="content">${pages[state.page]()}</div></main></div>`;
+}
+
+function publicStore(){
+const b=db.business;
+const cats=['Todos',...(db.categories||[]).filter(c=>c.active!==false).map(c=>c.name)];
+const list=db.products.filter(p=>p.active&&(state.category==='Todos'||p.category===state.category)&&p.name.toLowerCase().includes(state.query.toLowerCase()));
+const cartCount=Object.values(state.cart).reduce((a,b)=>a+b,0);
+const cartTotal=Object.entries(state.cart).reduce((sum,[id,q])=>sum+(db.products.find(p=>p.id===id)?.price||0)*q,0);
+const logoHtml=b.logo?`<img src="${b.logo}" alt="${b.name}">`:b.name[0];
+return `
+<div class="store" style="--green:${b.accentColor||'#16c784'};--green-dark:${b.accentColor||'#16c784'};--green-soft:${b.accentColor||'#16c784'}18">
+  ${b.promoEnabled?`<div class="promo-strip" style="background:${b.accentColor||'#16c784'}">${b.promoText||''}</div>`:''}
+  <div class="store-head"><div class="store-head-inner wrap"><div class="store-brand"><span class="store-brand-logo ${b.logo?'has-logo':''}">${logoHtml}</span><div><b>${b.name}</b><small>Pedidos pelo WhatsApp</small></div></div><button class="btn light" data-act="back-demo">← Voltar</button></div></div>
+  <section class="wrap store-hero"><span class="eyebrow">CATÁLOGO ONLINE</span><h1>${b.headline}</h1><p>${b.description}</p>
+    ${b.showSearch!==false?`<div class="store-toolbar"><input id="store-search" placeholder="Buscar produto..." value="${state.query}"></div>`:''}
+    ${b.showCategories!==false?`<div class="chips">${cats.map(c=>`<button class="chip ${state.category===c?'active':''}" data-cat="${c}">${c}</button>`).join('')}</div>`:''}
+  </section>
+  <section class="wrap store-grid layout-${b.storeLayout||'grid'} ratio-${b.imageRatio||'square'}">
+    ${list.map(p=>`<article class="storeproduct style-${b.cardStyle||'soft'}"><div class="storeproduct-img ${p.photos?.[0]?'has-photo':''}">${p.photos?.[0]?`<img src="${p.photos[0]}" alt="${p.name}">`:p.name[0]}</div><div class="storeproduct-body"><span class="smallmuted">${p.category}</span><h3>${p.name}</h3>${b.showDescription!==false?`<p>${p.description}</p>`:""}<div class="storeproduct-bottom"><strong>${money(p.promoPrice||p.price)}</strong><button class="addbtn ${b.buttonStyle||'solid'}" data-add="${p.id}">+</button></div></div></article>`).join('')}
+  </section>
+  <div class="brandingline">Catálogo criado com <b>ClickZap</b></div>
+  ${cartCount?`<button class="cartbar" data-act="open-cart"><div><small>${cartCount} item(ns) no pedido</small><strong>${money(cartTotal)}</strong></div><span class="btn green">Ver pedido →</span></button>`:''}
+  ${state.drawer?cartDrawer():''}
+</div>`;
+}
+
+function cartDrawer(){
+const entries=Object.entries(state.cart).filter(([,q])=>q>0);
+const subtotal=entries.reduce((sum,[id,q])=>sum+(db.products.find(p=>p.id===id)?.price||0)*q,0);
+const checkout=state.checkout||{name:'',delivery:'Entrega',neighborhood:'',note:''};
+const deliveryType=checkout.delivery || (db.business.delivery?'Entrega':'Retirada');
+let shippingFee=0, neighborhood='';
+if(deliveryType==='Entrega'){
+  if(db.business.shippingMode==='global') shippingFee=Number(db.business.globalFee||0);
+  else{
+    neighborhood=checkout.neighborhood||db.business.neighborhoods?.[0]?.name||'';
+    const found=(db.business.neighborhoods||[]).find(n=>n.name===neighborhood);
+    shippingFee=Number(found?.fee||0);
+  }
+}
+const total=subtotal+shippingFee;
+const deliveryOptions=`${db.business.delivery?`<option ${deliveryType==='Entrega'?'selected':''}>Entrega</option>`:''}${db.business.pickup?`<option ${deliveryType==='Retirada'?'selected':''}>Retirada</option>`:''}`;
+const neighborhoodSelect=deliveryType==='Entrega'&&db.business.shippingMode==='neighborhood'
+  ?`<select id="delivery-neighborhood">${(db.business.neighborhoods||[]).map(n=>`<option value="${n.name}" ${neighborhood===n.name?'selected':''}>${n.name} · ${money(n.fee)}</option>`).join('')}</select>`:'';
+return `<div class="drawerback" data-act="close-cart"></div><aside class="drawer">
+  <div class="drawerhead"><div><span class="eyebrow">Seu pedido</span><h2>Carrinho</h2></div><button class="iconbtn" data-act="close-cart">✕</button></div>
+  <div class="cartitems">${entries.map(([id,q])=>{const p=db.products.find(x=>x.id===id);return `<div class="cartitem"><div><b>${p.name}</b><small>${money(p.price)} cada</small></div><div class="qty"><button data-dec="${id}">−</button><b>${q}</b><button data-inc="${id}">+</button></div></div>`}).join('')}</div>
+  <div class="cartfoot">
+    <div class="shipping-line"><span>Subtotal</span><strong>${money(subtotal)}</strong></div>
+    ${deliveryType==='Entrega'?`<div class="shipping-line"><span>Frete${neighborhood?` · ${neighborhood}`:''}</span><strong>${money(shippingFee)}</strong></div>`:''}
+    <div class="totalrow"><span>Total do pedido</span><strong>${money(total)}</strong></div>
+    <div class="formmini">
+      <input id="client-name" placeholder="Seu nome" value="${checkout.name||''}">
+      <select id="delivery-type">${deliveryOptions}</select>
+      ${neighborhoodSelect}
+      <textarea id="client-note" rows="2" placeholder="Observação (opcional)">${checkout.note||''}</textarea>
+    </div>
+    <div class="msgpreview">${buildMessage(checkout.name||'Cliente',deliveryType,checkout.note||'',neighborhood)}</div>
+    <button class="btn green full" data-act="send-whatsapp">Enviar pedido no WhatsApp</button>
+    <div class="smallmuted" style="text-align:center;margin-top:8px">Você será direcionado para conversar com ${db.business.name}.</div>
+  </div>
+</aside>`;
+}
+
+function buildMessage(name='Cliente',delivery='Entrega',note='',neighborhood=''){
+const entries=Object.entries(state.cart).filter(([,q])=>q>0);
+const subtotal=entries.reduce((sum,[id,q])=>sum+(db.products.find(p=>p.id===id)?.price||0)*q,0);
+let shippingFee=0;
+if(delivery==='Entrega'){
+  if(db.business.shippingMode==='global') shippingFee=Number(db.business.globalFee||0);
+  else{
+    const hood=neighborhood||state.checkout?.neighborhood||db.business.neighborhoods?.[0]?.name||'';
+    shippingFee=Number((db.business.neighborhoods||[]).find(n=>n.name===hood)?.fee||0);
+    neighborhood=hood;
+  }
+}
+const total=subtotal+shippingFee;
+let text=`Olá! Quero fazer um pedido pela ${db.business.name}. 👋\n\n🛍️ *Meu pedido*\n`;
+entries.forEach(([id,q])=>{const p=db.products.find(x=>x.id===id); text+=`${q}x ${p.name} — ${money(p.price*q)}\n`;});
+text+=`\n🧾 Subtotal: ${money(subtotal)}`;
+if(delivery==='Entrega') text+=`\n🚚 Frete${neighborhood?` (${neighborhood})`:''}: ${money(shippingFee)}`;
+text+=`\n💰 *Total: ${money(total)}*\n\n👤 ${name}\n📍 ${delivery}${neighborhood?` · ${neighborhood}`:''}`;
+if(note) text+=`\n📝 Obs.: ${note}`;
+text+=`\n\nPedido montado pelo ClickZap.`;
+return text;
+}
+
+function productModal(){
+const activeCats=(db.categories||[]).filter(c=>c.active!==false);
+const p=state.editProduct||{name:'',sku:'',category:activeCats[0]?.name||'',description:'',price:'',variations:'',tags:'',featured:false,active:true,photos:[]};
+const photos=state.photoDraft||[];
+return `<div class="overlay"><div class="modal" style="width:min(760px,100%)">
+  <div class="modalhead"><div><span class="eyebrow">${state.editProduct?'Editar produto':'Novo produto'}</span><h2>${state.editProduct?'Atualize o item':'Cadastre um produto no catálogo'}</h2></div><button class="iconbtn" data-act="close-modal">✕</button></div>
+  <form id="product-form"><div class="fields">
+    <div class="product-gallery-upload"><div><div><b>Fotos do produto</b><p>Adicione até 5 fotos. A primeira será a capa do catálogo.</p></div><label class="btn light" style="display:inline-flex;width:auto">+ Adicionar fotos<input id="product-photos" type="file" accept="image/*" multiple hidden></label></div><div class="photo-grid">${Array.from({length:5},(_,i)=>photos[i]?`<div class="photo-slot"><img src="${photos[i]}" alt="Foto ${i+1}"><button type="button" data-remove-photo="${i}">✕</button></div>`:`<div class="photo-slot">Foto ${i+1}</div>`).join('')}</div><div class="smallmuted" style="margin-top:8px">${photos.length}/5 fotos selecionadas</div></div>
+    <div class="fieldsection"><h3>Identificação</h3>
+      <div class="formrow"><label>Nome do produto<input name="name" value="${p.name||''}" required></label><label>SKU / código<input name="sku" value="${p.sku||''}" placeholder="Ex.: CX-001"></label></div>
+      <label>Categoria<select name="category" required>${activeCats.map(c=>`<option value="${c.name}" ${p.category===c.name?'selected':''}>${c.name}</option>`).join('')}</select></label>
+      ${activeCats.length?'':'<div class="smallmuted">Crie uma categoria antes de cadastrar o produto.</div>'}
+      <label>Descrição completa<textarea name="description" rows="4" placeholder="Detalhes, tamanhos, sabores, materiais, diferenciais...">${p.description||''}</textarea></label>
+    </div>
+    <div class="fieldsection"><h3>Preço</h3><label>Preço do produto (R$)<input name="price" type="number" min="0" step="0.01" value="${p.price??''}" required></label></div>
+    <div class="fieldsection"><h3>Detalhes para venda</h3>
+      <label>Variações / opções<textarea name="variations" rows="3" placeholder="Ex.: Tamanhos P, M, G | Cores Preto e Branco">${p.variations||''}</textarea></label>
+      <label>Tags<input name="tags" value="${p.tags||''}" placeholder="presente, premium, café"></label>
+      <div class="formrow"><label class="checkfield"><input type="checkbox" name="featured" ${p.featured?'checked':''}><span>Destacar este produto na vitrine</span></label><label class="checkfield"><input type="checkbox" name="active" ${p.active!==false?'checked':''}><span>Produto ativo e disponível</span></label></div>
+    </div>
+    <div class="modalactions"><button type="button" class="btn light" data-act="close-modal">Cancelar</button><button class="btn green" type="submit" ${activeCats.length?'':'disabled'}>Salvar produto</button></div>
+  </div></form>
+</div></div>`;
+}
+
+function categoryModal(){
+const c=state.editCategory||{name:'',active:true};
+return `<div class="overlay"><div class="modal" style="width:min(460px,100%)">
+<div class="modalhead"><div><span class="eyebrow">Categorias</span><h2>${state.editCategory?'Editar categoria':'Nova categoria'}</h2></div><button class="iconbtn" data-act="close-category-modal">✕</button></div>
+<form id="category-form"><div class="fields"><label>Nome da categoria<input name="name" value="${c.name||''}" placeholder="Ex.: Presentes" required maxlength="60"></label><label class="checkfield"><input type="checkbox" name="active" ${c.active!==false?'checked':''}><span>Categoria ativa no catálogo</span></label><div class="modalactions"><button type="button" class="btn light" data-act="close-category-modal">Cancelar</button><button class="btn green" type="submit">Salvar categoria</button></div></div></form>
+</div></div>`;
+}
+
+function orderModal(){
+const o=state.editOrder;if(!o)return '';
+const labels={new:'Novo',sent:'Em conversa',done:'Concluído'};
+return `<div class="overlay"><div class="modal" style="width:min(560px,100%)">
+<div class="modalhead"><div><span class="eyebrow">${o.id}</span><h2>${o.client}</h2></div><button class="iconbtn" data-act="close-order-modal">✕</button></div>
+<div class="fields">
+<div class="formrow"><div class="panel panel-pad"><span class="smallmuted">Telefone</span><b style="display:block;margin-top:5px">${o.phone}</b><button class="btn whatsapp sm" style="margin-top:10px" data-order-whatsapp="${o.id}">↗ Abrir conversa no WhatsApp</button></div><div class="panel panel-pad"><span class="smallmuted">Total</span><b style="display:block;margin-top:5px">${money(o.total)}</b></div></div>
+<div class="formrow"><div class="panel panel-pad"><span class="smallmuted">Itens</span><b style="display:block;margin-top:5px">${o.items}</b></div><div class="panel panel-pad"><span class="smallmuted">Status</span><b style="display:block;margin-top:5px">${labels[o.status]}</b></div></div>
+${o.status==='done'?`<div><b>Resultado da venda</b><div class="outcome"><button class="btn light ${o.result==='sold'?'selected-sold':''}" data-order-result="${o.id}" data-result="sold">✓ Vendido</button><button class="btn light ${o.result==='lost'?'selected-lost':''}" data-order-result="${o.id}" data-result="lost">✕ Não vendido</button></div></div>`:''}
+<div class="modalactions">${o.status!=='new'?`<button class="btn light sm" data-order-back="${o.id}">← Voltar etapa</button>`:''}${o.status!=='done'?`<button class="btn green sm" data-order-next="${o.id}">Avançar etapa →</button>`:''}</div>
+</div></div></div>`;
+}
+
+function render(){
+  document.title='ClickZap — Seu catálogo vende pelo WhatsApp';
+  let html=state.mode==='landing'?landing():state.mode==='store'?publicStore():appPage();
+  if(state.modal==='product') html+=productModal();
+  if(state.modal==='category') html+=categoryModal();
+  if(state.modal==='order') html+=orderModal();
+  $('#app').innerHTML=html;
+  bind();
+}
+
+function bind(){
+  $$('[data-act]').forEach(el=>el.onclick=()=>{
+    const a=el.dataset.act;
+    if(a==='demo'||a==='start') go('app','overview');
+    if(a==='home') go('landing');
+    if(a==='store'||a==='open-store'){state.mode='store';state.category='Todos';state.query='';render();window.scrollTo(0,0)}
+    if(a==='back-demo') go('app','overview');
+    if(a==='copy-link'){navigator.clipboard?.writeText(`https://clickzap.app/${db.business.slug}`);toast('Link copiado!')}
+    if(a==='new-product'){state.modal='product';state.editProduct=null;state.photoDraft=[];render()}
+    if(a==='close-modal'){state.modal=null;state.editProduct=null;state.photoDraft=[];render()}
+    if(a==='new-category'){state.modal='category';state.editCategory=null;render()}
+    if(a==='close-category-modal'){state.modal=null;state.editCategory=null;render()}
+    if(a==='close-order-modal'){state.modal=null;state.editOrder=null;render()}
+    if(a==='open-cart'){state.drawer=true;render()}
+    if(a==='close-cart'){state.drawer=false;render()}
+    if(a==='upgrade') toast('Checkout do plano Pro seria aberto aqui.');
+    if(a==='export') exportCSV();
+    if(a==='clear-order-filters'){state.orderStatus='all';state.orderPeriod='week';state.orderStart='';state.orderEnd='';state.orderSearch='';state.orderSort='recent';state.orderMin='';render()}
+    if(a==='remove-logo'){db.business.logo='';save();render()}
+    if(a==='add-neighborhood'){
+      const name=$('#new-neighborhood-name')?.value.trim()||'';
+      const fee=Number($('#new-neighborhood-fee')?.value||0);
+      if(!name) return toast('Informe o nome do bairro.');
+      if((db.business.neighborhoods||[]).some(n=>n.name.toLowerCase()===name.toLowerCase())) return toast('Esse bairro já está cadastrado.');
+      db.business.neighborhoods=[...(db.business.neighborhoods||[]),{id:uid(),name,fee}];save();render();toast('Bairro adicionado.');
+    }
+    if(a==='send-whatsapp'){
+      const name=$('#client-name')?.value.trim()||'Cliente';
+      const delivery=$('#delivery-type')?.value||'Entrega';
+      const note=$('#client-note')?.value.trim()||'';
+      const neighborhood=$('#delivery-neighborhood')?.value||state.checkout.neighborhood||'';
+      state.checkout={name,delivery,neighborhood,note};
+      const msg=buildMessage(name,delivery,note,neighborhood);
+      toast('Pedido montado! Abrindo WhatsApp...');
+      const url=`https://wa.me/${db.business.whatsapp.replace(/\D/g,'')}?text=${encodeURIComponent(msg)}`;
+      setTimeout(()=>window.open(url,'_blank'),250);
+    }
+  });
+
+  $$('[data-page]').forEach(el=>el.onclick=()=>{state.page=el.dataset.page;render()});
+  $$('[data-cat]').forEach(el=>el.onclick=()=>{state.category=el.dataset.cat;render()});
+  $$('[data-add]').forEach(el=>el.onclick=()=>{state.cart[el.dataset.add]=(state.cart[el.dataset.add]||0)+1;toast('Produto adicionado ao pedido');render()});
+  $$('[data-inc]').forEach(el=>el.onclick=()=>{state.cart[el.dataset.inc]=(state.cart[el.dataset.inc]||0)+1;render()});
+  $$('[data-dec]').forEach(el=>el.onclick=()=>{const id=el.dataset.dec;state.cart[id]=Math.max(0,(state.cart[id]||0)-1);if(!state.cart[id])delete state.cart[id];render()});
+
+  $$('[data-edit]').forEach(el=>el.onclick=()=>{state.editProduct={...db.products.find(p=>p.id===el.dataset.edit)};state.photoDraft=[...(state.editProduct.photos||[])];state.modal='product';render()});
+  $$('[data-toggle]').forEach(el=>el.onclick=()=>{const p=db.products.find(p=>p.id===el.dataset.toggle);p.active=!p.active;save();render()});
+
+  $$('[data-edit-category]').forEach(el=>el.onclick=()=>{state.editCategory={...db.categories.find(c=>c.id===el.dataset.editCategory)};state.modal='category';render()});
+  $$('[data-toggle-category]').forEach(el=>el.onclick=()=>{const c=db.categories.find(c=>c.id===el.dataset.toggleCategory);c.active=!c.active;save();render()});
+  $$('[data-delete-category]').forEach(el=>el.onclick=()=>{const c=db.categories.find(c=>c.id===el.dataset.deleteCategory);if(db.products.some(p=>p.category===c.name))return toast('Essa categoria está em uso por produtos.');db.categories=db.categories.filter(x=>x.id!==c.id);save();render();toast('Categoria excluída.');});
+
+  const moveOrder=(id,status)=>{const o=db.orders.find(o=>o.id===id);if(!o)return;o.status=status;if(status!=='done')o.result=null;save();if(state.modal==='order')state.editOrder={...o};render()};
+  $$('[data-order-next]').forEach(el=>el.onclick=()=>{const o=db.orders.find(o=>o.id===el.dataset.orderNext);moveOrder(o.id,o.status==='new'?'sent':'done')});
+  $$('[data-order-back]').forEach(el=>el.onclick=()=>{const o=db.orders.find(o=>o.id===el.dataset.orderBack);moveOrder(o.id,o.status==='done'?'sent':'new')});
+  $$('[data-order-result]').forEach(el=>el.onclick=()=>{const o=db.orders.find(o=>o.id===el.dataset.orderResult);o.result=el.dataset.result;save();if(state.modal==='order')state.editOrder={...o};render()});
+  $$('[data-order-view]').forEach(el=>el.onclick=()=>{state.orderView=el.dataset.orderView;render()});
+  $$('[data-order-detail]').forEach(el=>el.onclick=()=>{state.editOrder={...db.orders.find(o=>o.id===el.dataset.orderDetail)};state.modal='order';render()});
+  $$('[data-order-whatsapp]').forEach(el=>el.onclick=()=>{const o=db.orders.find(o=>o.id===el.dataset.orderWhatsapp);if(!o)return;const phone=String(o.phone||'').replace(/\D/g,'');const msg=`Olá, ${o.client.split(' ')[0]}! Tudo bem? Estou falando sobre o seu pedido ${o.id} no ${db.business.name}.`;window.open(`https://wa.me/55${phone.startsWith('55')?phone.slice(2):phone}?text=${encodeURIComponent(msg)}`,'_blank','noopener,noreferrer')});
+
+
+  $$('[data-order-card]').forEach(card=>{card.ondragstart=e=>{card.classList.add('dragging');e.dataTransfer.setData('text/plain',card.dataset.orderCard);e.dataTransfer.effectAllowed='move'};card.ondragend=()=>card.classList.remove('dragging')});
+  $$('[data-drop-status]').forEach(col=>{col.ondragover=e=>{e.preventDefault();col.classList.add('drag-over');e.dataTransfer.dropEffect='move'};col.ondragleave=()=>col.classList.remove('drag-over');col.ondrop=e=>{e.preventDefault();col.classList.remove('drag-over');const id=e.dataTransfer.getData('text/plain');if(id)moveOrder(id,col.dataset.dropStatus)}});
+
+  $$('[data-switch]').forEach(el=>el.onclick=()=>{db.business[el.dataset.switch]=!db.business[el.dataset.switch];save();render()});
+  $$('[data-shipping-mode]').forEach(el=>el.onclick=()=>{db.business.shippingMode=el.dataset.shippingMode;save();render()});
+  $$('[data-remove-neighborhood]').forEach(el=>el.onclick=()=>{db.business.neighborhoods=(db.business.neighborhoods||[]).filter(n=>n.id!==el.dataset.removeNeighborhood);save();render()});
+  $$('[data-layout]').forEach(el=>el.onclick=()=>{db.business.storeLayout=el.dataset.layout;save();render()});
+  $$('[data-preview-device]').forEach(el=>el.onclick=()=>{state.settingsPreview=el.dataset.previewDevice;render()});
+  $$('[data-card-style]').forEach(el=>el.onclick=()=>{db.business.cardStyle=el.dataset.cardStyle;save();render()});
+  $$('[data-image-ratio]').forEach(el=>el.onclick=()=>{db.business.imageRatio=el.dataset.imageRatio;save();render()});
+  $$('[data-button-style]').forEach(el=>el.onclick=()=>{db.business.buttonStyle=el.dataset.buttonStyle;save();render()});
+  $$('[data-store-toggle]').forEach(el=>el.onclick=()=>{const k=el.dataset.storeToggle;db.business[k]=!db.business[k];save();render()});
+
+
+  const ps=$('#prod-search');
+  if(ps) ps.oninput=e=>{state.query=e.target.value;render()};
+  const sf=$('#cat-filter');
+  if(sf) sf.onchange=e=>{state.category=e.target.value;render()};
+  const ss=$('#store-search');
+  if(ss) ss.oninput=e=>{state.query=e.target.value;render()};
+
+  const os=$('#order-search'); if(os) os.oninput=e=>{state.orderSearch=e.target.value;render()};
+  const ost=$('#order-status'); if(ost) ost.onchange=e=>{state.orderStatus=e.target.value;render()};
+  const op=$('#order-period'); if(op) op.onchange=e=>{state.orderPeriod=e.target.value;if(state.orderPeriod!=='custom'){state.orderStart='';state.orderEnd=''}render()};
+  const ods=$('#order-start'); if(ods) ods.onchange=e=>{state.orderStart=e.target.value;render()};
+  const ode=$('#order-end'); if(ode) ode.onchange=e=>{state.orderEnd=e.target.value;render()};
+  const oso=$('#order-sort'); if(oso) oso.onchange=e=>{state.orderSort=e.target.value;render()};
+  const omin=$('#order-min'); if(omin) omin.oninput=e=>{state.orderMin=e.target.value;render()};
+
+  const photoInput=$('#product-photos');
+  if(photoInput) photoInput.onchange=async e=>{
+    const files=[...e.target.files].filter(f=>f.type.startsWith('image/')).slice(0,Math.max(0,5-state.photoDraft.length));
+    for(const file of files){
+      const data=await new Promise(resolve=>{const reader=new FileReader();reader.onload=()=>resolve(reader.result);reader.readAsDataURL(file)});
+      state.photoDraft.push(data);
+    }
+    if(files.length<e.target.files.length) toast('Limite de 5 fotos por produto.');
+    render();
+  };
+  $$('[data-remove-photo]').forEach(el=>el.onclick=()=>{state.photoDraft.splice(Number(el.dataset.removePhoto),1);render()});
+
+  const promoText=$('#promo-text'); if(promoText) promoText.onchange=e=>{db.business.promoText=e.target.value;save();render()};
+
+  const colorInput=$('#brand-color');
+  const colorHex=$('#brand-color-hex');
+  const setBrandColor=value=>{
+    if(/^#[0-9a-fA-F]{6}$/.test(value)){db.business.accentColor=value;save();render()}
+  };
+  if(colorInput) colorInput.onchange=e=>setBrandColor(e.target.value);
+  if(colorHex) colorHex.onchange=e=>setBrandColor(e.target.value.trim());
+
+  const gf=$('#global-fee'); if(gf) gf.onchange=e=>{db.business.globalFee=Number(e.target.value||0);save();render()};
+
+  const businessLogo=$('#business-logo');
+  if(businessLogo) businessLogo.onchange=e=>{
+    const file=e.target.files?.[0]; if(!file) return;
+    const reader=new FileReader(); reader.onload=()=>{db.business.logo=reader.result;try{save()}catch(err){toast('A logo é grande demais para salvar localmente.')}render()}; reader.readAsDataURL(file);
+  };
+
+  const globalFee=$('#global-fee');
+  if(globalFee) globalFee.onchange=e=>{db.business.globalFee=Math.max(0,Number(e.target.value||0));save();render()};
+
+  const deliveryType=$('#delivery-type');
+  if(deliveryType) deliveryType.onchange=e=>{state.checkout.delivery=e.target.value;render()};
+  const deliveryNeighborhood=$('#delivery-neighborhood');
+  if(deliveryNeighborhood) deliveryNeighborhood.onchange=e=>{state.checkout.neighborhood=e.target.value;render()};
+  const clientName=$('#client-name');
+  if(clientName) clientName.oninput=e=>{state.checkout.name=e.target.value};
+  const clientNote=$('#client-note');
+  if(clientNote) clientNote.oninput=e=>{state.checkout.note=e.target.value};
+
+  const settingsForm=$('#settings-form');
+  if(settingsForm) settingsForm.onsubmit=e=>{
+    e.preventDefault(); const fd=new FormData(e.target);
+    Object.assign(db.business,{
+      name:String(fd.get('name')).trim(),
+      slug:String(fd.get('slug')).trim().toLowerCase().replace(/[^a-z0-9-]+/g,'-'),
+      whatsapp:String(fd.get('whatsapp')).replace(/\D/g,''),
+      headline:String(fd.get('headline')).trim(),
+      description:String(fd.get('description')).trim()
+    });
+    save();toast('Configurações atualizadas.');render();
+  };
+
+  const cf=$('#category-form');
+  if(cf) cf.onsubmit=e=>{
+    e.preventDefault();const fd=new FormData(e.target);const name=String(fd.get('name')||'').trim();if(!name)return;
+    const duplicate=db.categories.some(c=>c.name.toLowerCase()===name.toLowerCase()&&c.id!==state.editCategory?.id);
+    if(duplicate)return toast('Já existe uma categoria com esse nome.');
+    if(state.editCategory){
+      const c=db.categories.find(c=>c.id===state.editCategory.id);const old=c.name;c.name=name;c.active=fd.get('active')==='on';
+      db.products.forEach(p=>{if(p.category===old)p.category=name});
+    }else db.categories.push({id:uid(),name,active:fd.get('active')==='on'});
+    save();state.modal=null;state.editCategory=null;toast('Categoria salva.');render();
+  };
+
+  const pf=$('#product-form');
+  if(pf) pf.onsubmit=e=>{
+    e.preventDefault(); const fd=new FormData(e.target);
+    const data={name:String(fd.get('name')).trim(),sku:String(fd.get('sku')||'').trim(),category:String(fd.get('category')||'').trim(),description:String(fd.get('description')||'').trim(),price:Number(fd.get('price')),variations:String(fd.get('variations')||'').trim(),tags:String(fd.get('tags')||'').trim(),featured:fd.get('featured')==='on',active:fd.get('active')==='on',photos:[...state.photoDraft]};
+    if(state.editProduct){const idx=db.products.findIndex(p=>p.id===state.editProduct.id);db.products[idx]={...db.products[idx],...data}}
+    else db.products.unshift({id:uid(),...data});
+    try{save()}catch(err){toast('Produto salvo na sessão, mas as fotos são grandes demais para o armazenamento local.')}state.modal=null;state.editProduct=null;state.photoDraft=[];toast('Produto salvo.');render();
+  };
+}
+
+function exportCSV(){
+  const rows=[['Pedido','Cliente','Telefone','Data','Itens','Total','Status','Resultado'],...db.orders.map(o=>[o.id,o.client,o.phone,o.date,o.items,o.total,o.status,o.result==='sold'?'Vendido':o.result==='lost'?'Não vendido':''])];
+  const csv='\uFEFF'+rows.map(r=>r.map(v=>`"${String(v).replaceAll('"','""')}"`).join(';')).join('\r\n');
+  const blob=new Blob([csv],{type:'text/csv;charset=utf-8'});
+  const a=document.createElement('a');a.href=URL.createObjectURL(blob);a.download='clickzap-pedidos.csv';a.click();URL.revokeObjectURL(a.href);
+}
+
+render();
+</script>
+</body>
+</html>

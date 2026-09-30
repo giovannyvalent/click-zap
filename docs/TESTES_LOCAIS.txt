@@ -1,0 +1,32 @@
+
+> clickzap@1.0.0 test
+> node --import tsx --test tests/*.test.ts
+
+▶ Migrations, RLS, checkout transaction and business invariants
+  ✔ User cannot join another business or grant own plan (5.93783ms)
+  ✔ Cross-tenant product/category binding blocked (3.470691ms)
+  ✔ Cannot publish an empty business (3.28042ms)
+  ✔ Current DB price + global freight override browser totals (11.737151ms)
+  ✔ Idempotent retries create one order; altered retries rejected (4.181183ms)
+  ✔ Private orders cannot be read by anon or tenant B (5.443237ms)
+  ✔ Completed requires outcome; reopening clears outcome (5.595448ms)
+  ✔ Inactive products fail atomically without orphan orders (5.413352ms)
+  ✔ Inactive categories hide and reject products (5.516819ms)
+  ✔ Neighborhood freight and pickup (12.004358ms)
+  ✔ 10-product limit applies in DB and archive frees a slot (16.227405ms)
+  ✔ Existing above-limit stores keep products editable after plan change (8.132235ms)
+  ✔ Rate limit persists across calls (5.848025ms)
+  ✔ Photo count, paths and cross-tenant images validated (3.992155ms)
+✔ Migrations, RLS, checkout transaction and business invariants (1152.463131ms)
+✔ Brazilian phone normalization and reserved slug (3.611382ms)
+✔ Period uses Fortaleza date around UTC midnight (20.943101ms)
+✔ Checkout rejects duplicate items and missing delivery address; strips browser price (2.530959ms)
+✔ WhatsApp message includes persisted amounts and customer address (4.390347ms)
+ℹ tests 19
+ℹ suites 0
+ℹ pass 19
+ℹ fail 0
+ℹ cancelled 0
+ℹ skipped 0
+ℹ todo 0
+ℹ duration_ms 1496.252008
