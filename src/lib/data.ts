@@ -64,7 +64,7 @@ export async function dashboardData(): Promise<DashboardData> {
       .order("sort_order"),
     db
       .from("products")
-      .select("*,product_images(*)")
+      .select("*,product_images!image_product_tenant(*)")
       .eq("business_id", business.id)
       .is("archived_at", null)
       .order("created_at", { ascending: false }),
@@ -118,7 +118,7 @@ export const getStore = cache(
         .order("sort_order"),
       db
         .from("products")
-        .select("*,product_images(*)")
+        .select("*,product_images!image_product_tenant(*)")
         .eq("business_id", business.id)
         .eq("active", true)
         .is("archived_at", null)

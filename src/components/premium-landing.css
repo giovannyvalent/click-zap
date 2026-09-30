@@ -19,8 +19,8 @@
 .premium-landing * {
   box-sizing: border-box;
 }
-.premium-landing {
-  scroll-behavior: smooth;
+.premium-landing [id] {
+  scroll-margin-top: 92px;
 }
 .premium-landing {
   margin: 0;
@@ -277,12 +277,18 @@
   gap: 54px;
   align-items: center;
 }
+.premium-landing .hero-intro {
+  container-type: inline-size;
+  min-width: 0;
+  max-width: 560px;
+}
 .premium-landing .hero h1 {
   margin: 18px 0 0;
-  font-size: clamp(61px, 7.1vw, 106px);
-  line-height: 0.89;
-  letter-spacing: -0.072em;
+  font-size: clamp(30px, 10cqw, 58px);
+  line-height: 1.08;
+  letter-spacing: -0.03em;
   font-weight: 600;
+  white-space: nowrap;
 }
 .premium-landing .hero h1 .green {
   color: var(--green);
@@ -1903,6 +1909,9 @@
   .premium-landing .nav {
     height: 66px;
   }
+  .premium-landing [id] {
+    scroll-margin-top: 82px;
+  }
   .premium-landing .nav-actions .btn-outline {
     display: none;
   }
@@ -1921,9 +1930,6 @@
   }
   .premium-landing .hero {
     padding: 42px 0 24px;
-  }
-  .premium-landing .hero h1 {
-    font-size: clamp(54px, 16.4vw, 76px);
   }
   .premium-landing .hero-copy {
     font-size: 14px;
@@ -2080,9 +2086,6 @@
   }
 }
 @media (max-width: 430px) {
-  .premium-landing .hero h1 {
-    font-size: 52px;
-  }
   .premium-landing .hero-visual {
     min-height: 420px;
   }

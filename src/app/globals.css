@@ -1,4 +1,12 @@
 @import "tailwindcss";
+html {
+  scroll-behavior: smooth;
+}
+@media (prefers-reduced-motion: reduce) {
+  html {
+    scroll-behavior: auto;
+  }
+}
 :root {
   --bg: #f6f7f6;
   --ink: #101612;
@@ -296,11 +304,22 @@ td small {
 .brand-icon {
   width: 35px;
   height: 35px;
-  display: grid;
-  place-items: center;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0;
   background: #090d0b;
-  color: var(--green);
   border-radius: 10px;
+  font-size: 13px;
+  font-weight: 700;
+  letter-spacing: -0.06em;
+  white-space: nowrap;
+}
+.brand-icon-c {
+  color: #fff;
+}
+.brand-icon-z {
+  color: var(--green);
 }
 .panel {
   background: #fff;

@@ -47,7 +47,7 @@ export function AuthForm({
             window.location.assign("/onboarding");
             return;
           }
-          setNotice("Confira seu e-mail para confirmar a conta.");
+          setNotice("Conta criada. Entre para continuar.");
         }
       } else if (mode === "login") {
         const r = await db.auth.signInWithPassword(v);
@@ -73,9 +73,7 @@ export function AuthForm({
       }
       if (error)
         setNotice(
-          mode === "login"
-            ? "Não foi possível entrar. Confira os dados e a confirmação do e-mail."
-            : error.message,
+          mode === "login" ? "Não foi possível entrar. Confira e-mail e senha." : error.message,
         );
     } catch {
       setNotice("Não foi possível conectar. Tente novamente.");
