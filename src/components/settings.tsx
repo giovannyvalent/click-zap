@@ -21,17 +21,15 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
   const [newZoneName, setNewZoneName] = useState("");
   const [newZoneFee, setNewZoneFee] = useState("");
   const [copied, setCopied] = useState(false);
-  const storeUrl =
-    (typeof window !== "undefined" ? window.location.origin : "") +
-    "/loja/" +
-    data.business.slug;
+  const storePath = "/loja/" + data.business.slug;
   async function copyLink() {
+    const url = location.origin + storePath;
     try {
-      await navigator.clipboard.writeText(storeUrl);
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      window.prompt("Copie o endereço:", storeUrl);
+      window.prompt("Copie o endereço:", url);
     }
   }
   const { register, watch, setValue, handleSubmit } = useForm({
@@ -72,7 +70,7 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
       <div className="link-bar">
         <div>
           <small className="muted">Link da sua loja</small>
-          <b>{storeUrl}</b>
+          <b>{storePath}</b>
         </div>
         <button type="button" className="btn secondary small" onClick={copyLink}>
           {copied ? <Check size={14} /> : <LinkIcon size={14} />}
