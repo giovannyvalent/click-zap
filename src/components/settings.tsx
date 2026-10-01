@@ -75,11 +75,7 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
             <div className="form-grid">
               <label>
                 Endereço do catálogo
-                <input
-                  required
-                  pattern="[-a-z0-9]{3,60}"
-                  {...register("slug")}
-                />
+                <input required {...register("slug")} />
               </label>
               <label>
                 WhatsApp
