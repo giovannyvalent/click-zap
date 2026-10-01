@@ -1107,8 +1107,8 @@ td small {
   top: 0;
   bottom: 0;
   width: 235px;
-  background: #fff;
-  border-right: 1px solid var(--line);
+  background: #0a0a0a;
+  border-right: 1px solid #1a1c1a;
   padding: 27px 18px 15px;
   display: flex;
   flex-direction: column;
@@ -1116,12 +1116,17 @@ td small {
 }
 .sidebar > .brand {
   padding: 0 10px;
+  color: #fff;
+}
+.sidebar .brand-icon {
+  border: 1px solid #242424;
 }
 .workspace {
   display: flex;
   align-items: center;
   gap: 10px;
-  border: 1px solid var(--line);
+  border: 1px solid #242424;
+  background: #141414;
   border-radius: 10px;
   padding: 12px 10px;
   margin: 30px 0;
@@ -1130,11 +1135,11 @@ td small {
   display: grid;
   place-items: center;
   flex-shrink: 0;
-  width: 32px;
-  height: 32px;
-  border-radius: 8px;
-  background: #e7f2e7;
-  color: #277048;
+  width: 36px;
+  height: 36px;
+  border-radius: 10px;
+  background: var(--green);
+  color: #052014;
   font-weight: 750;
   font-size: 12px;
 }
@@ -1145,15 +1150,16 @@ td small {
   text-overflow: ellipsis;
   white-space: nowrap;
   font-size: 12px;
+  color: #fff;
 }
 .workspace small {
   font-size: 9px;
-  color: var(--muted);
+  color: #818a84;
 }
 .nav-label {
   font-size: 8px;
   letter-spacing: 1.3px;
-  color: #97a19a;
+  color: #636a66;
   font-weight: 750;
   padding: 0 12px;
   margin-bottom: 12px;
@@ -1167,19 +1173,25 @@ td small {
   display: flex;
   align-items: center;
   gap: 12px;
-  color: #6c7770;
+  color: #a8b0aa;
   font-size: 12px;
   font-weight: 600;
   padding: 12px;
   border-radius: 8px;
 }
+.sidebar nav a:hover {
+  background: #171917;
+  color: #fff;
+}
 .sidebar nav a.active {
-  background: #e5f8ee;
-  color: #088952;
+  background: #171917;
+  color: #fff;
+  box-shadow: inset 3px 0 0 var(--green);
 }
 .sidebar nav a small {
   margin-left: auto;
-  background: #c9f0db;
+  background: #1d3f2a;
+  color: #a0d8b1;
   padding: 1px 6px;
   border-radius: 4px;
   font-size: 9px;
@@ -1190,18 +1202,23 @@ td small {
 }
 .plan-card {
   padding: 15px;
-  background: #f5f7f3;
-  border: 1px solid #e3eadd;
+  background: #131613;
+  border: 1px solid #232923;
   border-radius: 11px;
+}
+.plan-card .badge {
+  background: #1d3f2a;
+  color: #a0d8b1;
 }
 .plan-card b {
   font-size: 12px;
   display: block;
   margin: 12px 0 7px;
+  color: #fff;
 }
 .plan-card p {
   font-size: 10px;
-  color: #7e897e;
+  color: #7d887f;
   line-height: 1.7;
 }
 .plan-card a {
@@ -1211,7 +1228,7 @@ td small {
   font-size: 10px;
   margin-top: 14px;
   font-weight: 750;
-  color: #33794b;
+  color: var(--green);
 }
 .logout {
   display: flex;
@@ -1219,9 +1236,12 @@ td small {
   gap: 10px;
   background: none;
   border: 0;
-  color: #78837b;
+  color: #7d887f;
   padding: 16px 10px 0;
   font-size: 12px;
+}
+.logout:hover {
+  color: #fff;
 }
 .app-area {
   margin-left: 235px;
@@ -1561,22 +1581,108 @@ td small {
   margin-bottom: 12px;
   font-size: 18px;
 }
-.zone-row {
+.switchrow {
   display: flex;
+  flex-direction: row;
   justify-content: space-between;
-  gap: 10px;
   align-items: center;
-  padding: 18px 0;
-  border-bottom: 1px solid var(--line);
+  gap: 14px;
+  cursor: pointer;
 }
-.zone-row b {
+.switchrow p {
+  font-size: 11px;
+  margin-top: 3px;
+}
+.switch-input {
+  appearance: none;
+  -webkit-appearance: none;
+  width: 44px;
+  height: 24px;
+  flex-shrink: 0;
+  border-radius: 999px;
+  background: #dfe4e1;
+  position: relative;
+  cursor: pointer;
+  transition: 0.2s;
+}
+.switch-input::before {
+  content: "";
+  position: absolute;
+  top: 3px;
+  left: 3px;
+  width: 18px;
+  height: 18px;
+  border-radius: 50%;
+  background: #fff;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.15);
+  transition: 0.2s;
+}
+.switch-input:checked {
+  background: var(--green);
+}
+.switch-input:checked::before {
+  transform: translateX(20px);
+}
+.shipping-box {
+  border-top: 1px solid var(--line);
+  padding-top: 16px;
+}
+.shipping-box > b {
+  font-size: 13px;
+  display: block;
+  margin-bottom: 10px;
+}
+.shipping-modes {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 8px;
+  margin-bottom: 14px;
+}
+.choice-card {
+  border: 1px solid var(--line);
+  background: #fff;
+  border-radius: 12px;
+  padding: 11px;
+  text-align: left;
+  cursor: pointer;
+}
+.choice-card b {
+  display: block;
+  font-size: 11px;
+}
+.choice-card small {
+  display: block;
+  font-size: 9px;
+  color: var(--muted);
+  margin-top: 4px;
+  line-height: 1.4;
+}
+.choice-card.active {
+  border-color: var(--green);
+  background: var(--green-soft);
+}
+.neighborhood-list {
+  display: grid;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+.neighborhood-row {
+  display: grid;
+  grid-template-columns: 1fr auto auto;
+  align-items: center;
+  gap: 10px;
   font-size: 12px;
 }
-.zone-row small {
-  display: block;
-  font-size: 10px;
+.neighborhood-row b {
+  font-size: 12px;
+}
+.neighborhood-row .fee {
   color: var(--muted);
-  margin-top: 3px;
+}
+.add-neighborhood {
+  display: grid;
+  grid-template-columns: 1fr 110px auto;
+  gap: 8px;
 }
 .designer {
   display: grid;
@@ -2659,6 +2765,12 @@ td small {
   .settings-grid,
   .designer {
     grid-template-columns: 1fr;
+  }
+  .add-neighborhood {
+    grid-template-columns: 1fr 1fr;
+  }
+  .add-neighborhood .btn {
+    grid-column: 1 / -1;
   }
   .designer-preview {
     position: static;

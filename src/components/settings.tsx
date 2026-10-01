@@ -2,266 +2,247 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import {
-  Monitor,
-  Smartphone,
-  Plus,
-  Pencil,
-  Trash2,
-  ExternalLink,
-} from "lucide-react";
-import type { DashboardData, Zone, Settings } from "@/lib/types";
+import { Monitor, Smartphone, X } from "lucide-react";
+import type { DashboardData, Settings } from "@/lib/types";
 import {
   saveBusiness,
   saveZone,
   deleteZone,
   saveSettings,
 } from "@/lib/actions";
-import { Modal, useTask, SaveButton } from "./ui";
+import { useTask, SaveButton } from "./ui";
 import { Store } from "./store";
 import { uploadImage } from "@/lib/upload";
 import { money } from "@/lib/utils";
 export function BusinessSettings({ data }: { data: DashboardData }) {
   const task = useTask();
+  const zoneTask = useTask();
   const router = useRouter();
-  const [zone, setZone] = useState<Zone | null | undefined>();
-  const { register, watch, handleSubmit } = useForm({
+  const [newZoneName, setNewZoneName] = useState("");
+  const [newZoneFee, setNewZoneFee] = useState("");
+  const { register, watch, setValue, handleSubmit } = useForm({
     defaultValues: {
       ...data.business,
       global_shipping_fee: Number(data.business.global_shipping_fee),
     },
   });
+  const delivery = watch("allow_delivery");
+  const shippingMode = watch("shipping_mode");
+  async function addZone() {
+    const name = newZoneName.trim();
+    if (!name) return;
+    await zoneTask.run(async () => {
+      await saveZone(null, {
+        name,
+        fee: Number(newZoneFee || 0),
+        active: true,
+        sort_order: data.zones.length,
+      });
+      setNewZoneName("");
+      setNewZoneFee("");
+      router.refresh();
+    }, "Bairro adicionado.");
+  }
   return (
     <>
       <div className="page-heading">
         <div>
-          <span className="eyebrow">DO SEU JEITO DE VENDER</span>
+          <span className="eyebrow">OPERAÇÃO</span>
           <h1>Configurações</h1>
-          <p>Dados do negócio, publicação e formas de receber.</p>
-        </div>
-      </div>
-      <div className="settings-grid">
-        <form
-          className="panel padded"
-          onSubmit={handleSubmit((v) =>
-            task.run(async () => {
-              await saveBusiness(v);
-              router.refresh();
-            }),
-          )}
-        >
-          <h2>Seu negócio</h2>
-          <div className="form-grid">
-            <label className="span2">
-              Nome do negócio
-              <input required {...register("name")} />
-            </label>
-            <label>
-              Endereço da loja
-              <input required pattern="[a-z0-9-]{3,60}" {...register("slug")} />
-            </label>
-            <label>
-              WhatsApp com DDI e DDD
-              <input required {...register("whatsapp")} />
-            </label>
-          </div>
-          <hr />
-          <h2>Entrega e retirada</h2>
-          <div className="row wrap">
-            <label className="check">
-              <input type="checkbox" {...register("allow_pickup")} />
-              Permitir retirada
-            </label>
-            <label className="check">
-              <input type="checkbox" {...register("allow_delivery")} />
-              Permitir entrega
-            </label>
-          </div>
-          {watch("allow_delivery") && (
-            <>
-              <label>
-                Cálculo do frete
-                <select {...register("shipping_mode")}>
-                  <option value="global">Valor único para entregas</option>
-                  <option value="neighborhood">Valor por bairro</option>
-                </select>
-              </label>
-              {watch("shipping_mode") === "global" ? (
-                <label>
-                  Frete fixo (R$)
-                  <input
-                    type="number"
-                    min="0"
-                    step="0.01"
-                    {...register("global_shipping_fee", {
-                      valueAsNumber: true,
-                    })}
-                  />
-                </label>
-              ) : (
-                <p className="notice">
-                  Cadastre e ative os bairros no painel ao lado. Depois salve
-                  estas configurações.
-                </p>
-              )}
-            </>
-          )}
-          <hr />
-          <h2>Publicação</h2>
-          <label className="check">
-            <input type="checkbox" {...register("published")} />
-            Publicar minha loja
-          </label>
-          <p className="muted">
-            Para publicar, tenha pelo menos uma categoria e um produto ativos,
-            WhatsApp válido e uma forma de recebimento.
+          <p>
+            Dados do negócio, WhatsApp e regras de entrega. A aparência da
+            loja fica em <b>Minha Loja</b>.
           </p>
-          {task.feedback}
-          <SaveButton busy={task.busy} />
-        </form>
-        <div className="stack">
-          <section className="panel padded">
-            <div className="row between">
-              <h2>Frete por bairro</h2>
-              <button
-                className="btn secondary small"
-                onClick={() => setZone(null)}
-              >
-                <Plus size={14} />
-                Bairro
-              </button>
-            </div>
-            <p className="muted">
-              Usado quando o modo “Valor por bairro” estiver selecionado.
-            </p>
-            {data.zones.length ? (
-              data.zones.map((z) => (
-                <div className="zone-row" key={z.id}>
-                  <div>
-                    <b>{z.name}</b>
-                    <small>
-                      {money(z.fee)} · {z.active ? "Ativo" : "Inativo"} · ordem{" "}
-                      {z.sort_order}
-                    </small>
-                  </div>
-                  <div className="row">
-                    <button
-                      aria-label={"Editar " + z.name}
-                      className="iconbtn"
-                      onClick={() => setZone(z)}
-                    >
-                      <Pencil size={14} />
-                    </button>
-                    <button
-                      className="iconbtn"
-                      aria-label={"Excluir " + z.name}
-                      onClick={() => {
-                        if (confirm("Excluir este bairro?"))
-                          task.run(async () => {
-                            await deleteZone(z.id);
-                            router.refresh();
-                          });
-                      }}
-                    >
-                      <Trash2 size={14} />
-                    </button>
-                  </div>
-                </div>
-              ))
-            ) : (
-              <p className="empty-small">Nenhum bairro cadastrado.</p>
-            )}
-          </section>
-          <section className="share-card">
-            <h2>Próximos passos</h2>
-            <p>
-              Configure o frete, crie uma categoria, cadastre seu primeiro
-              produto e volte para publicar.
-            </p>
-            <div className="stack">
-              <a href="/app/categorias" className="btn secondary">
-                2. Criar categorias
-              </a>
-              <a href="/app/produtos" className="btn secondary">
-                3. Cadastrar produtos
-              </a>
-              <a href="/app/minha-loja" className="btn secondary">
-                4. Personalizar Minha Loja
-              </a>
-              <a
-                href={"/loja/" + data.business.slug}
-                target="_blank"
-                className="btn primary"
-              >
-                Ver loja <ExternalLink size={14} />
-              </a>
-            </div>
-          </section>
         </div>
       </div>
-      {zone !== undefined && (
-        <ZoneEditor value={zone} onClose={() => setZone(undefined)} />
-      )}
-    </>
-  );
-}
-function ZoneEditor({
-  value,
-  onClose,
-}: {
-  value: Zone | null;
-  onClose: () => void;
-}) {
-  const task = useTask();
-  const router = useRouter();
-  const { register, handleSubmit } = useForm({
-    defaultValues: {
-      name: value?.name || "",
-      fee: Number(value?.fee || 0),
-      active: value?.active ?? true,
-      sort_order: value?.sort_order || 0,
-    },
-  });
-  return (
-    <Modal title={value ? "Editar bairro" : "Novo bairro"} onClose={onClose}>
       <form
+        className="settings-grid"
         onSubmit={handleSubmit((v) =>
           task.run(async () => {
-            await saveZone(value?.id || null, v);
+            await saveBusiness(v);
             router.refresh();
-            onClose();
           }),
         )}
       >
-        <label>
-          Bairro
-          <input required {...register("name")} />
-        </label>
-        <label>
-          Frete (R$)
-          <input
-            type="number"
-            min="0"
-            step="0.01"
-            {...register("fee", { valueAsNumber: true })}
-          />
-        </label>
-        <label>
-          Ordem
-          <input
-            type="number"
-            min="0"
-            {...register("sort_order", { valueAsNumber: true })}
-          />
-        </label>
-        <label className="check">
-          <input type="checkbox" {...register("active")} />
-          Bairro ativo
-        </label>
-        {task.feedback}
-        <SaveButton busy={task.busy} />
+        <div className="panel padded">
+          <h2>Informações do negócio</h2>
+          <p className="muted">Identificação e contato principal.</p>
+          <div className="stack" style={{ marginTop: 18 }}>
+            <label>
+              Nome do negócio
+              <input required {...register("name")} />
+            </label>
+            <div className="form-grid">
+              <label>
+                Endereço do catálogo
+                <input
+                  required
+                  pattern="[a-z0-9-]{3,60}"
+                  {...register("slug")}
+                />
+              </label>
+              <label>
+                WhatsApp
+                <input
+                  required
+                  placeholder="DDI + DDD + número"
+                  {...register("whatsapp")}
+                />
+              </label>
+            </div>
+            <hr />
+            <label className="switchrow">
+              <div>
+                <b>Publicar minha loja</b>
+                <p className="muted">
+                  Deixe o catálogo visível para os clientes.
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                className="switch-input"
+                {...register("published")}
+              />
+            </label>
+            {task.feedback}
+            <SaveButton busy={task.busy} />
+          </div>
+        </div>
+        <aside className="panel padded">
+          <h2>Opções de pedido</h2>
+          <p className="muted">
+            Defina como seus clientes podem receber os produtos.
+          </p>
+          <div className="stack" style={{ marginTop: 18 }}>
+            <label className="switchrow">
+              <div>
+                <b>Permitir entrega</b>
+                <p className="muted">Cliente pode pedir entrega pelo WhatsApp.</p>
+              </div>
+              <input
+                type="checkbox"
+                className="switch-input"
+                {...register("allow_delivery")}
+              />
+            </label>
+            <label className="switchrow">
+              <div>
+                <b>Permitir retirada</b>
+                <p className="muted">
+                  Cliente pode escolher retirada no local.
+                </p>
+              </div>
+              <input
+                type="checkbox"
+                className="switch-input"
+                {...register("allow_pickup")}
+              />
+            </label>
+            {delivery && (
+              <div className="shipping-box">
+                <b>Configuração do frete</b>
+                <input type="hidden" {...register("shipping_mode")} />
+                <div className="shipping-modes">
+                  <button
+                    type="button"
+                    className={
+                      "choice-card" +
+                      (shippingMode === "global" ? " active" : "")
+                    }
+                    onClick={() => setValue("shipping_mode", "global")}
+                  >
+                    <b>Frete único</b>
+                    <small>Mesmo valor para qualquer entrega.</small>
+                  </button>
+                  <button
+                    type="button"
+                    className={
+                      "choice-card" +
+                      (shippingMode === "neighborhood" ? " active" : "")
+                    }
+                    onClick={() => setValue("shipping_mode", "neighborhood")}
+                  >
+                    <b>Por bairro</b>
+                    <small>Valor diferente por região.</small>
+                  </button>
+                </div>
+                {shippingMode === "global" ? (
+                  <label>
+                    Valor geral do frete (R$)
+                    <input
+                      type="number"
+                      min="0"
+                      step="0.01"
+                      {...register("global_shipping_fee", {
+                        valueAsNumber: true,
+                      })}
+                    />
+                  </label>
+                ) : (
+                  <>
+                    <div className="neighborhood-list">
+                      {data.zones.length ? (
+                        data.zones.map((z) => (
+                          <div className="neighborhood-row" key={z.id}>
+                            <span>{z.name}</span>
+                            <span className="fee">{money(z.fee)}</span>
+                            <button
+                              className="iconbtn"
+                              type="button"
+                              aria-label={"Remover " + z.name}
+                              onClick={() => {
+                                if (confirm("Excluir este bairro?"))
+                                  zoneTask.run(async () => {
+                                    await deleteZone(z.id);
+                                    router.refresh();
+                                  }, "Bairro removido.");
+                              }}
+                            >
+                              <X size={14} />
+                            </button>
+                          </div>
+                        ))
+                      ) : (
+                        <p className="muted">Nenhum bairro cadastrado.</p>
+                      )}
+                    </div>
+                    <div className="add-neighborhood">
+                      <input
+                        placeholder="Nome do bairro"
+                        value={newZoneName}
+                        onChange={(e) => setNewZoneName(e.target.value)}
+                      />
+                      <input
+                        type="number"
+                        min="0"
+                        step="0.01"
+                        placeholder="Frete R$"
+                        value={newZoneFee}
+                        onChange={(e) => setNewZoneFee(e.target.value)}
+                      />
+                      <button
+                        className="btn secondary"
+                        type="button"
+                        disabled={zoneTask.busy || !newZoneName.trim()}
+                        onClick={addZone}
+                      >
+                        Adicionar
+                      </button>
+                    </div>
+                    {zoneTask.feedback}
+                  </>
+                )}
+              </div>
+            )}
+            <hr />
+            <p className="muted">
+              O ClickZap não processa pagamento nesta versão. O fechamento
+              acontece diretamente na conversa com o cliente.
+            </p>
+          </div>
+        </aside>
       </form>
-    </Modal>
+    </>
   );
 }
 export function StoreDesigner({ data }: { data: DashboardData }) {
