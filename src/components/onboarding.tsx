@@ -48,7 +48,7 @@ export function Onboarding() {
         </label>
         <label>
           Endereço da loja
-          <input required pattern="[a-z0-9-]{3,60}" {...register("slug")} />
+          <input required pattern="[-a-z0-9]{3,60}" {...register("slug")} />
           <small>clickzap / loja / seu-endereco</small>
         </label>
         <label>

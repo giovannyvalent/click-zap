@@ -77,7 +77,7 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
                 Endereço do catálogo
                 <input
                   required
-                  pattern="[a-z0-9-]{3,60}"
+                  pattern="[-a-z0-9]{3,60}"
                   {...register("slug")}
                 />
               </label>
