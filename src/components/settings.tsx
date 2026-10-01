@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
-import { Monitor, Smartphone, X } from "lucide-react";
+import { Monitor, Smartphone, X, Check, Link as LinkIcon } from "lucide-react";
 import type { DashboardData, Settings } from "@/lib/types";
 import {
   saveBusiness,
@@ -20,6 +20,20 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
   const router = useRouter();
   const [newZoneName, setNewZoneName] = useState("");
   const [newZoneFee, setNewZoneFee] = useState("");
+  const [copied, setCopied] = useState(false);
+  const storeUrl =
+    (typeof window !== "undefined" ? window.location.origin : "") +
+    "/loja/" +
+    data.business.slug;
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(storeUrl);
+      setCopied(true);
+      setTimeout(() => setCopied(false), 2500);
+    } catch {
+      window.prompt("Copie o endereço:", storeUrl);
+    }
+  }
   const { register, watch, setValue, handleSubmit } = useForm({
     defaultValues: {
       ...data.business,
@@ -54,6 +68,16 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
             loja fica em <b>Minha Loja</b>.
           </p>
         </div>
+      </div>
+      <div className="link-bar">
+        <div>
+          <small className="muted">Link da sua loja</small>
+          <b>{storeUrl}</b>
+        </div>
+        <button type="button" className="btn secondary small" onClick={copyLink}>
+          {copied ? <Check size={14} /> : <LinkIcon size={14} />}
+          {copied ? "Link copiado" : "Copiar link"}
+        </button>
       </div>
       <form
         className="settings-grid"
@@ -235,6 +259,9 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
               O ClickZap não processa pagamento nesta versão. O fechamento
               acontece diretamente na conversa com o cliente.
             </p>
+            <hr />
+            {task.feedback}
+            <SaveButton busy={task.busy} />
           </div>
         </aside>
       </form>
