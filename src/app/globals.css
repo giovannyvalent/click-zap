@@ -23,9 +23,9 @@ body {
   margin: 0;
   background: var(--bg);
   color: var(--ink);
-  font-family: Arial, Helvetica, sans-serif;
-  font-size: 14px;
-  line-height: 1.5;
+  font-family: "Inter", Arial, Helvetica, sans-serif;
+  font-size: 16px;
+  line-height: 1.55;
 }
 button,
 input,
@@ -72,13 +72,13 @@ h1 {
   font-size: 34px;
 }
 h2 {
-  font-size: 21px;
+  font-size: 22px;
 }
 h3 {
-  font-size: 17px;
+  font-size: 18px;
 }
 small {
-  font-size: 12px;
+  font-size: 15px;
 }
 input,
 select,
@@ -114,7 +114,7 @@ label {
   display: flex;
   flex-direction: column;
   gap: 6px;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 650;
 }
 form {
@@ -142,7 +142,7 @@ table {
   white-space: nowrap;
 }
 th {
-  font-size: 11px;
+  font-size: 14px;
   color: var(--muted);
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -155,7 +155,7 @@ th {
   border-bottom: 1px solid var(--line);
 }
 td {
-  font-size: 13px;
+  font-size: 15px;
 }
 td small {
   display: block;
@@ -173,7 +173,7 @@ td small {
   border: 1px solid transparent;
   border-radius: 9px;
   padding: 11px 16px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   white-space: nowrap;
   transition: 0.15s;
@@ -195,11 +195,11 @@ td small {
 }
 .small {
   padding: 8px 11px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .tiny {
   padding: 5px 7px;
-  font-size: 10px;
+  font-size: 13px;
   border-radius: 6px;
 }
 .full {
@@ -221,7 +221,7 @@ td small {
   color: #ad3343;
 }
 .text-link {
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 700;
   color: #087b50;
 }
@@ -243,7 +243,7 @@ td small {
 }
 .muted {
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.65;
 }
 .error {
@@ -254,7 +254,7 @@ td small {
   background: #eef8f2;
   border: 1px solid #d9ebe1;
   border-radius: 9px;
-  font-size: 13px;
+  font-size: 15px;
   line-height: 1.65;
 }
 .notice.error {
@@ -269,7 +269,7 @@ td small {
   border-radius: 6px;
   background: #eef1ef;
   color: #657168;
-  font-size: 10px;
+  font-size: 13px;
   font-weight: 700;
   padding: 5px 8px;
   white-space: nowrap;
@@ -280,7 +280,7 @@ td small {
 }
 .eyebrow {
   display: block;
-  font-size: 10px;
+  font-size: 13px;
   letter-spacing: 1.5px;
   font-weight: 800;
   color: #0b8f5e;
@@ -310,7 +310,7 @@ td small {
   gap: 0;
   background: #090d0b;
   border-radius: 10px;
-  font-size: 13px;
+  font-size: 15px;
   font-weight: 700;
   letter-spacing: -0.06em;
   white-space: nowrap;
@@ -337,10 +337,10 @@ td small {
   padding: 23px;
 }
 .panel-heading h2 {
-  font-size: 17px;
+  font-size: 18px;
 }
 .panel-heading p {
-  font-size: 12px;
+  font-size: 15px;
   color: var(--muted);
   margin-top: 6px;
 }
@@ -360,12 +360,12 @@ td small {
 }
 .empty p {
   max-width: 330px;
-  font-size: 13px;
+  font-size: 15px;
 }
 .empty-small {
   padding: 20px 0;
   color: var(--muted);
-  font-size: 13px;
+  font-size: 15px;
 }
 .search {
   flex-direction: row;
@@ -388,7 +388,7 @@ td small {
   align-items: center;
   gap: 9px;
   cursor: pointer;
-  font-size: 13px;
+  font-size: 15px;
 }
 .check input {
   width: 16px;
@@ -420,7 +420,7 @@ td small {
   background: transparent;
   border-radius: 6px;
   color: var(--muted);
-  font-size: 12px;
+  font-size: 15px;
 }
 .segmented .active {
   background: #fff;
@@ -460,7 +460,7 @@ td small {
   margin-bottom: 24px;
 }
 .modal > header h2 {
-  font-size: 21px;
+  font-size: 22px;
 }
 .modal-actions {
   margin-top: 20px;
@@ -1141,7 +1141,7 @@ td small {
   background: var(--green);
   color: #052014;
   font-weight: 750;
-  font-size: 12px;
+  font-size: 15px;
 }
 .workspace b {
   display: block;
@@ -1149,15 +1149,15 @@ td small {
   overflow: hidden;
   text-overflow: ellipsis;
   white-space: nowrap;
-  font-size: 12px;
+  font-size: 15px;
   color: #fff;
 }
 .workspace small {
-  font-size: 9px;
+  font-size: 12px;
   color: #818a84;
 }
 .nav-label {
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 1.3px;
   color: #636a66;
   font-weight: 750;
@@ -1174,7 +1174,7 @@ td small {
   align-items: center;
   gap: 12px;
   color: #a8b0aa;
-  font-size: 12px;
+  font-size: 15px;
   font-weight: 600;
   padding: 12px;
   border-radius: 8px;
@@ -1194,7 +1194,7 @@ td small {
   color: #a0d8b1;
   padding: 1px 6px;
   border-radius: 4px;
-  font-size: 9px;
+  font-size: 12px;
 }
 .sidebar-bottom {
   margin-top: auto;
@@ -1211,13 +1211,13 @@ td small {
   color: #a0d8b1;
 }
 .plan-card b {
-  font-size: 12px;
+  font-size: 15px;
   display: block;
   margin: 12px 0 7px;
   color: #fff;
 }
 .plan-card p {
-  font-size: 10px;
+  font-size: 13px;
   color: #7d887f;
   line-height: 1.7;
 }
@@ -1225,7 +1225,7 @@ td small {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  font-size: 10px;
+  font-size: 13px;
   margin-top: 14px;
   font-weight: 750;
   color: var(--green);
@@ -1238,7 +1238,7 @@ td small {
   border: 0;
   color: #7d887f;
   padding: 16px 10px 0;
-  font-size: 12px;
+  font-size: 15px;
 }
 .logout:hover {
   color: #fff;
@@ -1263,10 +1263,10 @@ td small {
   display: flex;
   align-items: center;
   gap: 5px;
-  font-size: 11px;
+  font-size: 14px;
 }
 .app-top .muted {
-  font-size: 11px;
+  font-size: 14px;
 }
 .avatar {
   width: 29px;
@@ -1276,7 +1276,7 @@ td small {
   place-items: center;
   background: #e8eee5;
   color: #43734a;
-  font-size: 11px;
+  font-size: 14px;
   font-weight: 700;
 }
 .app-main {
@@ -1288,7 +1288,7 @@ td small {
 .app-footer {
   margin-top: auto;
   padding: 25px 32px;
-  font-size: 10px;
+  font-size: 13px;
   color: #a3aba5;
 }
 .page-heading {
@@ -1312,7 +1312,7 @@ td small {
 }
 .link-bar small {
   display: block;
-  font-size: 10px;
+  font-size: 13px;
   color: #3e8a62;
   text-transform: uppercase;
   letter-spacing: 0.5px;
@@ -1320,7 +1320,7 @@ td small {
 }
 .link-bar b {
   display: block;
-  font-size: 13px;
+  font-size: 15px;
   margin-top: 3px;
   word-break: break-all;
 }
@@ -1329,24 +1329,24 @@ td small {
 }
 .page-heading .eyebrow {
   margin-bottom: 8px;
-  font-size: 9px;
+  font-size: 12px;
 }
 .page-heading h1 {
   font-size: 30px;
 }
 .page-heading h1 small {
-  font-size: 15px;
+  font-size: 17px;
   letter-spacing: 0;
   color: #95a097;
   margin-left: 10px;
 }
 .page-heading p {
   color: var(--muted);
-  font-size: 12px;
+  font-size: 15px;
   margin-top: 10px;
 }
 .page-heading > select {
-  font-size: 12px;
+  font-size: 15px;
 }
 .green-dot {
   display: inline-block;
@@ -1374,7 +1374,7 @@ td small {
   align-items: center;
   justify-content: space-between;
   gap: 7px;
-  font-size: 11px;
+  font-size: 14px;
   color: #6e7c73;
 }
 .stat > span svg {
@@ -1388,7 +1388,7 @@ td small {
   white-space: nowrap;
 }
 .stat small {
-  font-size: 9px;
+  font-size: 12px;
   color: #8a958d;
 }
 .overview-grid {
@@ -1405,7 +1405,7 @@ td small {
 .share-card .badge {
   background: #1d3f2a;
   color: #a0d8b1;
-  font-size: 8px;
+  font-size: 11px;
   letter-spacing: 0.7px;
 }
 .share-card h2 {
@@ -1414,7 +1414,7 @@ td small {
   line-height: 1.2;
 }
 .share-card p {
-  font-size: 12px;
+  font-size: 15px;
   line-height: 1.8;
   color: #9db4a5;
   margin-bottom: 20px;
@@ -1424,7 +1424,7 @@ td small {
   border: 1px solid #345240;
   background: #1a3123;
   border-radius: 8px;
-  font-size: 11px;
+  font-size: 14px;
   color: #b6cfbe;
   margin: 15px 0;
   overflow: hidden;
@@ -1441,7 +1441,7 @@ td small {
   margin-bottom: 24px;
 }
 .onboarding-card h2 {
-  font-size: 19px;
+  font-size: 20px;
 }
 .steps-inline {
   display: flex;
@@ -1453,7 +1453,7 @@ td small {
   display: flex;
   align-items: center;
   gap: 8px;
-  font-size: 11px;
+  font-size: 14px;
   color: #6e816e;
   background: #fff8;
   padding: 7px 10px;
@@ -1466,7 +1466,7 @@ td small {
   place-items: center;
   background: #dce9d6;
   border-radius: 50%;
-  font-size: 10px;
+  font-size: 13px;
 }
 .steps-inline a.done {
   color: #237740;
@@ -1482,7 +1482,7 @@ td small {
 }
 .toolbar input,
 .toolbar select {
-  font-size: 11px;
+  font-size: 14px;
   padding: 10px;
 }
 .toolbar .search {
@@ -1490,7 +1490,7 @@ td small {
   max-width: 360px;
 }
 .toolbar .check {
-  font-size: 11px;
+  font-size: 14px;
 }
 .toolbar .min-value {
   width: 110px;
@@ -1540,13 +1540,13 @@ td small {
 }
 .product-body h3 {
   margin: 5px 0 20px;
-  font-size: 16px;
+  font-size: 18px;
 }
 .product-body .muted {
-  font-size: 10px;
+  font-size: 13px;
 }
 .product-body b {
-  font-size: 15px;
+  font-size: 17px;
 }
 .photo-editor {
   padding: 16px;
@@ -1556,7 +1556,7 @@ td small {
 }
 .photo-editor label small {
   font-weight: 400;
-  font-size: 10px;
+  font-size: 13px;
   color: var(--muted);
 }
 .photo-strip {
@@ -1575,7 +1575,7 @@ td small {
   border-radius: 7px;
 }
 .photo-strip small {
-  font-size: 9px;
+  font-size: 12px;
   display: block;
   overflow: hidden;
 }
@@ -1597,7 +1597,7 @@ td small {
   padding: 10px;
 }
 .pending-photo button {
-  font-size: 9px;
+  font-size: 12px;
   text-decoration: underline;
   margin-top: 6px;
 }
@@ -1608,7 +1608,7 @@ td small {
 }
 .settings-grid h2 {
   margin-bottom: 12px;
-  font-size: 18px;
+  font-size: 19px;
 }
 .switchrow {
   display: flex;
@@ -1619,7 +1619,7 @@ td small {
   cursor: pointer;
 }
 .switchrow p {
-  font-size: 11px;
+  font-size: 14px;
   margin-top: 3px;
 }
 .switch-input {
@@ -1657,7 +1657,7 @@ td small {
   padding-top: 16px;
 }
 .shipping-box > b {
-  font-size: 13px;
+  font-size: 15px;
   display: block;
   margin-bottom: 10px;
 }
@@ -1677,11 +1677,11 @@ td small {
 }
 .choice-card b {
   display: block;
-  font-size: 11px;
+  font-size: 14px;
 }
 .choice-card small {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: var(--muted);
   margin-top: 4px;
   line-height: 1.4;
@@ -1700,10 +1700,10 @@ td small {
   grid-template-columns: 1fr auto auto;
   align-items: center;
   gap: 10px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .neighborhood-row b {
-  font-size: 12px;
+  font-size: 15px;
 }
 .neighborhood-row .fee {
   color: var(--muted);
@@ -1719,14 +1719,14 @@ td small {
   gap: 25px;
 }
 .designer-controls h2 {
-  font-size: 17px;
+  font-size: 18px;
 }
 .designer-controls hr {
   margin: 3px 0;
 }
 .designer-controls input,
 .designer-controls select {
-  font-size: 11px;
+  font-size: 14px;
 }
 .designer-controls {
   gap: 14px;
@@ -1745,7 +1745,7 @@ td small {
   align-items: center;
   justify-content: space-between;
   margin-bottom: 16px;
-  font-size: 12px;
+  font-size: 15px;
 }
 .preview-frame {
   overflow: auto;
@@ -1767,7 +1767,7 @@ td small {
 }
 .preview-caption {
   text-align: center;
-  font-size: 10px;
+  font-size: 13px;
   margin-top: 14px;
 }
 .logo-thumb {
@@ -1782,7 +1782,7 @@ td small {
   align-items: center;
   justify-content: space-between;
   margin: 22px 0 16px;
-  font-size: 11px;
+  font-size: 14px;
   color: #819087;
 }
 .orders-summary b {
@@ -1814,7 +1814,7 @@ td small {
   padding: 16px;
 }
 .kanban-column h2 {
-  font-size: 12px;
+  font-size: 15px;
   letter-spacing: 0;
 }
 .stage-dot {
@@ -1832,7 +1832,7 @@ td small {
 .count {
   background: #dfe6dc;
   padding: 1px 6px;
-  font-size: 9px;
+  font-size: 12px;
   border-radius: 5px;
   margin-left: auto;
   color: #6b7f6c;
@@ -1846,7 +1846,7 @@ td small {
 .drop-empty {
   padding: 35px 15px;
   text-align: center;
-  font-size: 11px;
+  font-size: 14px;
   color: #98a491;
   border: 1px dashed #cfdbca;
   border-radius: 9px;
@@ -1864,7 +1864,7 @@ td small {
   opacity: 0.85;
 }
 .order-number {
-  font-size: 10px;
+  font-size: 13px;
   color: #829886;
   font-weight: 700;
 }
@@ -1877,7 +1877,7 @@ td small {
 }
 .order-title {
   display: block;
-  font-size: 14px;
+  font-size: 16px;
   font-weight: 700;
   margin: 9px 0 3px;
   text-align: left;
@@ -1885,7 +1885,7 @@ td small {
   border: 0;
 }
 .order-card .muted {
-  font-size: 10px;
+  font-size: 13px;
 }
 .order-value {
   display: flex;
@@ -1894,16 +1894,16 @@ td small {
   margin: 17px 0 8px;
 }
 .order-value b {
-  font-size: 18px;
+  font-size: 19px;
   letter-spacing: -0.5px;
 }
 .order-value small {
-  font-size: 10px;
+  font-size: 13px;
   color: #8b9b8d;
 }
 .order-date {
   display: block;
-  font-size: 9px;
+  font-size: 12px;
   color: #94a195;
   margin: 13px 0;
 }
@@ -1934,12 +1934,12 @@ td small {
   justify-content: space-between;
   gap: 20px;
   padding: 10px 0;
-  font-size: 13px;
+  font-size: 15px;
 }
 .order-line small {
   display: block;
   color: var(--muted);
-  font-size: 10px;
+  font-size: 13px;
 }
 .mobile-only {
   display: none;
@@ -2709,10 +2709,10 @@ td small {
     display: none;
   }
   .app-top .badge {
-    font-size: 8px;
+    font-size: 11px;
   }
   .app-top .btn {
-    font-size: 10px;
+    font-size: 13px;
     padding: 7px;
   }
   .app-main {
@@ -2727,13 +2727,13 @@ td small {
     font-size: 27px;
   }
   .page-heading p {
-    font-size: 11px;
+    font-size: 14px;
   }
   .page-heading .eyebrow {
-    font-size: 8px;
+    font-size: 11px;
   }
   .page-heading > .btn {
-    font-size: 11px;
+    font-size: 14px;
     padding: 10px;
   }
   .stats {
@@ -2744,14 +2744,14 @@ td small {
     padding: 16px 13px;
   }
   .stat > span {
-    font-size: 10px;
+    font-size: 13px;
   }
   .stat strong {
     font-size: 24px;
     margin: 15px 0 5px;
   }
   .stat small {
-    font-size: 8px;
+    font-size: 11px;
   }
   .overview-grid {
     grid-template-columns: 1fr;
@@ -2763,13 +2763,13 @@ td small {
     padding: 19px;
   }
   .onboarding-card h2 {
-    font-size: 17px;
+    font-size: 18px;
   }
   .steps-inline {
     gap: 6px;
   }
   .steps-inline a {
-    font-size: 10px;
+    font-size: 13px;
     padding: 6px 7px;
   }
   .product-grid {
@@ -2779,13 +2779,13 @@ td small {
     padding: 12px;
   }
   .product-body h3 {
-    font-size: 13px;
+    font-size: 15px;
   }
   .product-body .row {
     gap: 4px;
   }
   .product-body b {
-    font-size: 12px;
+    font-size: 15px;
   }
   .product-body .iconbtn {
     width: 27px;
@@ -2830,7 +2830,7 @@ td small {
     padding-right: 15px;
   }
   .orders-summary {
-    font-size: 10px;
+    font-size: 13px;
   }
   .form-grid {
     grid-template-columns: 1fr;
@@ -2848,7 +2848,7 @@ td small {
     border-radius: 15px;
   }
   .modal h2 {
-    font-size: 19px;
+    font-size: 20px;
   }
   .modal .form-grid {
     grid-template-columns: 1fr;
