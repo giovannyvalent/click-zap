@@ -1,3 +1,4 @@
+import Script from "next/script";
 import "./premium-landing.css";
 import { LandingInteractions } from "./landing-interactions";
 // Trusted, versioned project asset. Never interpolate user input here.
@@ -9,6 +10,10 @@ export function PremiumLanding() {
       <link
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
+      />
+      <Script
+        src="https://prospecta-ai.setecompanytec.com.br/api/public/track/script/f42b9bfb-58d9-4b57-ab1e-1022e689bd8e"
+        strategy="afterInteractive"
       />
       <div
         className="premium-landing"
