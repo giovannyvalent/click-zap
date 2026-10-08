@@ -231,6 +231,15 @@ export function Products({ data }: { data: DashboardData }) {
       (!featured || p.featured) &&
       p.name.toLowerCase().includes(search.toLowerCase()),
   );
+  const limit = PLANS[data.business.plan_key as PlanKey]?.productLimit ?? PLANS.start.productLimit;
+  const atLimit = data.products.length >= limit;
+  function openNewProduct() {
+    if (atLimit) {
+      router.push("/app/planos");
+      return;
+    }
+    setEdit(null);
+  }
   return (
     <>
       <div className="page-heading">
@@ -246,11 +255,11 @@ export function Products({ data }: { data: DashboardData }) {
         </div>
         <button
           className="btn primary"
-          onClick={() => setEdit(null)}
+          onClick={openNewProduct}
           disabled={!data.categories.length}
         >
           <Plus size={16} />
-          Novo produto
+          {atLimit ? "Fazer upgrade" : "Novo produto"}
         </button>
       </div>
       <div className="toolbar wrap">
@@ -370,8 +379,8 @@ export function Products({ data }: { data: DashboardData }) {
             }
           >
             {data.categories.length ? (
-              <button className="btn primary" onClick={() => setEdit(null)}>
-                Cadastrar produto
+              <button className="btn primary" onClick={openNewProduct}>
+                {atLimit ? "Fazer upgrade" : "Cadastrar produto"}
               </button>
             ) : (
               <a className="btn primary" href="/app/categorias">
