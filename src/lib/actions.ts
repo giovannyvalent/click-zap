@@ -8,8 +8,16 @@ import {
   categorySchema,
   productSchema,
   zoneSchema,
+  subscribeSchema,
 } from "./schemas";
-import { serverDB } from "./supabase/server";
+import { serverDB, adminDB } from "./supabase/server";
+import {
+  findOrCreateCustomer,
+  createSubscription,
+  getSubscriptionFirstPayment,
+  getPixQrCode,
+  cancelSubscription as asaasCancelSubscription,
+} from "./asaas";
 const fail = (error: { message: string } | null) => {
   if (error) throw new Error(error.message);
 };
@@ -197,4 +205,94 @@ export async function saveView(view: "kanban" | "list") {
     .from("user_preferences")
     .upsert({ user_id: user.id, orders_view: view });
   fail(error);
+}
+export async function subscribeToPro(input: unknown) {
+  const v = subscribeSchema.parse(input);
+  const { business } = await ownerContext();
+
+  const customer = await findOrCreateCustomer({
+    name: v.name,
+    email: v.email,
+    cpfCnpj: v.cpfCnpj,
+    mobilePhone: v.phone,
+    externalReference: business.id,
+  });
+
+  const dueDate = new Date();
+  dueDate.setDate(dueDate.getDate() + 1);
+
+  const subscription = await createSubscription({
+    customer: customer.id,
+    billingType: v.billingType,
+    value: 54.9,
+    nextDueDate: dueDate.toISOString().slice(0, 10),
+    description: "Assinatura ClickZap Pro",
+    externalReference: business.id,
+    creditCard:
+      v.billingType === "CREDIT_CARD"
+        ? {
+            holderName: v.cardHolderName!,
+            number: v.cardNumber!,
+            expiryMonth: v.cardExpiryMonth!,
+            expiryYear: v.cardExpiryYear!,
+            ccv: v.cardCcv!,
+          }
+        : undefined,
+    creditCardHolderInfo:
+      v.billingType === "CREDIT_CARD"
+        ? {
+            name: v.name,
+            email: v.email,
+            cpfCnpj: v.cpfCnpj,
+            postalCode: v.postalCode || "",
+            addressNumber: v.addressNumber || "",
+            phone: v.phone,
+          }
+        : undefined,
+  });
+
+  const admin = adminDB();
+  await admin
+    .from("businesses")
+    .update({
+      asaas_customer_id: customer.id,
+      asaas_subscription_id: subscription.id,
+    })
+    .eq("id", business.id);
+
+  if (v.billingType === "PIX") {
+    let payment = await getSubscriptionFirstPayment(subscription.id);
+    if (!payment) {
+      await new Promise((r) => setTimeout(r, 1500));
+      payment = await getSubscriptionFirstPayment(subscription.id);
+    }
+    if (!payment) throw new Error("Não foi possível gerar a cobrança Pix. Tente novamente.");
+    const qr = await getPixQrCode(payment.id);
+    return {
+      type: "pix" as const,
+      qrImage: qr.encodedImage,
+      payload: qr.payload,
+      expirationDate: qr.expirationDate,
+    };
+  }
+  let cardPayment = await getSubscriptionFirstPayment(subscription.id);
+  if (!cardPayment) {
+    await new Promise((r) => setTimeout(r, 1500));
+    cardPayment = await getSubscriptionFirstPayment(subscription.id);
+  }
+  return {
+    type: "card" as const,
+    confirmed: cardPayment ? ["CONFIRMED", "RECEIVED"].includes(cardPayment.status) : false,
+  };
+}
+export async function cancelPro() {
+  const { business } = await ownerContext();
+  if (!business.asaas_subscription_id) throw new Error("Nenhuma assinatura ativa.");
+  await asaasCancelSubscription(business.asaas_subscription_id);
+  const admin = adminDB();
+  await admin
+    .from("businesses")
+    .update({ plan_key: "start", billing_status: "canceled" })
+    .eq("id", business.id);
+  revalidatePath("/app");
 }

@@ -90,3 +90,46 @@ export const zoneSchema = z.object({
   active: z.boolean(),
   sort_order: z.number().int().min(0).max(9999),
 });
+export const subscribeSchema = z
+  .object({
+    name: z.string().trim().min(3).max(150),
+    email: z.email(),
+    cpfCnpj: z
+      .string()
+      .transform((s) => s.replace(/\D/g, ""))
+      .pipe(z.string().regex(/^\d{11}$|^\d{14}$/, "Informe um CPF ou CNPJ válido.")),
+    phone: phoneSchema,
+    billingType: z.enum(["PIX", "CREDIT_CARD"]),
+    cardHolderName: z.string().trim().max(150).optional(),
+    cardNumber: z
+      .string()
+      .transform((s) => s.replace(/\D/g, ""))
+      .optional(),
+    cardExpiryMonth: z.string().trim().max(2).optional(),
+    cardExpiryYear: z.string().trim().max(4).optional(),
+    cardCcv: z
+      .string()
+      .transform((s) => s.replace(/\D/g, ""))
+      .optional(),
+    postalCode: z
+      .string()
+      .transform((s) => s.replace(/\D/g, ""))
+      .optional(),
+    addressNumber: z.string().trim().max(20).optional(),
+  })
+  .superRefine((v, c) => {
+    if (v.billingType === "CREDIT_CARD") {
+      if (!v.cardHolderName)
+        c.addIssue({ code: "custom", path: ["cardHolderName"], message: "Informe o nome impresso no cartão." });
+      if (!v.cardNumber || v.cardNumber.length < 13)
+        c.addIssue({ code: "custom", path: ["cardNumber"], message: "Número de cartão inválido." });
+      if (!v.cardExpiryMonth || !v.cardExpiryYear)
+        c.addIssue({ code: "custom", path: ["cardExpiryMonth"], message: "Informe a validade." });
+      if (!v.cardCcv || v.cardCcv.length < 3)
+        c.addIssue({ code: "custom", path: ["cardCcv"], message: "Código de segurança inválido." });
+      if (!v.postalCode || v.postalCode.length !== 8)
+        c.addIssue({ code: "custom", path: ["postalCode"], message: "Informe o CEP." });
+      if (!v.addressNumber)
+        c.addIssue({ code: "custom", path: ["addressNumber"], message: "Informe o número do endereço." });
+    }
+  });

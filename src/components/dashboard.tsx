@@ -23,6 +23,7 @@ import { money, dayKey, periodStart, dateTime, statusLabel } from "@/lib/utils";
 import { Categories, Products } from "./catalog";
 import { BusinessSettings, StoreDesigner } from "./settings";
 import { Orders } from "./orders";
+import { SubscribeButton, ManageSubscription } from "./billing";
 const nav = [
   ["", "Visão geral", LayoutDashboard],
   ["pedidos", "Pedidos", ShoppingBag],
@@ -163,7 +164,7 @@ export function Dashboard({
           ) : section === "configuracoes" ? (
             <BusinessSettings data={data} />
           ) : (
-            <Plans />
+            <Plans data={data} />
           )}
         </main>
         <footer className="app-footer">
@@ -374,19 +375,20 @@ function Overview({
     </>
   );
 }
-function Plans() {
+function Plans({ data }: { data: DashboardData }) {
+  const isPro = data.business.plan_key === "pro";
   return (
     <>
       <div className="page-heading">
         <div>
           <span className="eyebrow">CRESÇA NO SEU RITMO</span>
           <h1>Simples desde o começo.</h1>
-          <p>Comece gratuitamente. Sem cobrança automática.</p>
+          <p>Comece gratuitamente. Evolua quando precisar.</p>
         </div>
       </div>
       <div className="plans">
         <section className="panel padded">
-          <span className="badge green">DISPONÍVEL AGORA</span>
+          <span className="badge">{isPro ? "PLANO ANTERIOR" : "DISPONÍVEL AGORA"}</span>
           <h2>Start</h2>
           <strong className="price">Grátis</strong>
           <p>
@@ -394,11 +396,11 @@ function Plans() {
             registrados · entrega ou retirada · marca ClickZap.
           </p>
           <button className="btn secondary full" disabled>
-            Seu plano atual
+            {isPro ? "Plano anterior" : "Seu plano atual"}
           </button>
         </section>
         <section className="panel padded">
-          <span className="badge">EM BREVE</span>
+          <span className="badge green">{isPro ? "SEU PLANO" : "RECOMENDADO"}</span>
           <h2>Pro</h2>
           <strong className="price">
             R$ 54,90<small>/mês</small>
@@ -407,12 +409,16 @@ function Plans() {
             Produtos ilimitados · personalização completa · central de pedidos ·
             indicadores comerciais · frete por bairro · sem marca ClickZap.
           </p>
-          <p className="notice">
-            Valor atualizado: R$ 54,90/mês. A contratação online ainda não está
-            disponível; nenhuma cobrança está ativa.
-          </p>
+          {isPro ? (
+            <button className="btn secondary full" disabled>
+              Seu plano atual
+            </button>
+          ) : (
+            <SubscribeButton business={data.business} />
+          )}
         </section>
       </div>
+      <ManageSubscription business={data.business} />
     </>
   );
 }

@@ -9,6 +9,9 @@ export type Business = {
   allow_delivery: boolean;
   shipping_mode: "global" | "neighborhood";
   global_shipping_fee: number;
+  billing_status: "ok" | "past_due" | "canceled";
+  asaas_customer_id: string | null;
+  asaas_subscription_id: string | null;
 };
 export type Category = {
   id: string;
