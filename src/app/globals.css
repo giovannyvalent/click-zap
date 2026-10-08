@@ -1200,6 +1200,7 @@ td small {
   padding: 27px 18px 15px;
   display: flex;
   flex-direction: column;
+  overflow-y: auto;
   z-index: 30;
 }
 .sidebar > .brand {
@@ -1286,10 +1287,11 @@ td small {
 }
 .sidebar-bottom {
   margin-top: auto;
-  padding-top: 30px;
+  padding-top: 16px;
+  flex-shrink: 0;
 }
 .plan-card {
-  padding: 15px;
+  padding: 12px;
   background: #131613;
   border: 1px solid #232923;
   border-radius: 11px;
@@ -1299,22 +1301,23 @@ td small {
   color: #a0d8b1;
 }
 .plan-card b {
-  font-size: 15px;
+  font-size: 14px;
   display: block;
-  margin: 12px 0 7px;
+  margin: 8px 0 4px;
   color: #fff;
 }
 .plan-card p {
-  font-size: 13px;
+  font-size: 12px;
   color: #7d887f;
-  line-height: 1.7;
+  line-height: 1.5;
+  margin: 0;
 }
 .plan-card a {
   display: flex;
   align-items: center;
   justify-content: space-between;
   font-size: 13px;
-  margin-top: 14px;
+  margin-top: 10px;
   font-weight: 750;
   color: var(--green);
 }
@@ -1325,7 +1328,7 @@ td small {
   background: none;
   border: 0;
   color: #7d887f;
-  padding: 16px 10px 0;
+  padding: 10px 10px 0;
   font-size: 15px;
 }
 .logout:hover {
