@@ -33,7 +33,7 @@ export async function POST(req: Request) {
 
   const { data: business } = await db
     .from("businesses")
-    .select("id")
+    .select("id,pending_plan_key")
     .eq("asaas_subscription_id", payment.subscription)
     .maybeSingle();
 
@@ -41,7 +41,11 @@ export async function POST(req: Request) {
     if (CONFIRMED.has(event)) {
       await db
         .from("businesses")
-        .update({ plan_key: "pro", billing_status: "ok" })
+        .update({
+          plan_key: business.pending_plan_key || "pro",
+          billing_status: "ok",
+          pending_plan_key: null,
+        })
         .eq("id", business.id);
     } else if (OVERDUE.has(event)) {
       await db

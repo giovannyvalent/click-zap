@@ -99,6 +99,7 @@ export const subscribeSchema = z
       .transform((s) => s.replace(/\D/g, ""))
       .pipe(z.string().regex(/^\d{11}$|^\d{14}$/, "Informe um CPF ou CNPJ válido.")),
     phone: phoneSchema,
+    plan: z.enum(["plus", "pro"]),
     billingType: z.enum(["PIX", "CREDIT_CARD"]),
     cardHolderName: z.string().trim().max(150).optional(),
     cardNumber: z

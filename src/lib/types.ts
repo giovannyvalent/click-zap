@@ -12,7 +12,14 @@ export type Business = {
   billing_status: "ok" | "past_due" | "canceled";
   asaas_customer_id: string | null;
   asaas_subscription_id: string | null;
+  pending_plan_key: string | null;
 };
+export const PLANS = {
+  start: { label: "Start", price: 0, productLimit: 10 },
+  plus: { label: "Plus", price: 29.9, productLimit: 100 },
+  pro: { label: "Pro", price: 59.9, productLimit: 1000 },
+} as const;
+export type PlanKey = keyof typeof PLANS;
 export type Category = {
   id: string;
   business_id: string;

@@ -300,7 +300,7 @@ export function Marketing({ page = "" }: { page?: string }) {
           <span className="eyebrow">COMECE PELO SIMPLES</span>
           <h2>Uma loja. Muitas possibilidades.</h2>
         </div>
-        <div className="plans">
+        <div className="plans plans-3">
           <article className="panel padded">
             <span className="badge green">DISPONÍVEL AGORA</span>
             <h3>Start</h3>
@@ -318,22 +318,36 @@ export function Marketing({ page = "" }: { page?: string }) {
             </Link>
           </article>
           <article className="panel padded">
-            <span className="badge">EM BREVE</span>
+            <span className="badge">MAIS POPULAR</span>
+            <h3>Plus</h3>
+            <strong className="price">
+              R$ 29,90<small>/mês</small>
+            </strong>
+            <p>Para quem já vendeu o essencial e precisa crescer o catálogo.</p>
+            <ul>
+              <li>Até 100 produtos</li>
+              <li>Personalização completa</li>
+              <li>Central de pedidos e frete por bairro</li>
+            </ul>
+            <Link className="btn secondary full" href="/cadastro">
+              Criar conta e assinar <ArrowRight size={15} />
+            </Link>
+          </article>
+          <article className="panel padded">
+            <span className="badge">PARA QUEM ESCALA</span>
             <h3>Pro</h3>
             <strong className="price">
-              R$ 54,90<small>/mês</small>
+              R$ 59,90<small>/mês</small>
             </strong>
-            <p>Pro por R$ 54,90 ao mês.</p>
+            <p>Catálogo grande, indicadores comerciais e sem marca ClickZap.</p>
             <ul>
-              <li>Produtos ilimitados</li>
-              <li>Personalização completa</li>
-              <li>Central de pedidos e indicadores comerciais</li>
-              <li>Frete por bairro</li>
+              <li>Até 1.000 produtos</li>
+              <li>Indicadores comerciais</li>
               <li>Remoção da marca ClickZap</li>
             </ul>
-            <p className="notice">
-              Plano em planejamento. Nenhuma assinatura ou cobrança está ativa.
-            </p>
+            <Link className="btn secondary full" href="/cadastro">
+              Criar conta e assinar <ArrowRight size={15} />
+            </Link>
           </article>
         </div>
       </section>

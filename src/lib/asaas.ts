@@ -41,6 +41,9 @@ export type AsaasPayment = {
   status: string;
   value: number;
   invoiceUrl: string;
+  dueDate: string;
+  paymentDate?: string | null;
+  billingType: string;
 };
 export type AsaasPixQrCode = {
   encodedImage: string;
@@ -101,6 +104,15 @@ export async function getSubscriptionFirstPayment(
     `/subscriptions/${subscriptionId}/payments`,
   );
   return list.data?.[0] || null;
+}
+
+export async function getSubscriptionPayments(
+  subscriptionId: string,
+): Promise<AsaasPayment[]> {
+  const list = await asaas<{ data: AsaasPayment[] }>(
+    `/subscriptions/${subscriptionId}/payments?limit=20`,
+  );
+  return list.data || [];
 }
 
 export async function getPixQrCode(paymentId: string): Promise<AsaasPixQrCode> {

@@ -18,7 +18,8 @@ import {
 } from "lucide-react";
 import { Brand } from "./brand";
 import { signOut } from "@/lib/actions";
-import type { DashboardData } from "@/lib/types";
+import type { DashboardData, PlanKey } from "@/lib/types";
+import { PLANS } from "@/lib/types";
 import { money, dayKey, periodStart, dateTime, statusLabel } from "@/lib/utils";
 import { Categories, Products } from "./catalog";
 import { BusinessSettings, StoreDesigner } from "./settings";
@@ -107,14 +108,35 @@ export function Dashboard({
           ))}
         </nav>
         <div className="sidebar-bottom">
-          <div className="plan-card">
-            <span className="badge">PLANO START</span>
-            <b>Sua loja está começando.</b>
-            <p>{data.products.length} de 10 produtos no plano grátis.</p>
-            <Link href="/app/planos">
-              Conhecer os planos <ArrowUpRight size={14} />
-            </Link>
-          </div>
+          {(() => {
+            const planKey = data.business.plan_key as PlanKey;
+            const plan = PLANS[planKey] ?? PLANS.start;
+            const isPaid = planKey !== "start";
+            const pastDue = data.business.billing_status === "past_due";
+            return (
+              <div className="plan-card">
+                <span className="badge">PLANO {plan.label.toUpperCase()}</span>
+                {isPaid ? (
+                  <>
+                    <b>{pastDue ? "Pagamento pendente" : "Assinatura ativa"}</b>
+                    <p>
+                      {data.products.length} produtos · até {plan.productLimit} no
+                      plano {plan.label}.
+                    </p>
+                  </>
+                ) : (
+                  <>
+                    <b>Sua loja está começando.</b>
+                    <p>{data.products.length} de {plan.productLimit} produtos no plano grátis.</p>
+                  </>
+                )}
+                <Link href="/app/planos">
+                  {isPaid ? "Minha assinatura" : "Conhecer os planos"}
+                  <ArrowUpRight size={14} />
+                </Link>
+              </div>
+            );
+          })()}
           <button className="logout" onClick={() => signOut()}>
             <LogOut size={16} />
             Sair da conta
@@ -376,7 +398,7 @@ function Overview({
   );
 }
 function Plans({ data }: { data: DashboardData }) {
-  const isPro = data.business.plan_key === "pro";
+  const current = data.business.plan_key as PlanKey;
   return (
     <>
       <div className="page-heading">
@@ -386,35 +408,58 @@ function Plans({ data }: { data: DashboardData }) {
           <p>Comece gratuitamente. Evolua quando precisar.</p>
         </div>
       </div>
-      <div className="plans">
+      <div className="plans plans-3">
         <section className="panel padded">
-          <span className="badge">{isPro ? "PLANO ANTERIOR" : "DISPONÍVEL AGORA"}</span>
+          <span className="badge">{current === "start" ? "SEU PLANO" : "PLANO ANTERIOR"}</span>
           <h2>Start</h2>
           <strong className="price">Grátis</strong>
-          <p>
-            1 loja · até 10 produtos · carrinho para WhatsApp · pedidos
-            registrados · entrega ou retirada · marca ClickZap.
-          </p>
+          <p>1 loja · até 10 produtos · carrinho para WhatsApp · pedidos registrados · entrega ou retirada.</p>
           <button className="btn secondary full" disabled>
-            {isPro ? "Plano anterior" : "Seu plano atual"}
+            {current === "start" ? "Seu plano atual" : "Plano anterior"}
           </button>
         </section>
         <section className="panel padded">
-          <span className="badge green">{isPro ? "SEU PLANO" : "RECOMENDADO"}</span>
-          <h2>Pro</h2>
+          <span className="badge green">{current === "plus" ? "SEU PLANO" : "MAIS POPULAR"}</span>
+          <h2>Plus</h2>
           <strong className="price">
-            R$ 54,90<small>/mês</small>
+            {money(PLANS.plus.price)}
+            <small>/mês</small>
           </strong>
-          <p>
-            Produtos ilimitados · personalização completa · central de pedidos ·
-            indicadores comerciais · frete por bairro · sem marca ClickZap.
-          </p>
-          {isPro ? (
+          <p>Até 100 produtos · personalização completa · central de pedidos · frete por bairro.</p>
+          {current === "plus" ? (
             <button className="btn secondary full" disabled>
               Seu plano atual
             </button>
           ) : (
-            <SubscribeButton business={data.business} />
+            <SubscribeButton
+              business={data.business}
+              plan="plus"
+              defaultName={data.business.name}
+              defaultEmail={data.email}
+              defaultPhone={data.business.whatsapp}
+            />
+          )}
+        </section>
+        <section className="panel padded">
+          <span className="badge green">{current === "pro" ? "SEU PLANO" : "PARA QUEM ESCALA"}</span>
+          <h2>Pro</h2>
+          <strong className="price">
+            {money(PLANS.pro.price)}
+            <small>/mês</small>
+          </strong>
+          <p>Até 1.000 produtos · indicadores comerciais · sem marca ClickZap · suporte prioritário.</p>
+          {current === "pro" ? (
+            <button className="btn secondary full" disabled>
+              Seu plano atual
+            </button>
+          ) : (
+            <SubscribeButton
+              business={data.business}
+              plan="pro"
+              defaultName={data.business.name}
+              defaultEmail={data.email}
+              defaultPhone={data.business.whatsapp}
+            />
           )}
         </section>
       </div>

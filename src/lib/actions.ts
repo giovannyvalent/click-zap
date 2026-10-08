@@ -11,10 +11,12 @@ import {
   subscribeSchema,
 } from "./schemas";
 import { serverDB, adminDB } from "./supabase/server";
+import { PLANS, type PlanKey } from "./types";
 import {
   findOrCreateCustomer,
   createSubscription,
   getSubscriptionFirstPayment,
+  getSubscriptionPayments,
   getPixQrCode,
   cancelSubscription as asaasCancelSubscription,
 } from "./asaas";
@@ -209,6 +211,7 @@ export async function saveView(view: "kanban" | "list") {
 export async function subscribeToPro(input: unknown) {
   const v = subscribeSchema.parse(input);
   const { business } = await ownerContext();
+  const plan = PLANS[v.plan as PlanKey];
 
   const customer = await findOrCreateCustomer({
     name: v.name,
@@ -218,15 +221,19 @@ export async function subscribeToPro(input: unknown) {
     externalReference: business.id,
   });
 
+  if (business.asaas_subscription_id) {
+    await asaasCancelSubscription(business.asaas_subscription_id).catch(() => {});
+  }
+
   const dueDate = new Date();
   dueDate.setDate(dueDate.getDate() + 1);
 
   const subscription = await createSubscription({
     customer: customer.id,
     billingType: v.billingType,
-    value: 54.9,
+    value: plan.price,
     nextDueDate: dueDate.toISOString().slice(0, 10),
-    description: "Assinatura ClickZap Pro",
+    description: `Assinatura ClickZap ${plan.label}`,
     externalReference: business.id,
     creditCard:
       v.billingType === "CREDIT_CARD"
@@ -257,6 +264,7 @@ export async function subscribeToPro(input: unknown) {
     .update({
       asaas_customer_id: customer.id,
       asaas_subscription_id: subscription.id,
+      pending_plan_key: v.plan,
     })
     .eq("id", business.id);
 
@@ -292,7 +300,41 @@ export async function cancelPro() {
   const admin = adminDB();
   await admin
     .from("businesses")
-    .update({ plan_key: "start", billing_status: "canceled" })
+    .update({ plan_key: "start", billing_status: "canceled", pending_plan_key: null })
     .eq("id", business.id);
   revalidatePath("/app");
+}
+export async function checkProStatus() {
+  const { db, user } = await requireUser();
+  const { data } = await db
+    .from("business_members")
+    .select("business_id")
+    .eq("user_id", user.id)
+    .order("created_at")
+    .limit(1)
+    .maybeSingle();
+  if (!data) return { planKey: "start", billingStatus: "ok" as const };
+  const { data: business } = await db
+    .from("businesses")
+    .select("plan_key,billing_status")
+    .eq("id", data.business_id)
+    .single();
+  return {
+    planKey: business?.plan_key || "start",
+    billingStatus: (business?.billing_status || "ok") as "ok" | "past_due" | "canceled",
+  };
+}
+export async function getPaymentHistory() {
+  const { business } = await ownerContext();
+  if (!business.asaas_subscription_id) return [];
+  const payments = await getSubscriptionPayments(business.asaas_subscription_id);
+  return payments.map((p) => ({
+    id: p.id,
+    status: p.status,
+    value: p.value,
+    dueDate: p.dueDate,
+    paymentDate: p.paymentDate ?? null,
+    billingType: p.billingType,
+    invoiceUrl: p.invoiceUrl,
+  }));
 }
