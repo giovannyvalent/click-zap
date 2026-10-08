@@ -6,19 +6,24 @@ export function Modal({
   onClose,
   children,
   wide = false,
+  fullscreen = false,
 }: {
   title: string;
   onClose: () => void;
   children: ReactNode;
   wide?: boolean;
+  fullscreen?: boolean;
 }) {
   return (
-    <div className="modal-backdrop" onClick={onClose}>
+    <div
+      className={"modal-backdrop" + (fullscreen ? " fullscreen" : "")}
+      onClick={fullscreen ? undefined : onClose}
+    >
       <section
         role="dialog"
         aria-modal="true"
         aria-label={title}
-        className={"modal " + (wide ? "wide" : "")}
+        className={"modal " + (wide ? "wide " : "") + (fullscreen ? "fullscreen" : "")}
         onClick={(e) => e.stopPropagation()}
       >
         <header>
@@ -27,7 +32,7 @@ export function Modal({
             <X size={18} />
           </button>
         </header>
-        {children}
+        {fullscreen ? <div className="modal-fullscreen-content">{children}</div> : children}
       </section>
     </div>
   );

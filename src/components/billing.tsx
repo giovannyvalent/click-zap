@@ -302,7 +302,7 @@ function SubscribeModal({
 
   if (confirmed) {
     return (
-      <Modal title="Assinatura ativada!" onClose={() => (window.location.href = "/app")}>
+      <Modal title="Assinatura ativada!" onClose={() => (window.location.href = "/app")} fullscreen>
         <div className="stack center-text">
           <CheckCircle2 size={56} color="#0c9d65" />
           <p>
@@ -319,7 +319,7 @@ function SubscribeModal({
 
   if (result?.type === "pix") {
     return (
-      <Modal title="Pagar com Pix" onClose={finish}>
+      <Modal title="Pagar com Pix" onClose={finish} fullscreen>
         <div className="stack">
           <div className="pix-box">
             <img
@@ -353,7 +353,7 @@ function SubscribeModal({
   }
   if (result?.type === "card") {
     return (
-      <Modal title={result.confirmed ? "Pagamento aprovado!" : "Processando pagamento"} onClose={finish}>
+      <Modal title={result.confirmed ? "Pagamento aprovado!" : "Processando pagamento"} onClose={finish} fullscreen>
         <div className="stack center-text">
           {result.confirmed ? (
             <CheckCircle2 size={56} color="#0c9d65" />
@@ -377,7 +377,7 @@ function SubscribeModal({
   }
 
   return (
-    <Modal title={`Assinar ClickZap ${planInfo.label}`} onClose={onClose}>
+    <Modal title={`Assinar ClickZap ${planInfo.label}`} onClose={onClose} fullscreen>
       <div className="plan-summary">
         <div>
           <b>
@@ -387,7 +387,7 @@ function SubscribeModal({
           <p className="muted">Até {planInfo.productLimit} produtos · cancele quando quiser</p>
         </div>
       </div>
-      <form onSubmit={handleSubmit(onSubmit)}>
+      <form key={step} onSubmit={handleSubmit(onSubmit)}>
         {step === "identity" ? (
           <>
             <div className="method-grid">

@@ -452,6 +452,40 @@ td small {
   padding: 25px;
   box-shadow: 0 24px 100px #0002;
 }
+.modal-backdrop.fullscreen {
+  padding: 0;
+  background: #fff;
+  backdrop-filter: none;
+}
+.modal.fullscreen {
+  width: 100%;
+  max-width: 100%;
+  height: 100dvh;
+  max-height: 100dvh;
+  border-radius: 0;
+  box-shadow: none;
+  padding: 0 20px;
+  display: flex;
+  flex-direction: column;
+  overflow-y: auto;
+}
+.modal.fullscreen > header {
+  max-width: 460px;
+  width: 100%;
+  margin: 0 auto;
+  padding-top: 26px;
+  flex-shrink: 0;
+}
+.modal-fullscreen-content {
+  max-width: 460px;
+  width: 100%;
+  margin: 0 auto;
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding-bottom: 40px;
+}
 .modal.wide {
   width: 700px;
 }

@@ -13,7 +13,8 @@ import {
   Package,
   Star,
 } from "lucide-react";
-import type { DashboardData, Category, Product, Photo } from "@/lib/types";
+import type { DashboardData, Category, Product, Photo, PlanKey } from "@/lib/types";
+import { PLANS } from "@/lib/types";
 import {
   saveCategory,
   deleteCategory,
@@ -236,7 +237,10 @@ export function Products({ data }: { data: DashboardData }) {
         <div>
           <span className="eyebrow">SEUS PRODUTOS, BEM APRESENTADOS</span>
           <h1>
-            Produtos <small>{data.products.length}/10</small>
+            Produtos{" "}
+            <small>
+              {data.products.length}/{PLANS[data.business.plan_key as PlanKey]?.productLimit ?? PLANS.start.productLimit}
+            </small>
           </h1>
           <p>Monte uma vitrine que dá vontade de explorar.</p>
         </div>

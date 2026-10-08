@@ -231,6 +231,17 @@
   gap: 8px;
   align-items: center;
 }
+.premium-landing .nav-login {
+  display: inline-flex;
+  align-items: center;
+  font-weight: 700;
+  font-size: 14px;
+  color: #0a0c0b;
+  padding: 0 6px;
+}
+.premium-landing .nav-login:hover {
+  color: var(--green);
+}
 .premium-landing .nav-actions .btn {
   font-weight: 700;
 }
