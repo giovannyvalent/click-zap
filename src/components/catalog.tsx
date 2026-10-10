@@ -1,7 +1,7 @@
 "use client";
 import { useState, useRef } from "react";
 import { useRouter } from "next/navigation";
-import { useForm } from "react-hook-form";
+import { useForm, Controller } from "react-hook-form";
 import {
   Plus,
   Search,
@@ -9,11 +9,16 @@ import {
   Trash2,
   ArrowUp,
   ArrowDown,
-  ImagePlus,
   Package,
   Star,
 } from "lucide-react";
-import type { DashboardData, Category, Product, Photo, PlanKey } from "@/lib/types";
+import type {
+  DashboardData,
+  Category,
+  Product,
+  Photo,
+  PlanKey,
+} from "@/lib/types";
 import { PLANS } from "@/lib/types";
 import {
   saveCategory,
@@ -25,6 +30,7 @@ import {
 import { money, slugify } from "@/lib/utils";
 import { Modal, Empty, useTask, SaveButton } from "./ui";
 import { uploadImage } from "@/lib/upload";
+import { MoneyInput, Select, PhotoDropzone } from "./form-controls";
 export function Categories({ data }: { data: DashboardData }) {
   const [edit, setEdit] = useState<Category | null | undefined>();
   const [search, setSearch] = useState("");
@@ -231,7 +237,9 @@ export function Products({ data }: { data: DashboardData }) {
       (!featured || p.featured) &&
       p.name.toLowerCase().includes(search.toLowerCase()),
   );
-  const limit = PLANS[data.business.plan_key as PlanKey]?.productLimit ?? PLANS.start.productLimit;
+  const limit =
+    PLANS[data.business.plan_key as PlanKey]?.productLimit ??
+    PLANS.start.productLimit;
   const atLimit = data.products.length >= limit;
   function openNewProduct() {
     if (atLimit) {
@@ -248,7 +256,9 @@ export function Products({ data }: { data: DashboardData }) {
           <h1>
             Produtos{" "}
             <small>
-              {data.products.length}/{PLANS[data.business.plan_key as PlanKey]?.productLimit ?? PLANS.start.productLimit}
+              {data.products.length}/
+              {PLANS[data.business.plan_key as PlanKey]?.productLimit ??
+                PLANS.start.productLimit}
             </small>
           </h1>
           <p>Monte uma vitrine que dá vontade de explorar.</p>
@@ -419,7 +429,7 @@ function ProductEditor({
   );
   const [files, setFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState("");
-  const { register, handleSubmit } = useForm({
+  const { register, handleSubmit, control } = useForm({
     defaultValues: {
       name: value?.name || "",
       category_id: value?.category_id || data.categories[0]?.id || "",
@@ -431,6 +441,26 @@ function ProductEditor({
       active: value?.active ?? true,
     },
   });
+  const PHOTO_LIMIT = 5;
+  function addFiles(added: File[]) {
+    if (!added.length) return;
+    if (added.length + files.length + photos.length > PHOTO_LIMIT) {
+      setFileError(`O limite é de ${PHOTO_LIMIT} fotos por produto.`);
+      return;
+    }
+    if (
+      added.some(
+        (f) =>
+          f.size > 5242880 ||
+          !["image/jpeg", "image/png", "image/webp"].includes(f.type),
+      )
+    ) {
+      setFileError("Use JPG, PNG ou WEBP, com até 5 MB por foto.");
+      return;
+    }
+    setFileError("");
+    setFiles([...files, ...added]);
+  }
   function reorder(i: number, d: number) {
     const copy = [...photos];
     if (i + d < 0 || i + d >= copy.length) return;
@@ -472,111 +502,97 @@ function ProductEditor({
         )}
       >
         <div className="photo-editor">
-          <label>
-            Fotos do produto{" "}
-            <small>Até 5 fotos · JPG, PNG ou WEBP · 5 MB por foto</small>
-          </label>
-          <div className="photo-strip">
-            {photos.map((p, i) => (
-              <div key={p.storage_path}>
-                <img src={p.public_url} alt={"Foto " + (i + 1)} />
-                <small>{i === 0 ? "Capa" : `Foto ${i + 1}`}</small>
-                <div className="row">
-                  <button
-                    type="button"
-                    className="iconbtn"
-                    aria-label="Mover foto para esquerda"
-                    onClick={() => reorder(i, -1)}
-                  >
-                    <ArrowUp size={12} />
-                  </button>
-                  <button
-                    type="button"
-                    className="iconbtn"
-                    aria-label="Mover foto para direita"
-                    onClick={() => reorder(i, 1)}
-                  >
-                    <ArrowDown size={12} />
-                  </button>
-                  <button
-                    type="button"
-                    className="iconbtn"
-                    aria-label="Remover foto"
-                    onClick={() => setPhotos(photos.filter((_, n) => n !== i))}
-                  >
-                    <Trash2 size={12} />
-                  </button>
+          <label>Fotos do produto</label>
+          {photos.length > 0 && (
+            <div className="photo-strip">
+              {photos.map((p, i) => (
+                <div key={p.storage_path}>
+                  <img src={p.public_url} alt={"Foto " + (i + 1)} />
+                  <small>{i === 0 ? "Capa" : `Foto ${i + 1}`}</small>
+                  <div className="row">
+                    <button
+                      type="button"
+                      className="iconbtn"
+                      aria-label="Mover foto para esquerda"
+                      onClick={() => reorder(i, -1)}
+                    >
+                      <ArrowUp size={12} />
+                    </button>
+                    <button
+                      type="button"
+                      className="iconbtn"
+                      aria-label="Mover foto para direita"
+                      onClick={() => reorder(i, 1)}
+                    >
+                      <ArrowDown size={12} />
+                    </button>
+                    <button
+                      type="button"
+                      className="iconbtn"
+                      aria-label="Remover foto"
+                      onClick={() =>
+                        setPhotos(photos.filter((_, n) => n !== i))
+                      }
+                    >
+                      <Trash2 size={12} />
+                    </button>
+                  </div>
                 </div>
-              </div>
-            ))}
-            {files.map((f, i) => (
-              <div key={i} className="pending-photo">
-                <ImagePlus size={22} />
-                <small>{f.name}</small>
-                <button
-                  type="button"
-                  onClick={() => setFiles(files.filter((_, j) => j !== i))}
-                >
-                  Remover
-                </button>
-              </div>
-            ))}
-          </div>
-          <input
-            type="file"
-            aria-label="Adicionar fotos"
-            accept="image/jpeg,image/png,image/webp"
-            multiple
+              ))}
+            </div>
+          )}
+          <PhotoDropzone
+            files={files}
+            remaining={PHOTO_LIMIT - photos.length - files.length}
+            total={photos.length + files.length}
+            limit={PHOTO_LIMIT}
             disabled={task.busy}
-            onChange={(e) => {
-              const added = Array.from(e.target.files || []);
-              if (added.length + files.length + photos.length > 5) {
-                setFileError("O limite é de 5 fotos por produto.");
-                return;
-              }
-              if (
-                added.some(
-                  (f) =>
-                    f.size > 5242880 ||
-                    !["image/jpeg", "image/png", "image/webp"].includes(f.type),
-                )
-              ) {
-                setFileError("Use JPG, PNG ou WEBP, com até 5 MB por foto.");
-                return;
-              }
-              setFileError("");
-              setFiles([...files, ...added]);
-              e.target.value = "";
-            }}
+            error={fileError}
+            onAdd={addFiles}
+            onRemove={(i) => setFiles(files.filter((_, j) => j !== i))}
           />
-          {fileError && <p className="error">{fileError}</p>}
         </div>
         <div className="form-grid">
           <label className="span2">
             Nome
             <input required maxLength={150} {...register("name")} />
           </label>
-          <label>
-            Categoria
-            <select required {...register("category_id")}>
-              {data.categories.map((c) => (
-                <option key={c.id} value={c.id}>
-                  {c.name}
-                  {!c.active ? " (inativa)" : ""}
-                </option>
-              ))}
-            </select>
-          </label>
-          <label>
-            Preço (R$)
-            <input
-              required
-              type="number"
-              min="0"
-              step="0.01"
-              {...register("price", { valueAsNumber: true })}
+          <div className="field">
+            <span>Categoria</span>
+            <Controller
+              control={control}
+              name="category_id"
+              rules={{ required: true }}
+              render={({ field }) => (
+                <Select
+                  label="Categoria"
+                  value={field.value}
+                  onChange={field.onChange}
+                  placeholder="Selecione uma categoria"
+                  options={data.categories.map((c) => ({
+                    value: c.id,
+                    label: c.name,
+                    hint: c.active ? undefined : "inativa",
+                  }))}
+                />
+              )}
             />
-          </label>
+          </div>
+          <div className="field">
+            <label htmlFor="product-price">Preço</label>
+            <Controller
+              control={control}
+              name="price"
+              render={({ field }) => (
+                <MoneyInput
+                  id="product-price"
+                  required
+                  value={field.value}
+                  onChange={field.onChange}
+                />
+              )}
+            />
+          </div>
           <label>
             Código interno
             <input maxLength={60} {...register("internal_code")} />
