@@ -165,6 +165,7 @@ export async function saveSettings(input: unknown) {
     card_style: z.enum(["soft", "bordered", "minimal"]),
     image_ratio: z.enum(["landscape", "square", "portrait"]),
     button_style: z.enum(["rounded", "pill", "square"]),
+    font: z.enum(["inter", "poppins", "playfair", "dm_sans"]),
     headline: z.string().max(160),
     description: z.string().max(600),
     show_search: z.boolean(),

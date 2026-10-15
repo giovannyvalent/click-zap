@@ -172,11 +172,20 @@ export function Store({
         (a, b) => (a.sort_order || 0) - (b.sort_order || 0),
       )
     : [];
+  const fontHref =
+    s.font === "poppins"
+      ? "https://fonts.googleapis.com/css2?family=Poppins:wght@400;500;600;700;800&display=swap"
+      : s.font === "playfair"
+        ? "https://fonts.googleapis.com/css2?family=Playfair+Display:wght@500;600;700;800&display=swap"
+        : s.font === "dm_sans"
+          ? "https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700;800&display=swap"
+          : null;
   return (
     <div
-      className={`store theme-${s.theme} layout-${s.layout} card-${s.card_style} ratio-${s.image_ratio} button-${s.button_style} ${preview ? "is-preview" : ""}`}
+      className={`store theme-${s.theme} layout-${s.layout} card-${s.card_style} ratio-${s.image_ratio} button-${s.button_style} font-${s.font} ${preview ? "is-preview" : ""}`}
       style={{ "--accent": s.accent_color } as CSSProperties}
     >
+      {fontHref && <link rel="stylesheet" href={fontHref} />}
       {s.show_promo_bar && s.promo_text && (
         <div className="promo-bar">{s.promo_text}</div>
       )}

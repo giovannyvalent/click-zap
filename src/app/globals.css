@@ -2180,6 +2180,18 @@ td small {
   container-type: inline-size;
   --accent: #16c784;
 }
+.store.font-poppins {
+  font-family: "Poppins", "Inter", sans-serif;
+}
+.store.font-dm_sans {
+  font-family: "DM Sans", "Inter", sans-serif;
+}
+.store.font-playfair h1,
+.store.font-playfair h2,
+.store.font-playfair h3,
+.store.font-playfair .store-brand b {
+  font-family: "Playfair Display", Georgia, serif;
+}
 .store.theme-dark {
   --store-bg: #111a15;
   --store-ink: #f1f7f0;

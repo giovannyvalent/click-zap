@@ -380,12 +380,21 @@ export function StoreDesigner({ data }: { data: DashboardData }) {
                 <option value="portrait">Retrato</option>
               </select>
             </label>
-            <label className="span2">
+            <label>
               Botões
               <select {...register("button_style")}>
                 <option value="rounded">Arredondados</option>
                 <option value="pill">Pílula</option>
                 <option value="square">Retos</option>
+              </select>
+            </label>
+            <label>
+              Fonte
+              <select {...register("font")}>
+                <option value="inter">Inter (padrão)</option>
+                <option value="poppins">Poppins</option>
+                <option value="playfair">Playfair Display</option>
+                <option value="dm_sans">DM Sans</option>
               </select>
             </label>
           </div>

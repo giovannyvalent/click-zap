@@ -58,6 +58,7 @@ export type Settings = {
   card_style: "soft" | "bordered" | "minimal";
   image_ratio: "landscape" | "square" | "portrait";
   button_style: "rounded" | "pill" | "square";
+  font: "inter" | "poppins" | "playfair" | "dm_sans";
   headline: string;
   description: string;
   show_search: boolean;
