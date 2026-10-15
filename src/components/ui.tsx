@@ -1,5 +1,6 @@
 "use client";
-import { useState, type ReactNode } from "react";
+import { useEffect, useState, type ReactNode } from "react";
+import { createPortal } from "react-dom";
 import { X, PackageOpen, LoaderCircle } from "lucide-react";
 export function Modal({
   title,
@@ -14,7 +15,17 @@ export function Modal({
   wide?: boolean;
   fullscreen?: boolean;
 }) {
-  return (
+  const [mounted, setMounted] = useState(false);
+  useEffect(() => {
+    setMounted(true);
+    const prev = document.body.style.overflow;
+    document.body.style.overflow = "hidden";
+    return () => {
+      document.body.style.overflow = prev;
+    };
+  }, []);
+  if (!mounted) return null;
+  return createPortal(
     <div
       className={"modal-backdrop" + (fullscreen ? " fullscreen" : "")}
       onClick={fullscreen ? undefined : onClose}
@@ -34,7 +45,8 @@ export function Modal({
         </header>
         {fullscreen ? <div className="modal-fullscreen-content">{children}</div> : children}
       </section>
-    </div>
+    </div>,
+    document.body,
   );
 }
 export function Empty({

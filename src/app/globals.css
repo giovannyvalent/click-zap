@@ -2222,8 +2222,12 @@ td small {
   align-items: center;
   justify-content: space-between;
   gap: 12px;
-  padding: 27px 0;
+  padding: 16px 0;
   border-bottom: 1px solid var(--store-border);
+  position: sticky;
+  top: 0;
+  z-index: 40;
+  background: var(--store-bg);
 }
 .store-brand {
   display: flex;
@@ -3093,6 +3097,9 @@ td small {
   }
   .store .modal {
     font-size: 13px;
+  }
+  .store-header {
+    padding: 12px 0;
   }
   .floating-cart {
     min-width: 0;
