@@ -44,6 +44,13 @@ export const marketingPages: Record<
     heading: "Sua primeira loja começa grátis.",
     lead: "Use o plano Start para publicar até 10 produtos, receber pedidos e organizar suas conversas. Sem pagamento online ou cobrança automática.",
   },
+  assinar: {
+    title: "Assine o ClickZap | Catálogo e pedidos pelo WhatsApp",
+    description:
+      "Crie seu catálogo online, receba pedidos organizados e continue a venda no WhatsApp. Comece grátis, sem cartão.",
+    heading: "Crie seu catálogo. Venda mais pelo WhatsApp.",
+    lead: "O ClickZap organiza seu catálogo, o carrinho e o pedido para a conversa continuar no WhatsApp.",
+  },
 };
 const faq = [
   [

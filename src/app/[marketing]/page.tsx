@@ -1,4 +1,5 @@
 import { PremiumLanding } from "@/components/premium-landing";
+import { AssinarLanding } from "@/components/assinar-landing";
 import { notFound } from "next/navigation";
 import { Marketing, marketingPages } from "@/components/marketing";
 export function generateStaticParams() {
@@ -26,5 +27,6 @@ export default async function Page({
 }) {
   const { marketing } = await params;
   if (!marketingPages[marketing]) notFound();
+  if (marketing === "assinar") return <AssinarLanding />;
   return marketing === "precos" ? <PremiumLanding /> : <Marketing page={marketing} />;
 }

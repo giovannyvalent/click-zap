@@ -1,0 +1,112 @@
+/* Seções exclusivas da landing /assinar — o resto reaproveita premium-landing.css */
+.assinar-landing .channels-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-top: 34px;
+}
+.assinar-landing .channel-chip {
+  display: flex;
+  align-items: center;
+  gap: 9px;
+  background: #fff;
+  border: 1px solid #dfe3de;
+  border-radius: 999px;
+  padding: 11px 16px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #2b312d;
+}
+.assinar-landing .channel-chip svg {
+  width: 16px;
+  height: 16px;
+  color: #008f5e;
+}
+.assinar-landing .included-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px 22px;
+  margin-top: 28px;
+  padding: 18px 0;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.assinar-landing .included-row span {
+  display: flex;
+  align-items: center;
+  gap: 7px;
+  font-size: 11px;
+  font-weight: 600;
+  color: #c3cbc6;
+}
+.assinar-landing .included-row svg {
+  width: 14px;
+  height: 14px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.assinar-landing .plan3-grid {
+  grid-template-columns: repeat(3, 1fr);
+}
+.assinar-landing .plan .limit {
+  font-size: 15px;
+  font-weight: 600;
+  color: #7eecc3;
+  margin-top: 14px;
+}
+.assinar-landing .plan.pro .limit {
+  color: #008f5e;
+}
+.assinar-landing .guarantee {
+  padding: 56px 0;
+  background: #0b0d0c;
+  border-top: 1px solid var(--line);
+  border-bottom: 1px solid var(--line);
+}
+.assinar-landing .guarantee-inner {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 40px;
+  flex-wrap: wrap;
+  text-align: center;
+}
+.assinar-landing .guarantee-item {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  max-width: 340px;
+}
+.assinar-landing .guarantee-item svg {
+  width: 30px;
+  height: 30px;
+  color: var(--green);
+  flex-shrink: 0;
+}
+.assinar-landing .guarantee-item b {
+  display: block;
+  font-size: 13px;
+}
+.assinar-landing .guarantee-item span {
+  display: block;
+  font-size: 10px;
+  color: #8d968f;
+  margin-top: 3px;
+  line-height: 1.5;
+}
+@media (max-width: 980px) {
+  .assinar-landing .plan3-grid {
+    grid-template-columns: 1fr;
+  }
+}
+@media (max-width: 680px) {
+  .assinar-landing .guarantee {
+    padding: 40px 0;
+  }
+  .assinar-landing .guarantee-inner {
+    gap: 22px;
+  }
+  .assinar-landing .included-row {
+    gap: 10px 16px;
+  }
+}
