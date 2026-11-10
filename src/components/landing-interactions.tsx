@@ -45,7 +45,30 @@ export function LandingInteractions({ root: rootSelector = ".premium-landing" }:
       }
     }
     root.addEventListener("click", click);
-    return () => root.removeEventListener("click", click);
+
+    const revealEls = root.querySelectorAll("[data-reveal], [data-reveal-stagger]");
+    let io: IntersectionObserver | undefined;
+    if (revealEls.length && "IntersectionObserver" in window) {
+      io = new IntersectionObserver(
+        (entries) => {
+          entries.forEach((entry) => {
+            if (entry.isIntersecting) {
+              entry.target.classList.add("in-view");
+              io!.unobserve(entry.target);
+            }
+          });
+        },
+        { threshold: 0.12, rootMargin: "0px 0px -60px 0px" },
+      );
+      revealEls.forEach((el) => io!.observe(el));
+    } else {
+      revealEls.forEach((el) => el.classList.add("in-view"));
+    }
+
+    return () => {
+      root!.removeEventListener("click", click);
+      io?.disconnect();
+    };
   }, [rootSelector]);
   return null;
 }

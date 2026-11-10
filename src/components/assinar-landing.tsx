@@ -47,7 +47,7 @@ const html = `
     <header class="anav">
       <a href="/" class="abrand">
         <span class="abrand-mark" aria-label="CZ">C<span class="z">Z</span></span>
-        ClickZap
+        <span class="abrand-text">ClickZap</span>
       </a>
       <nav class="anav-links">
         <a href="#como-funciona">Como funciona</a>
@@ -68,14 +68,18 @@ const html = `
 <section class="ahero-section">
   <div class="acontainer">
     <div class="ahero-panel">
+      <span class="ablob ablob-mint" style="width:340px;height:340px;top:-100px;right:-60px"></span>
+      <span class="ablob ablob-mint" style="width:220px;height:220px;bottom:-60px;left:30%"></span>
       <div class="ahero-grid">
         <div class="ahero">
           <span class="atrust">${iconStar}${iconStar}${iconStar}${iconStar}${iconStar}&nbsp;Feito para quem vende pelo WhatsApp</span>
           <h1>Crie seu catálogo online e venda mais pelo WhatsApp</h1>
           <p class="ahero-copy">O ClickZap organiza seu catálogo, o carrinho e o pedido — e leva tudo pronto para a conversa continuar no seu WhatsApp, sem precisar montar um e-commerce completo.</p>
           <div class="ahero-actions">
-            <a href="/cadastro" class="abtn abtn-primary">Começar grátis agora</a>
+            <a href="/cadastro" class="abtn abtn-primary abtn-glow">Começar grátis agora</a>
+            <a href="#planos" class="abtn abtn-outline">Ver planos</a>
           </div>
+          <div class="ahero-note">${check} Grátis para sempre no Start · Sem cartão de crédito</div>
         </div>
         <div class="ahero-visual">
           <div class="ahero-browser">
@@ -138,26 +142,82 @@ const html = `
 
 <section class="asteps-section" id="como-funciona">
   <div class="acontainer acenter">
-    <span class="akicker">Com o ClickZap, vender por catálogo é rápido</span>
-    <h2 class="atitle">Do cadastro do produto ao <span class="accent">pedido pronto</span></h2>
-    <p class="acopy">Sem equipe técnica, sem integração complicada. Publique, compartilhe o link e receba o pedido já organizado.</p>
-    <div class="acards-row">
+    <span class="akicker" data-reveal>Como funciona</span>
+    <h2 class="atitle" data-reveal>Comece a vender em <span class="accent">3 passos simples</span></h2>
+    <p class="acopy" data-reveal>Sem equipe técnica, sem integração complicada. Publique, compartilhe o link e receba o pedido já organizado.</p>
+    <div class="asteps-row" data-reveal-stagger>
+      <div class="astep">
+        <span class="astep-num">1</span>
+        <div class="astep-icon">${iconGrid}</div>
+        <h3>Monte seu catálogo</h3>
+        <p>Cadastre seus produtos com fotos, preços e variações em poucos minutos.</p>
+      </div>
+      <div class="astep-line"></div>
+      <div class="astep">
+        <span class="astep-num">2</span>
+        <div class="astep-icon">${iconLink}</div>
+        <h3>Compartilhe o link</h3>
+        <p>Divulgue o link da sua loja no WhatsApp, Instagram ou onde seus clientes já estão.</p>
+      </div>
+      <div class="astep-line"></div>
+      <div class="astep">
+        <span class="astep-num">3</span>
+        <div class="astep-icon">${waIcon}</div>
+        <h3>Receba o pedido pronto</h3>
+        <p>O cliente monta o carrinho sozinho e o pedido chega organizado direto no seu WhatsApp.</p>
+      </div>
+    </div>
+    <div class="acenter-cta"><a href="/cadastro" class="abtn abtn-primary abtn-glow">Começar grátis agora</a></div>
+  </div>
+</section>
+
+<section class="afeatures-section">
+  <div class="acontainer acenter">
+    <span class="akicker" data-reveal>Tudo incluso, em qualquer plano</span>
+    <h2 class="atitle" data-reveal>O que você ganha <span class="accent">desde o primeiro dia</span></h2>
+    <div class="acards-row" data-reveal-stagger>
       <article class="acard-sm">${iconClock}<p>Venda com seu catálogo disponível a qualquer hora, todo dia.</p></article>
       <article class="acard-sm">${iconUser}<p>Autonomia para o cliente montar o pedido sozinho, sem precisar te chamar antes.</p></article>
       <article class="acard-sm">${iconLink}<p>Divulgue o link do seu catálogo onde e como quiser.</p></article>
       <article class="acard-sm">${iconCloud}<p>Plataforma segura, com seus dados guardados na nuvem.</p></article>
       <article class="acard-sm">${iconPalette}<p>Personalize com a cor, o tema e a fonte da sua marca.</p></article>
     </div>
-    <div class="acenter-cta"><a href="/cadastro" class="abtn abtn-primary">Começar grátis agora</a></div>
+  </div>
+</section>
+
+<section class="acompare-section">
+  <div class="acontainer acenter">
+    <span class="akicker" data-reveal>Antes e depois</span>
+    <h2 class="atitle" data-reveal>Pare de perder pedido no <span class="accent">meio da conversa</span></h2>
+  </div>
+  <div class="acontainer acompare-grid" data-reveal-stagger>
+    <div class="acompare-col acompare-bad">
+      <b>Sem o ClickZap</b>
+      <ul>
+        <li>Cliente manda foto por foto perguntando preço</li>
+        <li>Você perde o fio de vários pedidos ao mesmo tempo</li>
+        <li>Soma o pedido na mão e às vezes erra o valor</li>
+        <li>Catálogo em PDF ou álbum, difícil de manter atualizado</li>
+      </ul>
+    </div>
+    <div class="acompare-col acompare-good">
+      <b>Com o ClickZap</b>
+      <ul>
+        <li>${check} Cliente monta o carrinho sozinho na sua loja</li>
+        <li>${check} Pedido chega pronto, com itens e total já calculados</li>
+        <li>${check} Central de pedidos organiza tudo em um só lugar</li>
+        <li>${check} Catálogo online, você atualiza em segundos</li>
+      </ul>
+    </div>
   </div>
 </section>
 
 <section class="amint-section" id="recursos">
   <div class="acenter">
-    <h2 class="atitle">Uma solução completa para você vender <span class="accent">pelo WhatsApp</span></h2>
+    <h2 class="atitle" data-reveal>Uma solução completa para você vender <span class="accent">pelo WhatsApp</span></h2>
   </div>
 
-  <div class="aalt-panel">
+  <div class="aalt-panel" data-reveal>
     <span class="aicon-badge">${iconKanban}</span>
     <div class="aalt-grid">
       <div class="aalt-text">
@@ -175,7 +235,7 @@ const html = `
     </div>
   </div>
 
-  <div class="aalt-panel">
+  <div class="aalt-panel" data-reveal>
     <span class="aicon-badge">${iconGrid}</span>
     <div class="aalt-grid reverse">
       <div class="aalt-media">
@@ -195,7 +255,8 @@ const html = `
 
 <section class="aaudience-section">
   <div class="acontainer">
-    <div class="aaudience-panel">
+    <div class="aaudience-panel" data-reveal>
+      <span class="ablob ablob-dark" style="width:300px;height:300px;top:-80px;right:10%"></span>
       <div class="aaudience-grid">
         <div>
           <span class="akicker" style="color:#9ae8c3">Um plano para cada momento</span>
@@ -215,11 +276,11 @@ const html = `
 
 <section class="apricing-section" id="planos">
   <div class="acontainer acenter">
-    <span class="akicker">Comece simples, suba quando precisar</span>
-    <h2 class="atitle">Selecione um plano e <span class="accent">comece a vender hoje mesmo</span></h2>
-    <p class="acopy">Todos sem taxa sobre suas vendas. A loja, o carrinho e a central de pedidos são os mesmos em qualquer plano.</p>
+    <span class="akicker" data-reveal>Comece simples, suba quando precisar</span>
+    <h2 class="atitle" data-reveal>Selecione um plano e <span class="accent">comece a vender hoje mesmo</span></h2>
+    <p class="acopy" data-reveal>Todos sem taxa sobre suas vendas. A loja, o carrinho e a central de pedidos são os mesmos em qualquer plano.</p>
 
-    <div class="aplans-grid">
+    <div class="aplans-grid" data-reveal-stagger>
       <article class="aplan">
         <div class="aplan-top">
           <div class="aplan-name-row"><span class="aplan-name">Start</span></div>
@@ -245,7 +306,7 @@ const html = `
           <p class="aplan-desc">Para quem já tem clientes e precisa de mais espaço.</p>
           <div class="aplan-price">R$ 29,90 <small>/ mês</small></div>
           <span class="aplan-limit">${iconGrid} Até 100 produtos</span>
-          <a href="/app/planos" class="abtn abtn-primary">Assinar o Plus</a>
+          <a href="/app/planos" class="abtn abtn-primary abtn-glow">Assinar o Plus</a>
         </div>
         <div class="aplan-feats">
           <b>Tudo do Start, mais:</b>
@@ -285,12 +346,12 @@ const html = `
 
 <section class="afaq-section" id="faq">
   <div class="acontainer afaq-grid">
-    <div>
+    <div data-reveal>
       <span class="akicker">Perguntas frequentes</span>
       <h2 class="atitle">Tire todas as suas dúvidas</h2>
       <p class="acopy">O ClickZap foi pensado para ser mais simples que um e-commerce e mais organizado que vender apenas pela conversa.</p>
     </div>
-    <div class="afaq-list">
+    <div class="afaq-list" data-reveal>
       <article class="faq-item open"><button class="faq-q">O ClickZap substitui meu WhatsApp? ${chevron}</button><div class="faq-a">Não. O ClickZap prepara o pedido antes da conversa e abre o WhatsApp com as informações organizadas. O atendimento continua no canal que você já utiliza.</div></article>
       <article class="faq-item"><button class="faq-q">Meu cliente precisa criar uma conta? ${chevron}</button><div class="faq-a">Não. A loja pública foi pensada para o comprador navegar, montar o carrinho e iniciar o pedido sem login.</div></article>
       <article class="faq-item"><button class="faq-q">Posso trocar de plano depois? ${chevron}</button><div class="faq-a">Sim. Você pode fazer upgrade ou downgrade a qualquer momento direto no painel, em Minha Loja.</div></article>
@@ -303,13 +364,15 @@ const html = `
 
 <section class="afinal-section">
   <div class="acontainer">
-    <div class="afinal-panel">
+    <div class="afinal-panel" data-reveal>
+      <span class="ablob ablob-mint" style="width:260px;height:260px;top:-80px;right:10%"></span>
       <div>
         <span class="akicker">Seu próximo pedido pode chegar melhor</span>
         <h2 class="atitle">Comece a vender pelo <span class="accent">WhatsApp</span> hoje mesmo.</h2>
+        <div class="afinal-note">${check} Grátis para sempre no Start · Sem cartão de crédito · Cancele quando quiser</div>
       </div>
       <div class="afinal-actions">
-        <a href="/cadastro" class="abtn abtn-primary">Criar minha conta grátis</a>
+        <a href="/cadastro" class="abtn abtn-primary abtn-glow">Criar minha conta grátis</a>
         <a href="#planos" class="abtn abtn-outline">Ver planos</a>
       </div>
     </div>
@@ -345,6 +408,11 @@ const html = `
   </div>
 </footer>
 
+<div class="asticky-cta">
+  <span>Grátis para sempre no Start<br>Sem cartão de crédito</span>
+  <a href="/cadastro" class="abtn abtn-primary">Criar conta</a>
+</div>
+
 `;
 export function AssinarLanding() {
   return (
@@ -353,6 +421,9 @@ export function AssinarLanding() {
         rel="stylesheet"
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       />
+      <noscript>
+        <style>{`.assinar-landing [data-reveal],.assinar-landing [data-reveal-stagger] > *{opacity:1!important;transform:none!important}`}</style>
+      </noscript>
       <div
         className="assinar-landing"
         dangerouslySetInnerHTML={{ __html: html }}
