@@ -1,8 +1,8 @@
 "use client";
 import { useEffect } from "react";
-export function LandingInteractions() {
+export function LandingInteractions({ root: rootSelector = ".premium-landing" }: { root?: string } = {}) {
   useEffect(() => {
-    const root = document.querySelector(".premium-landing");
+    const root = document.querySelector(rootSelector);
     if (!root) return;
     const titles: Record<string, string> = {
       catalogo: "Catálogo público em um único link",
@@ -46,6 +46,6 @@ export function LandingInteractions() {
     }
     root.addEventListener("click", click);
     return () => root.removeEventListener("click", click);
-  }, []);
+  }, [rootSelector]);
   return null;
 }

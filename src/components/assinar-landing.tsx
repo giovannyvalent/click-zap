@@ -354,10 +354,10 @@ export function AssinarLanding() {
         href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap"
       />
       <div
-        className="premium-landing assinar-landing"
+        className="assinar-landing"
         dangerouslySetInnerHTML={{ __html: html }}
       />
-      <LandingInteractions />
+      <LandingInteractions root=".assinar-landing" />
     </>
   );
 }
