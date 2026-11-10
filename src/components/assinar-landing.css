@@ -45,7 +45,7 @@
   color: var(--green);
   flex-shrink: 0;
 }
-.assinar-landing .plan3-grid {
+.assinar-landing .pricing-grid.plan3-grid {
   grid-template-columns: repeat(3, 1fr);
 }
 .assinar-landing .plan .limit {
@@ -95,7 +95,7 @@
   line-height: 1.5;
 }
 @media (max-width: 980px) {
-  .assinar-landing .plan3-grid {
+  .assinar-landing .pricing-grid.plan3-grid {
     grid-template-columns: 1fr;
   }
 }
