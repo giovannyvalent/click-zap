@@ -13,6 +13,7 @@ import {
 } from "./schemas";
 import { serverDB, adminDB } from "./supabase/server";
 import { PLANS, type PlanKey } from "./types";
+import { STOREFRONT_LAYOUTS } from "./storefront";
 import {
   findOrCreateCustomer,
   createSubscription,
@@ -282,16 +283,38 @@ export async function saveSettings(input: unknown) {
       show_descriptions: z.boolean(),
       show_promo_bar: z.boolean(),
       promo_text: z.string().max(160),
+      storefront: z
+        .object({ layout: z.enum(STOREFRONT_LAYOUTS) })
+        .optional(),
     });
     const v = schema.parse(input);
     const { db, business } = await ownerContext();
-    const { error } = await db
+    let storefrontSaved = !!v.storefront;
+    let { error } = await db
       .from("store_settings")
       .update(v)
       .eq("business_id", business.id);
+    // Sem a migration 010 a coluna storefront não existe: salva o resto
+    // (a coluna layout já leva o equivalente grid/list/showcase).
+    if (
+      error &&
+      v.storefront &&
+      (error.code === "PGRST204" ||
+        error.code === "42703" ||
+        /storefront/.test(error.message))
+    ) {
+      const { storefront: _ignored, ...rest } = v;
+      void _ignored;
+      ({ error } = await db
+        .from("store_settings")
+        .update(rest)
+        .eq("business_id", business.id));
+      storefrontSaved = false;
+    }
     fail(error);
     revalidatePath("/app");
     revalidatePath("/loja/" + business.slug);
+    return { storefrontSaved };
   });
 }
 export async function moveOrder(

@@ -66,6 +66,8 @@ export type Settings = {
   show_descriptions: boolean;
   show_promo_bar: boolean;
   promo_text: string;
+  // Coluna jsonb da migration 010; pode faltar se ela não foi aplicada.
+  storefront?: { layout?: string } | null;
 };
 export type Zone = {
   id: string;

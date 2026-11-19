@@ -15,6 +15,7 @@ import {
 import type { StoreData, Product } from "@/lib/types";
 import { money } from "@/lib/utils";
 import { Modal } from "./ui";
+import { storefrontLayout, accentInk } from "@/lib/storefront";
 function event(slug: string, event: string) {
   void fetch("/api/public/events", {
     method: "POST",
@@ -31,6 +32,7 @@ export function Store({
   preview?: boolean;
 }) {
   const { business: b, settings: s, categories, products, zones } = data;
+  const variant = storefrontLayout(s);
   const [search, setSearch] = useState("");
   const [category, setCategory] = useState("");
   const [cart, setCart] = useState<Record<string, number>>({});
@@ -182,8 +184,13 @@ export function Store({
           : null;
   return (
     <div
-      className={`store theme-${s.theme} layout-${s.layout} card-${s.card_style} ratio-${s.image_ratio} button-${s.button_style} font-${s.font} ${preview ? "is-preview" : ""}`}
-      style={{ "--accent": s.accent_color } as CSSProperties}
+      className={`store theme-${s.theme} layout-${s.layout} sf-${variant} card-${s.card_style} ratio-${s.image_ratio} button-${s.button_style} font-${s.font} ${preview ? "is-preview" : ""}`}
+      style={
+        {
+          "--accent": s.accent_color,
+          "--accent-ink": accentInk(s.accent_color),
+        } as CSSProperties
+      }
     >
       {fontHref && <link rel="stylesheet" href={fontHref} />}
       {s.show_promo_bar && s.promo_text && (
@@ -306,7 +313,9 @@ export function Store({
                     onClick={() => add(p)}
                   >
                     <Plus size={17} />
-                    {s.layout === "list" ? "Adicionar" : ""}
+                    {variant === "list" || variant === "cards"
+                      ? "Adicionar"
+                      : ""}
                   </button>
                 </div>
               </div>

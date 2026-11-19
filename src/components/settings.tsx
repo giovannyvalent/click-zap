@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { useForm } from "react-hook-form";
 import { useRouter } from "next/navigation";
 import { Monitor, Smartphone, X, Check, Link as LinkIcon } from "lucide-react";
@@ -11,7 +11,14 @@ import {
   saveSettings,
 } from "@/lib/actions";
 import { useTask, SaveButton } from "./ui";
-import { unwrap } from "@/lib/action-result";
+import { unwrap, friendlyMessage } from "@/lib/action-result";
+import {
+  LAYOUT_OPTIONS,
+  PALETTES,
+  baseLayout,
+  storefrontLayout,
+  type StorefrontLayout,
+} from "@/lib/storefront";
 import { Store } from "./store";
 import { uploadImage } from "@/lib/upload";
 import { money } from "@/lib/utils";
@@ -275,122 +282,217 @@ export function StoreDesigner({ data }: { data: DashboardData }) {
   const [mobile, setMobile] = useState(true);
   const [uploading, setUploading] = useState(false);
   const [uploadError, setUploadError] = useState("");
-  const { register, watch, setValue, handleSubmit } = useForm<Settings>({
-    defaultValues: data.settings,
+  const [layoutNote, setLayoutNote] = useState("");
+  const previewRef = useRef<HTMLElement>(null);
+  const { register, watch, setValue, handleSubmit } = useForm<
+    Settings & { variant: StorefrontLayout }
+  >({
+    defaultValues: {
+      ...data.settings,
+      variant: storefrontLayout(data.settings),
+    },
   });
   const current = watch();
+  const variant = current.variant;
+  const previewSettings: Settings = {
+    ...current,
+    layout: baseLayout(variant),
+    storefront: { ...(current.storefront || {}), layout: variant },
+  };
+  const activePalette = PALETTES.find(
+    (p) =>
+      p.accent.toLowerCase() === (current.accent_color || "").toLowerCase() &&
+      p.theme === current.theme,
+  );
   return (
     <>
       <div className="page-heading">
         <div>
           <span className="eyebrow">UMA VITRINE COM A SUA CARA</span>
           <h1>Minha Loja</h1>
-          <p>Personalize e veja o resultado antes de salvar.</p>
+          <p>Escolha o layout e as cores. A prévia muda na hora.</p>
         </div>
       </div>
       <div className="designer">
         <form
+          id="store-designer"
           className="panel padded designer-controls"
-          onSubmit={handleSubmit((v) =>
+          onSubmit={handleSubmit(({ variant: chosen, ...v }) =>
             task.run(async () => {
-              unwrap(await saveSettings(v));
+              const result = unwrap(
+                await saveSettings({
+                  ...v,
+                  layout: baseLayout(chosen),
+                  storefront: { ...(v.storefront || {}), layout: chosen },
+                }),
+              );
+              setLayoutNote(
+                result.storefrontSaved ||
+                  chosen === "grid2" ||
+                  chosen === "list" ||
+                  chosen === "showcase"
+                  ? ""
+                  : "Cores salvas. O layout escolhido ainda depende de uma atualização do banco; até lá a loja usa a grade de 2 colunas.",
+              );
               router.refresh();
             }),
           )}
         >
-          <h2>Identidade</h2>
-          <label>
-            Logo
-            <input
-              type="file"
-              accept="image/jpeg,image/png,image/webp"
-              disabled={uploading}
-              onChange={async (e) => {
-                const file = e.target.files?.[0];
-                if (!file) return;
-                setUploading(true);
-                setUploadError("");
-                try {
-                  const result = await uploadImage(
-                    file,
-                    "business-assets",
-                    data.business.id + "/logo",
-                  );
-                  setValue("logo_url", result.public_url);
-                  setValue("logo_path", result.storage_path);
-                } catch (e) {
-                  setUploadError(
-                    e instanceof Error ? e.message : "Falha no upload.",
-                  );
-                } finally {
-                  setUploading(false);
-                }
-              }}
-            />
-          </label>
-          {current.logo_url && (
-            <div className="row">
-              <img className="logo-thumb" src={current.logo_url} alt="Logo" />
-              <button
-                className="btn secondary tiny"
-                type="button"
-                onClick={() => {
-                  setValue("logo_url", null);
-                  setValue("logo_path", null);
-                }}
-              >
-                Remover
-              </button>
+          <input type="hidden" {...register("variant")} />
+          <input type="hidden" {...register("theme")} />
+          <section className="designer-section">
+            <h2>Layout da vitrine</h2>
+            <p className="muted">Como os produtos aparecem para o cliente.</p>
+            <div
+              className="layout-options"
+              role="radiogroup"
+              aria-label="Layout da vitrine"
+            >
+              {LAYOUT_OPTIONS.map((o) => (
+                <button
+                  key={o.value}
+                  type="button"
+                  role="radio"
+                  aria-checked={variant === o.value}
+                  className={
+                    "layout-option" + (variant === o.value ? " active" : "")
+                  }
+                  onClick={() => setValue("variant", o.value)}
+                >
+                  <span className={"layout-thumb thumb-" + o.value}>
+                    {Array.from({
+                      length:
+                        o.value === "grid3"
+                          ? 6
+                          : o.value === "cards"
+                            ? 2
+                            : o.value === "list"
+                              ? 3
+                              : o.value === "showcase"
+                                ? 3
+                                : 4,
+                    }).map((_, i) => (
+                      <i key={i} />
+                    ))}
+                  </span>
+                  <b>{o.label}</b>
+                  <small>{o.hint}</small>
+                </button>
+              ))}
             </div>
-          )}
-          {uploadError && <p className="error">{uploadError}</p>}
-          <label>
-            Cor principal
-            <input type="color" {...register("accent_color")} />
-          </label>
-          <hr />
-          <h2>Estilo da vitrine</h2>
-          <div className="form-grid">
+          </section>
+          <section className="designer-section">
+            <h2>Cores</h2>
+            <p className="muted">Comece por uma paleta pronta e ajuste se quiser.</p>
+            <div
+              className="palette-options"
+              role="radiogroup"
+              aria-label="Paletas prontas"
+            >
+              {PALETTES.map((p) => (
+                <button
+                  key={p.id}
+                  type="button"
+                  role="radio"
+                  aria-checked={activePalette?.id === p.id}
+                  className={
+                    "palette-option" +
+                    (activePalette?.id === p.id ? " active" : "")
+                  }
+                  onClick={() => {
+                    setValue("accent_color", p.accent);
+                    setValue("theme", p.theme);
+                  }}
+                >
+                  <span className={"palette-swatch bg-" + p.theme}>
+                    <i style={{ background: p.accent }} />
+                  </span>
+                  {p.name}
+                </button>
+              ))}
+            </div>
+            <div className="color-row">
+              <label className="color-field">
+                Cor de destaque
+                <span>
+                  <input type="color" {...register("accent_color")} />
+                  <code>{(current.accent_color || "").toUpperCase()}</code>
+                </span>
+              </label>
+              <div className="field">
+                <span>Fundo</span>
+                <div
+                  className="segmented bg-choice"
+                  role="radiogroup"
+                  aria-label="Fundo da loja"
+                >
+                  {(
+                    [
+                      ["light", "Claro"],
+                      ["soft", "Suave"],
+                      ["dark", "Escuro"],
+                    ] as const
+                  ).map(([value, label]) => (
+                    <button
+                      key={value}
+                      type="button"
+                      role="radio"
+                      aria-checked={current.theme === value}
+                      className={current.theme === value ? "active" : ""}
+                      onClick={() => setValue("theme", value)}
+                    >
+                      {label}
+                    </button>
+                  ))}
+                </div>
+              </div>
+            </div>
+          </section>
+          <section className="designer-section">
+            <h2>Identidade</h2>
             <label>
-              Estrutura
-              <select {...register("layout")}>
-                <option value="grid">Grade</option>
-                <option value="list">Lista / Catálogo</option>
-                <option value="showcase">Vitrine em destaque</option>
-              </select>
+              Logo
+              <input
+                type="file"
+                accept="image/jpeg,image/png,image/webp"
+                disabled={uploading}
+                onChange={async (e) => {
+                  const file = e.target.files?.[0];
+                  if (!file) return;
+                  setUploading(true);
+                  setUploadError("");
+                  try {
+                    const result = await uploadImage(
+                      file,
+                      "business-assets",
+                      data.business.id + "/logo",
+                    );
+                    setValue("logo_url", result.public_url);
+                    setValue("logo_path", result.storage_path);
+                  } catch (e) {
+                    setUploadError(friendlyMessage(e, "Falha no upload."));
+                  } finally {
+                    setUploading(false);
+                  }
+                }}
+              />
             </label>
-            <label>
-              Tema
-              <select {...register("theme")}>
-                <option value="light">Claro</option>
-                <option value="dark">Escuro</option>
-                <option value="soft">Soft</option>
-              </select>
-            </label>
-            <label>
-              Cards
-              <select {...register("card_style")}>
-                <option value="soft">Soft</option>
-                <option value="bordered">Contornado</option>
-                <option value="minimal">Minimal</option>
-              </select>
-            </label>
-            <label>
-              Fotos
-              <select {...register("image_ratio")}>
-                <option value="landscape">Paisagem</option>
-                <option value="square">Quadrado</option>
-                <option value="portrait">Retrato</option>
-              </select>
-            </label>
-            <label>
-              Botões
-              <select {...register("button_style")}>
-                <option value="rounded">Arredondados</option>
-                <option value="pill">Pílula</option>
-                <option value="square">Retos</option>
-              </select>
-            </label>
+            {current.logo_url && (
+              <div className="row">
+                <img className="logo-thumb" src={current.logo_url} alt="Logo" />
+                <button
+                  className="btn secondary tiny"
+                  type="button"
+                  onClick={() => {
+                    setValue("logo_url", null);
+                    setValue("logo_path", null);
+                  }}
+                >
+                  Remover
+                </button>
+              </div>
+            )}
+            {uploadError && <p className="error">{uploadError}</p>}
             <label>
               Fonte
               <select {...register("font")}>
@@ -400,52 +502,100 @@ export function StoreDesigner({ data }: { data: DashboardData }) {
                 <option value="dm_sans">DM Sans</option>
               </select>
             </label>
-          </div>
-          <hr />
-          <h2>Conteúdo</h2>
-          <label>
-            Chamada principal
-            <input maxLength={160} {...register("headline")} />
-          </label>
-          <label>
-            Descrição
-            <textarea rows={3} maxLength={600} {...register("description")} />
-          </label>
-          <label>
-            Texto promocional
-            <input maxLength={160} {...register("promo_text")} />
-          </label>
-          <hr />
-          <h2>Exibir na loja</h2>
-          {(
-            [
-              ["show_search", "Busca"],
-              ["show_categories", "Categorias"],
-              ["show_descriptions", "Descrição dos produtos"],
-              ["show_promo_bar", "Faixa promocional"],
-            ] as const
-          ).map(([key, label]) => (
-            <label className="check" key={key}>
-              <input type="checkbox" {...register(key)} />
-              {label}
+          </section>
+          <section className="designer-section">
+            <h2>Conteúdo</h2>
+            <label>
+              Chamada principal
+              <input maxLength={160} {...register("headline")} />
             </label>
-          ))}
+            <label>
+              Descrição
+              <textarea rows={3} maxLength={600} {...register("description")} />
+            </label>
+            <label>
+              Texto promocional
+              <input maxLength={160} {...register("promo_text")} />
+            </label>
+          </section>
+          <details className="designer-section designer-more">
+            <summary>Ajustes finos (cards, fotos e botões)</summary>
+            <div className="form-grid">
+              <label>
+                Cards
+                <select {...register("card_style")}>
+                  <option value="soft">Soft</option>
+                  <option value="bordered">Contornado</option>
+                  <option value="minimal">Minimal</option>
+                </select>
+              </label>
+              <label>
+                Fotos
+                <select {...register("image_ratio")}>
+                  <option value="landscape">Paisagem</option>
+                  <option value="square">Quadrado</option>
+                  <option value="portrait">Retrato</option>
+                </select>
+              </label>
+              <label>
+                Botões
+                <select {...register("button_style")}>
+                  <option value="rounded">Arredondados</option>
+                  <option value="pill">Pílula</option>
+                  <option value="square">Retos</option>
+                </select>
+              </label>
+            </div>
+          </details>
+          <section className="designer-section">
+            <h2>Exibir na loja</h2>
+            {(
+              [
+                ["show_search", "Busca"],
+                ["show_categories", "Categorias"],
+                ["show_descriptions", "Descrição dos produtos"],
+                ["show_promo_bar", "Faixa promocional"],
+              ] as const
+            ).map(([key, label]) => (
+              <label className="check" key={key}>
+                <input type="checkbox" {...register(key)} />
+                {label}
+              </label>
+            ))}
+          </section>
           {task.feedback}
-          <SaveButton busy={task.busy || uploading} />
+          {layoutNote && <p className="notice">{layoutNote}</p>}
+          <div className="designer-save">
+            <button
+              type="button"
+              className="btn secondary preview-jump"
+              onClick={() =>
+                previewRef.current?.scrollIntoView({
+                  behavior: "smooth",
+                  block: "start",
+                })
+              }
+            >
+              Ver prévia
+            </button>
+            <SaveButton busy={task.busy || uploading} />
+          </div>
         </form>
-        <section className="designer-preview">
+        <section className="designer-preview" ref={previewRef}>
           <div className="preview-toolbar">
-            <b>Preview ao vivo</b>
+            <b>Prévia ao vivo</b>
             <div className="segmented">
               <button
-                aria-label="Preview desktop"
+                type="button"
+                aria-label="Prévia no computador"
                 className={!mobile ? "active" : ""}
                 onClick={() => setMobile(false)}
               >
                 <Monitor size={16} />
               </button>
               <button
-                aria-label="Preview mobile"
+                type="button"
+                aria-label="Prévia no celular"
                 className={mobile ? "active" : ""}
                 onClick={() => setMobile(true)}
               >
@@ -453,9 +603,18 @@ export function StoreDesigner({ data }: { data: DashboardData }) {
               </button>
             </div>
           </div>
-          <div className={"preview-frame " + (mobile ? "mobile" : "desktop")}>
-            <Store data={{ ...data, settings: current }} preview />
-          </div>
+          {mobile ? (
+            <div className="phone-mockup">
+              <span className="phone-notch" aria-hidden="true" />
+              <div className="phone-screen">
+                <Store data={{ ...data, settings: previewSettings }} preview />
+              </div>
+            </div>
+          ) : (
+            <div className="preview-frame desktop">
+              <Store data={{ ...data, settings: previewSettings }} preview />
+            </div>
+          )}
           <p className="muted preview-caption">
             Prévia visual. Salve para atualizar sua loja pública.
           </p>
