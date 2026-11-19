@@ -131,16 +131,18 @@ const html = `
 <section class="achannels-section">
   <div class="acontainer">
     <div class="achannels-row">
-      <span class="achannel">${waIcon} WhatsApp</span>
-      <span class="achannel">${iconInstagram} Instagram</span>
-      <span class="achannel">${iconSearch} Google</span>
-      <span class="achannel">${iconLink} Linktree / bio</span>
-      <span class="achannel">${iconUser} Indicação</span>
+      <span class="achannel"><span class="achannel-ic achannel-ic-wa">${waIcon}</span>WhatsApp</span>
+      <span class="achannel"><span class="achannel-ic achannel-ic-ig">${iconInstagram}</span>Instagram</span>
+      <span class="achannel"><span class="achannel-ic achannel-ic-google">${iconSearch}</span>Google</span>
+      <span class="achannel"><span class="achannel-ic achannel-ic-link">${iconLink}</span>Linktree / bio</span>
+      <span class="achannel"><span class="achannel-ic achannel-ic-user">${iconUser}</span>Indicação</span>
     </div>
   </div>
 </section>
 
 <section class="asteps-section" id="como-funciona">
+  <span class="ablob ablob-blue" style="width:260px;height:260px;top:-40px;left:-60px"></span>
+  <span class="ablob ablob-purple" style="width:220px;height:220px;bottom:-60px;right:-40px"></span>
   <div class="acontainer acenter">
     <span class="akicker" data-reveal>Como funciona</span>
     <h2 class="atitle" data-reveal>Comece a vender em <span class="accent">3 passos simples</span></h2>
@@ -148,14 +150,14 @@ const html = `
     <div class="asteps-row" data-reveal-stagger>
       <div class="astep">
         <span class="astep-num">1</span>
-        <div class="astep-icon">${iconGrid}</div>
+        <div class="astep-icon astep-icon-blue">${iconGrid}</div>
         <h3>Monte seu catálogo</h3>
         <p>Cadastre seus produtos com fotos, preços e variações em poucos minutos.</p>
       </div>
       <div class="astep-line"></div>
       <div class="astep">
         <span class="astep-num">2</span>
-        <div class="astep-icon">${iconLink}</div>
+        <div class="astep-icon astep-icon-purple">${iconLink}</div>
         <h3>Compartilhe o link</h3>
         <p>Divulgue o link da sua loja no WhatsApp, Instagram ou onde seus clientes já estão.</p>
       </div>
@@ -172,20 +174,22 @@ const html = `
 </section>
 
 <section class="afeatures-section">
+  <span class="ablob ablob-amber" style="width:240px;height:240px;top:-50px;right:5%"></span>
   <div class="acontainer acenter">
     <span class="akicker" data-reveal>Tudo incluso, em qualquer plano</span>
     <h2 class="atitle" data-reveal>O que você ganha <span class="accent">desde o primeiro dia</span></h2>
     <div class="acards-row" data-reveal-stagger>
-      <article class="acard-sm">${iconClock}<p>Venda com seu catálogo disponível a qualquer hora, todo dia.</p></article>
-      <article class="acard-sm">${iconUser}<p>Autonomia para o cliente montar o pedido sozinho, sem precisar te chamar antes.</p></article>
-      <article class="acard-sm">${iconLink}<p>Divulgue o link do seu catálogo onde e como quiser.</p></article>
-      <article class="acard-sm">${iconCloud}<p>Plataforma segura, com seus dados guardados na nuvem.</p></article>
-      <article class="acard-sm">${iconPalette}<p>Personalize com a cor, o tema e a fonte da sua marca.</p></article>
+      <article class="acard-sm"><div class="acard-ic acard-ic-blue">${iconClock}</div><p>Venda com seu catálogo disponível a qualquer hora, todo dia.</p></article>
+      <article class="acard-sm"><div class="acard-ic acard-ic-coral">${iconUser}</div><p>Autonomia para o cliente montar o pedido sozinho, sem precisar te chamar antes.</p></article>
+      <article class="acard-sm"><div class="acard-ic acard-ic-purple">${iconLink}</div><p>Divulgue o link do seu catálogo onde e como quiser.</p></article>
+      <article class="acard-sm"><div class="acard-ic acard-ic-teal">${iconCloud}</div><p>Plataforma segura, com seus dados guardados na nuvem.</p></article>
+      <article class="acard-sm"><div class="acard-ic acard-ic-amber">${iconPalette}</div><p>Personalize com a cor, o tema e a fonte da sua marca.</p></article>
     </div>
   </div>
 </section>
 
 <section class="acompare-section">
+  <span class="ablob ablob-purple" style="width:260px;height:260px;top:10%;left:-70px"></span>
   <div class="acontainer acenter">
     <span class="akicker" data-reveal>Antes e depois</span>
     <h2 class="atitle" data-reveal>Pare de perder pedido no <span class="accent">meio da conversa</span></h2>
@@ -236,7 +240,7 @@ const html = `
   </div>
 
   <div class="aalt-panel" data-reveal>
-    <span class="aicon-badge">${iconGrid}</span>
+    <span class="aicon-badge aicon-badge-blue">${iconGrid}</span>
     <div class="aalt-grid reverse">
       <div class="aalt-media">
         <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
@@ -265,9 +269,9 @@ const html = `
           <div style="margin-top:22px"><a href="#planos" class="abtn abtn-white">Escolher meu plano</a></div>
         </div>
         <div class="aaudience-cards">
-          <article class="aaudience-card">${iconSeedling}<b>Para validar sua ideia</b><p>Plano Start, grátis. Até 10 produtos pra colocar sua loja no ar sem gastar nada.</p></article>
-          <article class="aaudience-card">${iconTrend}<b>Para o catálogo crescer</b><p>Plano Plus, R$ 29,90/mês. Até 100 produtos pra quem já tem clientes.</p></article>
-          <article class="aaudience-card">${iconRocket}<b>Para operar em escala</b><p>Plano Pro, R$ 59,90/mês. Até 1000 produtos pra operações maiores.</p></article>
+          <article class="aaudience-card"><div class="aaud-ic aaud-ic-teal">${iconSeedling}</div><b>Para validar sua ideia</b><p>Plano Start, grátis. Até 10 produtos pra colocar sua loja no ar sem gastar nada.</p></article>
+          <article class="aaudience-card"><div class="aaud-ic aaud-ic-blue">${iconTrend}</div><b>Para o catálogo crescer</b><p>Plano Plus, R$ 29,90/mês. Até 100 produtos pra quem já tem clientes.</p></article>
+          <article class="aaudience-card"><div class="aaud-ic aaud-ic-coral">${iconRocket}</div><b>Para operar em escala</b><p>Plano Pro, R$ 59,90/mês. Até 1000 produtos pra operações maiores.</p></article>
         </div>
       </div>
     </div>
