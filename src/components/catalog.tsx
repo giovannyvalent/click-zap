@@ -1,5 +1,5 @@
 "use client";
-import { useState, useRef } from "react";
+import { useEffect, useState, useRef } from "react";
 import { useRouter } from "next/navigation";
 import { useForm, Controller } from "react-hook-form";
 import {
@@ -252,6 +252,13 @@ export function Products({ data }: { data: DashboardData }) {
     }
     setEdit(null);
   }
+  // Atalho do onboarding do painel: /app/produtos?novo=1 abre o cadastro.
+  useEffect(() => {
+    if (new URLSearchParams(location.search).get("novo") !== "1") return;
+    history.replaceState(null, "", location.pathname);
+    openNewProduct();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
   return (
     <>
       <div className="page-heading">

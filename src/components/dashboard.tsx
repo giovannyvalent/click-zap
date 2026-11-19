@@ -1,6 +1,7 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import {
   LayoutDashboard,
   ShoppingBag,
@@ -11,13 +12,18 @@ import {
   ArrowUpRight,
   Link as LinkIcon,
   LogOut,
-  Menu,
   Check,
   TrendingUp,
   MessageCircle,
+  MoreHorizontal,
+  X,
+  Share2,
+  ArrowRight,
 } from "lucide-react";
 import { Brand } from "./brand";
-import { signOut } from "@/lib/actions";
+import { signOut, saveBusiness } from "@/lib/actions";
+import { unwrap } from "@/lib/action-result";
+import { useTask } from "./ui";
 import type { DashboardData, PlanKey } from "@/lib/types";
 import { PLANS } from "@/lib/types";
 import { money, dayKey, periodStart, dateTime, statusLabel } from "@/lib/utils";
@@ -33,6 +39,31 @@ const nav = [
   ["minha-loja", "Minha Loja", Palette],
   ["configuracoes", "Configurações", Settings],
 ] as const;
+// Itens da barra inferior no celular; o restante fica no menu "Mais".
+const mobileNav = [
+  ["", "Início", LayoutDashboard],
+  ["pedidos", "Pedidos", ShoppingBag],
+  ["produtos", "Produtos", Package],
+  ["minha-loja", "Loja", Palette],
+] as const;
+// "Copiar o link" não fica no banco: guardamos no navegador que o lojista já
+// copiou/compartilhou o link, só para concluir o passo do onboarding.
+function useLinkShared(businessId: string) {
+  const key = "clickzap:link-shared:" + businessId;
+  const [shared, setShared] = useState(false);
+  useEffect(() => {
+    try {
+      setShared(localStorage.getItem(key) === "1");
+    } catch {}
+  }, [key]);
+  const mark = useCallback(() => {
+    setShared(true);
+    try {
+      localStorage.setItem(key, "1");
+    } catch {}
+  }, [key]);
+  return [shared, mark] as const;
+}
 export function Dashboard({
   data,
   section,
@@ -42,6 +73,7 @@ export function Dashboard({
 }) {
   const [mobile, setMobile] = useState(false);
   const [copied, setCopied] = useState(false);
+  const [linkShared, markLinkShared] = useLinkShared(data.business.id);
   useEffect(() => {
     const idleMinutes = 30;
     let timer: ReturnType<typeof setTimeout>;
@@ -63,80 +95,106 @@ export function Dashboard({
       events.forEach((e) => window.removeEventListener(e, reset));
     };
   }, []);
+  useEffect(() => {
+    if (!mobile) return;
+    const onKey = (e: KeyboardEvent) => e.key === "Escape" && setMobile(false);
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [mobile]);
   async function copy() {
+    const url = location.origin + "/loja/" + data.business.slug;
     try {
-      await navigator.clipboard.writeText(
-        location.origin + "/loja/" + data.business.slug,
-      );
+      await navigator.clipboard.writeText(url);
       setCopied(true);
       setTimeout(() => setCopied(false), 2500);
     } catch {
-      window.prompt(
-        "Copie o endereço:",
-        location.origin + "/loja/" + data.business.slug,
-      );
+      window.prompt("Copie o endereço:", url);
     }
+    markLinkShared();
   }
+  const newOrders = data.orders.filter((o) => o.status === "new").length;
+  const planKey = data.business.plan_key as PlanKey;
+  const plan = PLANS[planKey] ?? PLANS.start;
+  const isPaid = planKey !== "start";
+  const pastDue = data.business.billing_status === "past_due";
+  const inMore = !mobileNav.some(([p]) => p === section);
   return (
     <div className="dashboard">
-      <aside className={"sidebar " + (mobile ? "open" : "")}>
-        <Brand />
+      {mobile && (
+        <div
+          className="sidebar-backdrop"
+          aria-hidden="true"
+          onClick={() => setMobile(false)}
+        />
+      )}
+      <aside
+        className={"sidebar " + (mobile ? "open" : "")}
+        aria-label="Menu do painel"
+      >
+        <div className="sidebar-top">
+          <Brand />
+          <button
+            className="iconbtn sidebar-close mobile-only"
+            aria-label="Fechar menu"
+            onClick={() => setMobile(false)}
+          >
+            <X size={18} />
+          </button>
+        </div>
         <div className="workspace">
           <span>{data.business.name.slice(0, 2).toUpperCase()}</span>
           <div>
-            <b>{data.business.name}</b>
-            <small>Seu espaço de vendas</small>
+            <b title={data.business.name}>{data.business.name}</b>
+            <small className={data.business.published ? "live" : ""}>
+              {data.business.published ? "Loja publicada" : "Rascunho"}
+            </small>
           </div>
         </div>
-        <small className="nav-label">PRINCIPAL</small>
         <nav>
           {nav.map(([path, label, Icon]) => (
             <Link
               key={path}
               onClick={() => setMobile(false)}
               className={section === path ? "active" : ""}
+              aria-current={section === path ? "page" : undefined}
               href={"/app" + (path ? "/" + path : "")}
             >
-              <Icon size={18} />
+              <Icon size={17} />
               {label}
-              {path === "pedidos" && (
-                <small>
-                  {data.orders.filter((o) => o.status === "new").length}
-                </small>
-              )}
+              {path === "pedidos" && newOrders > 0 && <small>{newOrders}</small>}
             </Link>
           ))}
         </nav>
         <div className="sidebar-bottom">
-          {(() => {
-            const planKey = data.business.plan_key as PlanKey;
-            const plan = PLANS[planKey] ?? PLANS.start;
-            const isPaid = planKey !== "start";
-            const pastDue = data.business.billing_status === "past_due";
-            return (
-              <div className="plan-card">
-                <span className="badge">PLANO {plan.label.toUpperCase()}</span>
-                {isPaid ? (
-                  <>
-                    <b>{pastDue ? "Pagamento pendente" : "Assinatura ativa"}</b>
-                    <p>
-                      {data.products.length} produtos · até {plan.productLimit} no
-                      plano {plan.label}.
-                    </p>
-                  </>
-                ) : (
-                  <>
-                    <b>Sua loja está começando.</b>
-                    <p>{data.products.length} de {plan.productLimit} produtos no plano grátis.</p>
-                  </>
-                )}
-                <Link href="/app/planos">
-                  {isPaid ? "Minha assinatura" : "Conhecer os planos"}
-                  <ArrowUpRight size={14} />
-                </Link>
-              </div>
-            );
-          })()}
+          <Link
+            href="/app/planos"
+            className="plan-card"
+            onClick={() => setMobile(false)}
+          >
+            <div className="plan-card-row">
+              <span className="badge">{plan.label.toUpperCase()}</span>
+              <small>
+                {isPaid && pastDue
+                  ? "Pagamento pendente"
+                  : `${data.products.length}/${plan.productLimit} produtos`}
+              </small>
+              <ArrowUpRight size={14} />
+            </div>
+            <div className="plan-meter" aria-hidden="true">
+              <i
+                style={{
+                  width:
+                    Math.min(
+                      100,
+                      Math.round(
+                        (data.products.length / plan.productLimit) * 100,
+                      ),
+                    ) + "%",
+                }}
+              />
+            </div>
+            <b>{isPaid ? "Minha assinatura" : "Conhecer os planos"}</b>
+          </Link>
           <button className="logout" onClick={() => signOut()}>
             <LogOut size={16} />
             Sair da conta
@@ -146,19 +204,14 @@ export function Dashboard({
       <div className="app-area">
         <header className="app-top">
           <div>
-            <button
-              className="iconbtn mobile-only"
-              aria-label="Abrir menu"
-              onClick={() => setMobile(!mobile)}
-            >
-              <Menu size={18} />
-            </button>
             <span className="muted">Seu negócio / </span>
             <b>{nav.find((n) => n[0] === section)?.[1] || "Planos"}</b>
           </div>
           <div className="row">
             <span
-              className={"badge " + (data.business.published ? "green" : "")}
+              className={
+                "badge top-status " + (data.business.published ? "green" : "")
+              }
             >
               {data.business.published ? "Loja publicada" : "Rascunho"}
             </span>
@@ -174,7 +227,13 @@ export function Dashboard({
         </header>
         <main className="app-main">
           {section === "" ? (
-            <Overview data={data} copy={copy} copied={copied} />
+            <Overview
+              data={data}
+              copy={copy}
+              copied={copied}
+              linkShared={linkShared}
+              markLinkShared={markLinkShared}
+            />
           ) : section === "pedidos" ? (
             <Orders data={data} />
           ) : section === "categorias" ? (
@@ -193,6 +252,35 @@ export function Dashboard({
           ClickZap · Menos trabalho. Mais conversa.
         </footer>
       </div>
+      <nav className="bottom-nav" aria-label="Navegação principal">
+        {mobileNav.map(([path, label, Icon]) => (
+          <Link
+            key={path}
+            href={"/app" + (path ? "/" + path : "")}
+            className={section === path ? "active" : ""}
+            aria-current={section === path ? "page" : undefined}
+          >
+            <span className="bottom-nav-icon">
+              <Icon size={21} />
+              {path === "pedidos" && newOrders > 0 && (
+                <small>{newOrders > 99 ? "99+" : newOrders}</small>
+              )}
+            </span>
+            {label}
+          </Link>
+        ))}
+        <button
+          className={inMore || mobile ? "active" : ""}
+          aria-label="Mais opções do menu"
+          aria-expanded={mobile}
+          onClick={() => setMobile(!mobile)}
+        >
+          <span className="bottom-nav-icon">
+            <MoreHorizontal size={21} />
+          </span>
+          Mais
+        </button>
+      </nav>
     </div>
   );
 }
@@ -200,10 +288,14 @@ function Overview({
   data,
   copy,
   copied,
+  linkShared,
+  markLinkShared,
 }: {
   data: DashboardData;
   copy: () => void;
   copied: boolean;
+  linkShared: boolean;
+  markLinkShared: () => void;
 }) {
   const [period, setPeriod] = useState("week");
   const orders = data.orders.filter(
@@ -243,6 +335,13 @@ function Overview({
           <option value="month">Este mês</option>
         </select>
       </div>
+      <GettingStarted
+        data={data}
+        copy={copy}
+        copied={copied}
+        linkShared={linkShared}
+        markLinkShared={markLinkShared}
+      />
       <div className="stats">
         {[
           ["Pedidos recebidos", orders.length, "Pedidos criados no período"],
@@ -268,36 +367,6 @@ function Overview({
           </div>
         ))}
       </div>
-      {!data.business.published && (
-        <div className="onboarding-card">
-          <div>
-            <span className="eyebrow">SUA LOJA EM 5 PASSOS</span>
-            <h2>Falta pouco para receber pedidos.</h2>
-          </div>
-          <div className="steps-inline">
-            {[
-              ["Negócio", true, "/app/configuracoes"],
-              ["Entrega", true, "/app/configuracoes"],
-              [
-                "Categoria",
-                data.categories.some((c) => c.active),
-                "/app/categorias",
-              ],
-              ["Produto", data.products.some((p) => p.active), "/app/produtos"],
-              ["Publicação", false, "/app/configuracoes"],
-            ].map(([l, ok, url], i) => (
-              <Link
-                href={url as string}
-                key={String(l)}
-                className={ok ? "done" : ""}
-              >
-                <span>{ok ? <Check size={14} /> : i + 1}</span>
-                {l}
-              </Link>
-            ))}
-          </div>
-        </div>
-      )}
       <div className="overview-grid">
         <section className="panel">
           <div className="panel-heading">
@@ -395,6 +464,204 @@ function Overview({
         </div>
       </div>
     </>
+  );
+}
+// Passos do primeiro uso, calculados com os dados reais da loja.
+function GettingStarted({
+  data,
+  copy,
+  copied,
+  linkShared,
+  markLinkShared,
+}: {
+  data: DashboardData;
+  copy: () => void;
+  copied: boolean;
+  linkShared: boolean;
+  markLinkShared: () => void;
+}) {
+  const task = useTask();
+  const router = useRouter();
+  const b = data.business;
+  const activeCategories = data.categories.filter((c) => c.active);
+  const activeProducts = data.products.filter(
+    (p) => p.active && activeCategories.some((c) => c.id === p.category_id),
+  );
+  const hasCategory = activeCategories.length > 0;
+  const hasProduct = activeProducts.length > 0;
+  const steps = [
+    {
+      key: "categoria",
+      title: "Crie uma categoria",
+      text: "Categorias organizam a vitrine (ex.: Roupas, Bolos, Acessórios).",
+      done: hasCategory,
+    },
+    {
+      key: "produto",
+      title: "Cadastre seu primeiro produto",
+      text: "Foto, nome e preço. Dá para criar a categoria no mesmo formulário.",
+      done: hasProduct,
+    },
+    {
+      key: "publicar",
+      title: "Publique a loja",
+      text: "Com a loja publicada, o catálogo fica visível para os clientes.",
+      done: b.published,
+    },
+    {
+      key: "link",
+      title: "Copie o link e compartilhe",
+      text: "Coloque na bio, no status do WhatsApp ou mande para os clientes.",
+      done: b.published && linkShared,
+    },
+  ];
+  const doneCount = steps.filter((s) => s.done).length;
+  const current = steps.find((s) => !s.done);
+  function publish() {
+    task.run(async () => {
+      unwrap(
+        await saveBusiness({
+          name: b.name,
+          slug: b.slug,
+          whatsapp: b.whatsapp,
+          published: true,
+          allow_pickup: b.allow_pickup,
+          allow_delivery: b.allow_delivery,
+          shipping_mode: b.shipping_mode,
+          global_shipping_fee: Number(b.global_shipping_fee),
+        }),
+      );
+      router.refresh();
+    }, "Loja publicada! Agora compartilhe o link.");
+  }
+  async function share() {
+    const storeUrl = location.origin + "/loja/" + b.slug;
+    const text = `Conheça a ${b.name}: ${storeUrl}`;
+    if (navigator.share) {
+      try {
+        await navigator.share({ title: b.name, text, url: storeUrl });
+        markLinkShared();
+      } catch {}
+      return;
+    }
+    window.open(
+      "https://wa.me/?text=" + encodeURIComponent(text),
+      "_blank",
+      "noopener",
+    );
+    markLinkShared();
+  }
+  function action(key: string) {
+    switch (key) {
+      case "categoria":
+        return (
+          <Link className="btn primary" href="/app/categorias">
+            Criar categoria <ArrowRight size={16} />
+          </Link>
+        );
+      case "produto":
+        return (
+          <Link className="btn primary" href="/app/produtos?novo=1">
+            Cadastrar produto <ArrowRight size={16} />
+          </Link>
+        );
+      case "publicar":
+        return (
+          <button
+            className="btn primary"
+            disabled={task.busy || !hasCategory || !hasProduct}
+            onClick={publish}
+          >
+            {task.busy ? "Publicando…" : "Publicar agora"}
+          </button>
+        );
+      default:
+        return (
+          <div className="row wrap-row">
+            <button className="btn primary" onClick={copy}>
+              {copied ? <Check size={16} /> : <LinkIcon size={16} />}
+              {copied ? "Link copiado" : "Copiar link"}
+            </button>
+            <button className="btn secondary" onClick={share}>
+              <Share2 size={16} />
+              Compartilhar
+            </button>
+          </div>
+        );
+    }
+  }
+  if (!current) {
+    // Tudo pronto. Com poucos produtos, um lembrete discreto para completar.
+    if (activeProducts.length >= 3) return null;
+    return (
+      <div className="tip-banner">
+        <div>
+          <b>
+            {activeProducts.length === 1
+              ? "Sua loja tem 1 produto ativo."
+              : `Sua loja tem ${activeProducts.length} produtos ativos.`}
+          </b>
+          <p>Cadastre mais produtos para seus clientes terem mais opções.</p>
+        </div>
+        <Link className="btn secondary small" href="/app/produtos?novo=1">
+          Cadastrar produto
+        </Link>
+      </div>
+    );
+  }
+  return (
+    <section className="getting-started" aria-label="Primeiros passos">
+      <div className="gs-head">
+        <div>
+          <span className="eyebrow">PRIMEIROS PASSOS</span>
+          <h2>
+            {hasProduct
+              ? "Falta pouco para receber pedidos."
+              : "Cadastre seu primeiro produto para começar a vender."}
+          </h2>
+        </div>
+        <span className="gs-count">
+          {doneCount} de {steps.length}
+        </span>
+      </div>
+      <div
+        className="gs-progress"
+        role="progressbar"
+        aria-valuemin={0}
+        aria-valuemax={steps.length}
+        aria-valuenow={doneCount}
+        aria-label="Progresso dos primeiros passos"
+      >
+        <i style={{ width: (doneCount / steps.length) * 100 + "%" }} />
+      </div>
+      <div className="gs-current">
+        <span className="gs-step-number">
+          {steps.indexOf(current) + 1}
+        </span>
+        <div>
+          <b>{current.title}</b>
+          <p>{current.text}</p>
+          {current.key === "publicar" && (!hasCategory || !hasProduct) && (
+            <p className="muted">Conclua os passos anteriores para publicar.</p>
+          )}
+        </div>
+        <div className="gs-action">{action(current.key)}</div>
+      </div>
+      {task.feedback}
+      <ol className="gs-steps">
+        {steps.map((step, i) => (
+          <li
+            key={step.key}
+            className={
+              step.done ? "done" : step === current ? "current" : undefined
+            }
+          >
+            <span>{step.done ? <Check size={13} /> : i + 1}</span>
+            {step.title}
+          </li>
+        ))}
+      </ol>
+    </section>
   );
 }
 function Plans({ data }: { data: DashboardData }) {
