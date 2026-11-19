@@ -36,18 +36,21 @@ export function AuthForm({
       const origin = window.location.origin;
       let error;
       if (mode === "signup") {
-        const r = await db.auth.signUp({
-          email: v.email,
-          password: v.password,
-          options: { emailRedirectTo: origin + "/auth/callback" },
+        const res = await fetch("/api/public/signup", {
+          method: "POST",
+          headers: { "Content-Type": "application/json" },
+          body: JSON.stringify(v),
         });
+        if (!res.ok) {
+          const body = await res.json().catch(() => ({}));
+          setNotice(body.error || "Não foi possível criar a conta. Tente novamente.");
+          return;
+        }
+        const r = await db.auth.signInWithPassword(v);
         error = r.error;
         if (!error) {
-          if (r.data.session) {
-            window.location.assign("/onboarding");
-            return;
-          }
-          setNotice("Conta criada. Entre para continuar.");
+          window.location.assign("/onboarding");
+          return;
         }
       } else if (mode === "login") {
         const r = await db.auth.signInWithPassword(v);
