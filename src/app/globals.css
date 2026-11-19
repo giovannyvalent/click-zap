@@ -3377,3 +3377,39 @@ td small {
     padding: 8px;
   }
 }
+
+/* Produto: criar categoria sem sair do formulário */
+.inline-create {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+  margin-top: 8px;
+  padding: 12px;
+  border: 1px dashed #bfd6c4;
+  border-radius: 10px;
+  background: #f5faf5;
+}
+.inline-create-row {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+.inline-create-row input {
+  flex: 1;
+  min-width: 0;
+}
+.inline-create-row .btn {
+  flex-shrink: 0;
+  min-height: 40px;
+}
+@media (max-width: 420px) {
+  .inline-create-row {
+    flex-wrap: wrap;
+  }
+  .inline-create-row input {
+    flex-basis: 100%;
+  }
+  .inline-create-row .btn {
+    flex: 1;
+  }
+}

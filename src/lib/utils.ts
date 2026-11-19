@@ -7,6 +7,26 @@ export const slugify = (s: string) =>
     .toLowerCase()
     .replace(/[^a-z0-9]+/g, "-")
     .replace(/^-|-$/g, "");
+export const RESERVED_SLUGS = [
+  "app",
+  "entrar",
+  "cadastro",
+  "precos",
+  "api",
+  "admin",
+  "loja",
+  "suporte",
+  "onboarding",
+];
+// Slug válido (3+ caracteres, não reservado) e que não colide com os já usados.
+export function uniqueSlug(name: string, taken: string[]) {
+  let base = slugify(name).slice(0, 50) || "categoria";
+  if (base.length < 3) base = (base + "-cat").replace(/^-/, "");
+  let slug = base;
+  for (let n = 2; RESERVED_SLUGS.includes(slug) || taken.includes(slug); n++)
+    slug = `${base}-${n}`;
+  return slug;
+}
 export const phone = (s: string) => {
   const d = s.replace(/\D/g, "");
   return d.length === 10 || d.length === 11 ? "55" + d : d;

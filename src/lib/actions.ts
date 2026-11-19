@@ -135,10 +135,12 @@ export async function saveCategory(id: string | null, input: unknown) {
           .eq("id", z.uuid().parse(id))
           .eq("business_id", business.id)
       : db.from("categories").insert({ ...v, business_id: business.id });
-    const { error } = await query;
+    const { data, error } = await query.select("id").single();
     fail(error);
     revalidatePath("/app");
     revalidatePath("/loja/" + business.slug);
+    // Devolve o id para o cadastro de produto já selecionar a categoria nova.
+    return data!.id as string;
   });
 }
 export async function deleteCategory(id: string) {

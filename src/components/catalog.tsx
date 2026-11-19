@@ -27,11 +27,12 @@ import {
   archiveProduct,
   savePhotos,
 } from "@/lib/actions";
-import { money, slugify } from "@/lib/utils";
+import { money, slugify, uniqueSlug } from "@/lib/utils";
 import { Modal, Empty, useTask, SaveButton } from "./ui";
 import { uploadImage } from "@/lib/upload";
 import { unwrap } from "@/lib/action-result";
 import { MoneyInput, Select, PhotoDropzone } from "./form-controls";
+const NEW_CATEGORY = "__nova_categoria__";
 export function Categories({ data }: { data: DashboardData }) {
   const [edit, setEdit] = useState<Category | null | undefined>();
   const [search, setSearch] = useState("");
@@ -266,11 +267,7 @@ export function Products({ data }: { data: DashboardData }) {
           </h1>
           <p>Monte uma vitrine que dá vontade de explorar.</p>
         </div>
-        <button
-          className="btn primary"
-          onClick={openNewProduct}
-          disabled={!data.categories.length}
-        >
+        <button className="btn primary" onClick={openNewProduct}>
           <Plus size={16} />
           {atLimit ? "Fazer upgrade" : "Novo produto"}
         </button>
@@ -381,25 +378,19 @@ export function Products({ data }: { data: DashboardData }) {
         <section className="panel">
           <Empty
             title={
-              data.categories.length
-                ? "Sua vitrine está esperando"
-                : "Primeiro, crie uma categoria"
+              data.products.length
+                ? "Nenhum produto com esses filtros"
+                : "Sua vitrine está esperando"
             }
             description={
               data.categories.length
                 ? "Cadastre seus produtos com fotos, descrição e preço."
-                : "As categorias organizam seus produtos na loja."
+                : "Cadastre o primeiro produto. A categoria você cria no próprio formulário."
             }
           >
-            {data.categories.length ? (
-              <button className="btn primary" onClick={openNewProduct}>
-                {atLimit ? "Fazer upgrade" : "Cadastrar produto"}
-              </button>
-            ) : (
-              <a className="btn primary" href="/app/categorias">
-                Criar categoria
-              </a>
-            )}
+            <button className="btn primary" onClick={openNewProduct}>
+              {atLimit ? "Fazer upgrade" : "Cadastrar produto"}
+            </button>
           </Empty>
         </section>
       )}
@@ -432,7 +423,18 @@ function ProductEditor({
   );
   const [files, setFiles] = useState<File[]>([]);
   const [fileError, setFileError] = useState("");
-  const { register, handleSubmit, control } = useForm({
+  // Categorias criadas aqui entram na lista na hora, sem fechar o formulário.
+  const [cats, setCats] = useState<Category[]>(data.categories);
+  const [creatingCat, setCreatingCat] = useState(!data.categories.length);
+  const [newCat, setNewCat] = useState("");
+  const catTask = useTask();
+  const {
+    register,
+    handleSubmit,
+    control,
+    setValue,
+    formState: { errors },
+  } = useForm({
     defaultValues: {
       name: value?.name || "",
       category_id: value?.category_id || data.categories[0]?.id || "",
@@ -463,6 +465,44 @@ function ProductEditor({
     }
     setFileError("");
     setFiles([...files, ...added]);
+  }
+  async function createCategory() {
+    const name = newCat.trim();
+    if (name.length < 2) return;
+    const existing = cats.find(
+      (c) => c.name.trim().toLowerCase() === name.toLowerCase(),
+    );
+    if (existing) {
+      setValue("category_id", existing.id, { shouldValidate: true });
+      setCreatingCat(false);
+      setNewCat("");
+      return;
+    }
+    await catTask.run(async () => {
+      const slug = uniqueSlug(
+        name,
+        cats.map((c) => c.slug),
+      );
+      const sort_order = cats.length;
+      const id = unwrap(
+        await saveCategory(null, { name, slug, active: true, sort_order }),
+      );
+      setCats((prev) => [
+        ...prev,
+        {
+          id,
+          business_id: data.business.id,
+          name,
+          slug,
+          active: true,
+          sort_order,
+        },
+      ]);
+      setValue("category_id", id, { shouldValidate: true });
+      setCreatingCat(false);
+      setNewCat("");
+      router.refresh();
+    }, `Categoria "${name}" criada e selecionada.`);
   }
   function reorder(i: number, d: number) {
     const copy = [...photos];
@@ -572,16 +612,85 @@ function ProductEditor({
                 <Select
                   label="Categoria"
                   value={field.value}
-                  onChange={field.onChange}
-                  placeholder="Selecione uma categoria"
-                  options={data.categories.map((c) => ({
-                    value: c.id,
-                    label: c.name,
-                    hint: c.active ? undefined : "inativa",
-                  }))}
+                  onChange={(v) => {
+                    if (v === NEW_CATEGORY) setCreatingCat(true);
+                    else {
+                      field.onChange(v);
+                      setCreatingCat(false);
+                    }
+                  }}
+                  placeholder={
+                    cats.length
+                      ? "Selecione uma categoria"
+                      : "Crie a primeira categoria"
+                  }
+                  options={[
+                    ...cats.map((c) => ({
+                      value: c.id,
+                      label: c.name,
+                      hint: c.active ? undefined : "inativa",
+                    })),
+                    { value: NEW_CATEGORY, label: "+ Nova categoria" },
+                  ]}
                 />
               )}
             />
+            {creatingCat && (
+              <div className="inline-create">
+                {!cats.length && (
+                  <small className="muted">
+                    Sua loja ainda não tem categorias. Crie a primeira aqui
+                    mesmo (por exemplo, Roupas ou Bolos).
+                  </small>
+                )}
+                <div className="inline-create-row">
+                  <input
+                    aria-label="Nome da nova categoria"
+                    placeholder="Nome da nova categoria"
+                    maxLength={80}
+                    autoFocus={cats.length > 0}
+                    value={newCat}
+                    disabled={catTask.busy}
+                    onChange={(e) => setNewCat(e.target.value)}
+                    onKeyDown={(e) => {
+                      if (e.key === "Enter") {
+                        e.preventDefault();
+                        createCategory();
+                      }
+                    }}
+                  />
+                  <button
+                    type="button"
+                    className="btn primary small"
+                    disabled={catTask.busy || newCat.trim().length < 2}
+                    onClick={createCategory}
+                  >
+                    {catTask.busy ? "Criando…" : "Criar"}
+                  </button>
+                  {cats.length > 0 && (
+                    <button
+                      type="button"
+                      className="btn secondary small"
+                      disabled={catTask.busy}
+                      onClick={() => {
+                        setCreatingCat(false);
+                        setNewCat("");
+                      }}
+                    >
+                      Cancelar
+                    </button>
+                  )}
+                </div>
+              </div>
+            )}
+            {catTask.feedback}
+            {errors.category_id && (
+              <p className="notice error" role="alert">
+                {creatingCat
+                  ? "Crie a categoria antes de salvar o produto."
+                  : "Escolha uma categoria ou crie uma nova."}
+              </p>
+            )}
           </div>
           <div className="field">
             <label htmlFor="product-price">Preço</label>

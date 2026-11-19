@@ -1,5 +1,5 @@
 import { z } from "zod";
-import { phone } from "./utils";
+import { phone, RESERVED_SLUGS } from "./utils";
 export const phoneSchema = z
   .string()
   .transform(phone)
@@ -9,21 +9,7 @@ export const slugSchema = z
   .min(3)
   .max(60)
   .regex(/^[a-z0-9-]+$/, "Use letras minúsculas, números e hífen.")
-  .refine(
-    (s) =>
-      ![
-        "app",
-        "entrar",
-        "cadastro",
-        "precos",
-        "api",
-        "admin",
-        "loja",
-        "suporte",
-        "onboarding",
-      ].includes(s),
-    "Endereço reservado.",
-  );
+  .refine((s) => !RESERVED_SLUGS.includes(s), "Endereço reservado.");
 export const businessSchema = z.object({
   name: z.string().trim().min(2).max(100),
   slug: slugSchema,
