@@ -3947,9 +3947,8 @@ td small {
 }
 .color-row {
   display: grid;
-  grid-template-columns: minmax(0, 1fr) minmax(0, 1.3fr);
+  grid-template-columns: 1fr;
   gap: 12px;
-  align-items: end;
 }
 .color-field > span {
   display: flex;
@@ -4122,11 +4121,13 @@ td small {
     display: none;
   }
   .sf-grid3 .store-product-body .row {
+    flex-wrap: wrap;
     margin-top: 8px;
     gap: 4px;
   }
   .sf-grid3 .store-product-body strong {
-    font-size: 12px;
+    font-size: 11.5px;
+    white-space: nowrap;
   }
   .sf-grid3 .store-add {
     min-height: 28px;
@@ -4148,4 +4149,9 @@ td small {
   .sf-cards .store-product-body p {
     font-size: 12px;
   }
+}
+
+/* Painel com overflow hidden vira container do sticky; a barra de salvar precisa da viewport. */
+.designer-controls.panel {
+  overflow: visible;
 }
