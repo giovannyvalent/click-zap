@@ -568,24 +568,6 @@
 .assinar-landing .astep-icon-blue svg { color: var(--c-blue); }
 .assinar-landing .astep-icon-purple { background: var(--c-purple-soft); }
 .assinar-landing .astep-icon-purple svg { color: var(--c-purple); }
-.assinar-landing .astep-shot {
-  width: 84px;
-  height: 104px;
-  margin: 0 auto 18px;
-  border-radius: 14px;
-  overflow: hidden;
-  box-shadow: 0 14px 28px rgba(10, 30, 20, 0.18);
-  transition: transform 0.25s ease;
-}
-.assinar-landing .astep:hover .astep-shot {
-  transform: scale(1.06);
-}
-.assinar-landing .astep-shot img {
-  width: 100%;
-  height: 100%;
-  object-fit: cover;
-  object-position: top;
-}
 .assinar-landing .astep h3 {
   font-size: 16px;
   margin: 0 0 8px;
@@ -909,30 +891,31 @@
   padding: 40px 48px;
   display: flex;
   align-items: center;
-  justify-content: space-between;
-  gap: 24px;
+  justify-content: center;
+  gap: 48px;
   color: #fff;
+}
+.assinar-landing .astart-text {
+  max-width: 460px;
 }
 .assinar-landing .astart-text h2 {
   font-size: clamp(22px, 2.6vw, 30px);
   margin: 0;
   letter-spacing: -0.02em;
   line-height: 1.15;
-  max-width: 460px;
 }
 .assinar-landing .astart-text p {
   margin-top: 10px;
   color: #d3e4da;
   font-size: 13.5px;
   line-height: 1.6;
-  max-width: 420px;
 }
 .assinar-landing .astart-text .abtn {
   margin-top: 18px;
 }
 .assinar-landing .astart-shot {
   flex-shrink: 0;
-  width: 130px;
+  width: 190px;
 }
 .assinar-landing .astart-shot img {
   width: 100%;

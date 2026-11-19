@@ -124,7 +124,7 @@ const html = `
       <div class="astep-line"></div>
       <div class="astep">
         <span class="astep-num">2</span>
-        <div class="astep-shot"><img src="/images/assinar/vitrine-mobile.webp" width="760" height="950" alt="Vitrine pública do ClickZap aberta no celular, com a lista de produtos e o botão de adicionar ao carrinho" loading="lazy" /></div>
+        <div class="astep-icon astep-icon-purple">${iconLink}</div>
         <h3>Compartilhe o link</h3>
         <p>Divulgue o link da sua loja no WhatsApp, Instagram ou onde seus clientes já estão.</p>
       </div>
