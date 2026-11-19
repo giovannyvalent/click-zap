@@ -1,5 +1,5 @@
 "use client";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import {
   DndContext,
@@ -460,11 +460,39 @@ function OrderCard({
 }) {
   const { attributes, listeners, setNodeRef, transform, isDragging } =
     useDraggable({ id: o.id, disabled });
+  // Evita abrir o detalhe no clique que encerra um arraste.
+  const dragged = useRef(false);
+  useEffect(() => {
+    if (isDragging) dragged.current = true;
+    else {
+      const t = setTimeout(() => (dragged.current = false), 0);
+      return () => clearTimeout(t);
+    }
+  }, [isDragging]);
+  // Botões e links do card fazem a própria ação e não abrem o detalhe.
+  const own = (e: { stopPropagation: () => void }) => e.stopPropagation();
+  function openFromCard(e: React.MouseEvent<HTMLElement>) {
+    if (dragged.current || isDragging) return;
+    if ((e.target as HTMLElement).closest("a,button,input,select,textarea"))
+      return;
+    open();
+  }
   return (
     <article
       ref={setNodeRef}
-      className={"order-card " + (isDragging ? "dragging" : "")}
+      className={"order-card clickable " + (isDragging ? "dragging" : "")}
       style={{ transform: CSS.Translate.toString(transform) }}
+      role="button"
+      tabIndex={0}
+      aria-label={`Abrir pedido #${o.order_number} de ${o.customer_name}`}
+      onClick={openFromCard}
+      onKeyDown={(e) => {
+        if (e.target !== e.currentTarget) return;
+        if (e.key === "Enter" || e.key === " ") {
+          e.preventDefault();
+          open();
+        }
+      }}
     >
       <div className="row between">
         <span className="order-number">#{o.order_number}</span>
@@ -473,13 +501,16 @@ function OrderCard({
           aria-label={"Arrastar pedido " + o.order_number}
           {...listeners}
           {...attributes}
+          onClick={own}
+          onKeyDown={(e) => {
+            e.stopPropagation();
+            listeners?.onKeyDown?.(e);
+          }}
         >
           <GripVertical size={17} />
         </button>
       </div>
-      <button className="order-title" onClick={open}>
-        {o.customer_name}
-      </button>
+      <span className="order-title">{o.customer_name}</span>
       <small className="muted">{o.customer_phone}</small>
       <div className="order-value">
         <b>{money(o.total)}</b>
@@ -498,10 +529,20 @@ function OrderCard({
           href={customerLink(o)}
           target="_blank"
           rel="noreferrer"
+          onClick={own}
+          onKeyDown={own}
         >
           <MessageCircle size={15} />
         </a>
-        <button className="iconbtn" aria-label="Detalhes" onClick={open}>
+        <button
+          className="iconbtn"
+          aria-label="Detalhes"
+          onClick={(e) => {
+            e.stopPropagation();
+            open();
+          }}
+          onKeyDown={own}
+        >
           <Eye size={15} />
         </button>
         <div className="row">
@@ -509,9 +550,11 @@ function OrderCard({
             <button
               disabled={disabled}
               className="btn secondary tiny"
-              onClick={() =>
-                move(o.id, o.status === "completed" ? "conversation" : "new")
-              }
+              onKeyDown={own}
+              onClick={(e) => {
+                e.stopPropagation();
+                move(o.id, o.status === "completed" ? "conversation" : "new");
+              }}
             >
               <ArrowLeft size={12} />
               Voltar
@@ -521,9 +564,11 @@ function OrderCard({
             <button
               disabled={disabled}
               className="btn secondary tiny"
-              onClick={() =>
-                move(o.id, o.status === "new" ? "conversation" : "completed")
-              }
+              onKeyDown={own}
+              onClick={(e) => {
+                e.stopPropagation();
+                move(o.id, o.status === "new" ? "conversation" : "completed");
+              }}
             >
               Avançar
               <ArrowRight size={12} />

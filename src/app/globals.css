@@ -3325,3 +3325,55 @@ td small {
 .pending-photo .thumb-remove:hover {
   background: #d23b3b;
 }
+
+/* Pedidos: card inteiro abre o detalhe */
+.order-card.clickable {
+  cursor: pointer;
+  transition: border-color 0.15s, box-shadow 0.15s;
+}
+.order-card.clickable:hover {
+  border-color: #c7d6c3;
+  box-shadow: 0 6px 16px #14290810;
+}
+.order-card.clickable:focus-visible {
+  outline: 2px solid var(--green);
+  outline-offset: 2px;
+}
+.order-card .order-title {
+  color: inherit;
+}
+.order-card a,
+.order-card button {
+  cursor: pointer;
+}
+.order-card .drag-handle {
+  cursor: grab;
+  padding: 6px;
+  margin: -6px -6px -6px 0;
+}
+@media (max-width: 650px) {
+  .kanban {
+    grid-template-columns: repeat(3, minmax(270px, 86%));
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+    overscroll-behavior-x: contain;
+  }
+  .kanban-column {
+    scroll-snap-align: start;
+    min-height: 300px;
+  }
+  .order-card {
+    padding: 14px;
+  }
+  .order-card footer .iconbtn {
+    width: 36px;
+    height: 36px;
+  }
+  .order-card footer .btn.tiny {
+    min-height: 36px;
+    padding: 6px 10px;
+  }
+  .order-card .drag-handle {
+    padding: 8px;
+  }
+}
