@@ -164,14 +164,16 @@ const html = `
   <div class="acontainer acompare-grid" data-reveal-stagger>
     <div class="acompare-col acompare-bad">
       <b>Sem o ClickZap</b>
+      <span class="acompare-caption">Cliente pergunta tudo pelo WhatsApp, um por um</span>
       <div class="achat">
         <span class="abubble">Quanto tá a bolsa?</span>
         <span class="abubble">Tem em preto?</span>
-        <span class="abubble">Quanto fica tudo?</span>
+        <span class="abubble">Quanto fica tudo com a vela?</span>
       </div>
     </div>
     <div class="acompare-col acompare-good">
       <b>Com o ClickZap</b>
+      <span class="acompare-caption">Pedido chega pronto, direto no WhatsApp</span>
       <div class="achat">
         <span class="abubble-order">1× Kit Essencial · R$ 89</span>
         <span class="abubble-order">1× Bolsa Minimal · R$ 129</span>
@@ -194,11 +196,16 @@ const html = `
         <p>Seu cliente escolhe os produtos, monta o carrinho e vê subtotal, entrega e total antes de falar com você. O pedido chega pronto para a conversa continuar.</p>
       </div>
       <div class="aalt-media">
-        <div style="width:100%;max-width:280px;background:#fff;border-radius:16px;padding:14px;box-shadow:0 20px 40px rgba(10,30,20,.12)">
-          <div style="background:#111;border-radius:10px;padding:10px;color:#fff;font-size:9px;font-weight:700">Subtotal <b style="float:right">R$ 218</b></div>
-          <div style="margin-top:8px;font-size:9px;font-weight:700;display:flex;justify-content:space-between;padding:6px 0;border-bottom:1px solid #eef1ec"><span>1x Kit Essencial</span><b>R$ 89</b></div>
-          <div style="font-size:9px;font-weight:700;display:flex;justify-content:space-between;padding:6px 0"><span>1x Bolsa Minimal</span><b>R$ 129</b></div>
-          <div style="margin-top:8px;background:#0f4d33;color:#fff;text-align:center;border-radius:9px;padding:9px;font-size:9px;font-weight:700">${waIcon} Enviar pedido</div>
+        <div style="width:100%;max-width:360px;background:#fff;border-radius:18px;padding:18px;box-shadow:0 20px 40px rgba(10,30,20,.12)">
+          <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px">
+            <b style="font-size:12px">Minha Loja</b>
+            <span style="background:#f3f5f2;color:#0f4d33;font-size:9px;font-weight:700;padding:5px 9px;border-radius:7px">Sacola · 2</span>
+          </div>
+          <div style="background:#111;border-radius:10px;padding:12px;color:#fff;font-size:10px;font-weight:700">Subtotal <b style="float:right">R$ 218</b></div>
+          <div style="margin-top:10px;font-size:10px;font-weight:700;display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eef1ec"><span>1x Kit Essencial</span><b>R$ 89</b></div>
+          <div style="font-size:10px;font-weight:700;display:flex;justify-content:space-between;padding:8px 0;border-bottom:1px solid #eef1ec"><span>1x Bolsa Minimal</span><b>R$ 129</b></div>
+          <div style="font-size:10px;font-weight:700;display:flex;justify-content:space-between;padding:8px 0;color:#8a938c"><span>Entrega</span><b>A combinar</b></div>
+          <div style="margin-top:10px;background:#0f4d33;color:#fff;text-align:center;border-radius:10px;padding:11px;font-size:10px;font-weight:700;display:flex;align-items:center;justify-content:center;gap:6px">${waIcon} Enviar pedido</div>
         </div>
       </div>
     </div>
@@ -208,10 +215,24 @@ const html = `
     <span class="aicon-badge aicon-badge-blue">${iconGrid}</span>
     <div class="aalt-grid reverse">
       <div class="aalt-media">
-        <div style="width:100%;display:grid;grid-template-columns:repeat(3,1fr);gap:8px">
-          <div style="background:#fff;border-radius:12px;padding:8px;box-shadow:0 10px 24px rgba(10,30,20,.08)"><small style="font-size:7px;font-weight:800;color:#8a938c;text-transform:uppercase">Novo</small><div style="margin-top:6px;background:#f3f5f2;border-radius:8px;padding:7px;font-size:8px;font-weight:700">#1048 · Bianca<br><span style="color:#677069;font-weight:600">R$ 218</span></div></div>
-          <div style="background:#fff;border-radius:12px;padding:8px;box-shadow:0 10px 24px rgba(10,30,20,.08)"><small style="font-size:7px;font-weight:800;color:#8a938c;text-transform:uppercase">Em conversa</small><div style="margin-top:6px;background:#f3f5f2;border-radius:8px;padding:7px;font-size:8px;font-weight:700">#1047 · Marcos<br><span style="color:#677069;font-weight:600">R$ 129</span></div></div>
-          <div style="background:#fff;border-radius:12px;padding:8px;box-shadow:0 10px 24px rgba(10,30,20,.08)"><small style="font-size:7px;font-weight:800;color:#8a938c;text-transform:uppercase">Concluído</small><div style="margin-top:6px;background:#dcebe1;border-radius:8px;padding:7px;font-size:8px;font-weight:700">#1045 · Vendido<br><span style="color:#677069;font-weight:600">R$ 180</span></div></div>
+        <div style="width:100%">
+          <b style="display:block;font-size:11px;margin-bottom:10px;color:#1b2420">Central de pedidos</b>
+          <div style="display:grid;grid-template-columns:repeat(3,1fr);gap:10px">
+            <div style="background:#fff;border-radius:14px;padding:10px;box-shadow:0 10px 24px rgba(10,30,20,.08)">
+              <small style="font-size:8px;font-weight:800;color:#8a938c;text-transform:uppercase">Novo</small>
+              <div style="margin-top:8px;background:#f3f5f2;border-radius:9px;padding:9px;font-size:9.5px;font-weight:700">#1048 · Bianca<br><span style="color:#677069;font-weight:600">R$ 218</span></div>
+              <div style="margin-top:6px;background:#f3f5f2;border-radius:9px;padding:9px;font-size:9.5px;font-weight:700">#1046 · Paula<br><span style="color:#677069;font-weight:600">R$ 89</span></div>
+            </div>
+            <div style="background:#fff;border-radius:14px;padding:10px;box-shadow:0 10px 24px rgba(10,30,20,.08)">
+              <small style="font-size:8px;font-weight:800;color:#8a938c;text-transform:uppercase">Em conversa</small>
+              <div style="margin-top:8px;background:#f3f5f2;border-radius:9px;padding:9px;font-size:9.5px;font-weight:700">#1047 · Marcos<br><span style="color:#677069;font-weight:600">R$ 129</span></div>
+            </div>
+            <div style="background:#fff;border-radius:14px;padding:10px;box-shadow:0 10px 24px rgba(10,30,20,.08)">
+              <small style="font-size:8px;font-weight:800;color:#8a938c;text-transform:uppercase">Concluído</small>
+              <div style="margin-top:8px;background:#dcebe1;border-radius:9px;padding:9px;font-size:9.5px;font-weight:700">#1045 · Vendido<br><span style="color:#677069;font-weight:600">R$ 180</span></div>
+              <div style="margin-top:6px;background:#dcebe1;border-radius:9px;padding:9px;font-size:9.5px;font-weight:700">#1044 · Vendido<br><span style="color:#677069;font-weight:600">R$ 249</span></div>
+            </div>
+          </div>
         </div>
       </div>
       <div class="aalt-text">
@@ -234,9 +255,9 @@ const html = `
           <div style="margin-top:22px"><a href="#planos" class="abtn abtn-white">Escolher meu plano</a></div>
         </div>
         <div class="aaudience-cards">
-          <article class="aaudience-card"><div class="aaud-ic aaud-ic-teal">${iconSeedling}</div><b>Para validar sua ideia</b><p>Plano Start, grátis. Até 10 produtos pra colocar sua loja no ar sem gastar nada.</p></article>
-          <article class="aaudience-card"><div class="aaud-ic aaud-ic-blue">${iconTrend}</div><b>Para o catálogo crescer</b><p>Plano Plus, R$ 29,90/mês. Até 100 produtos pra quem já tem clientes.</p></article>
-          <article class="aaudience-card"><div class="aaud-ic aaud-ic-coral">${iconRocket}</div><b>Para operar em escala</b><p>Plano Pro, R$ 59,90/mês. Até 1000 produtos pra operações maiores.</p></article>
+          <article class="aaudience-card"><div class="aaud-ic aaud-ic-teal">${iconSeedling}</div><b>Para validar sua ideia</b><p>Comece sem gastar nada e veja se o seu produto vende antes de investir mais.</p></article>
+          <article class="aaudience-card"><div class="aaud-ic aaud-ic-blue">${iconTrend}</div><b>Para o catálogo crescer</b><p>Automatize o que hoje você faz na mão, à medida que os pedidos aumentam.</p></article>
+          <article class="aaudience-card"><div class="aaud-ic aaud-ic-coral">${iconRocket}</div><b>Para operar em escala</b><p>Centralize um catálogo grande sem perder a organização do atendimento.</p></article>
         </div>
       </div>
     </div>
