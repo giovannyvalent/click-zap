@@ -915,7 +915,7 @@
 }
 .assinar-landing .astart-shot {
   flex-shrink: 0;
-  width: 190px;
+  width: 300px;
 }
 .assinar-landing .astart-shot img {
   width: 100%;
@@ -1372,6 +1372,9 @@
   }
   .assinar-landing .astart-text p {
     max-width: none;
+  }
+  .assinar-landing .astart-shot {
+    width: 220px;
   }
   .assinar-landing .afinal-panel.afinal-with-photo {
     grid-template-columns: 1fr;
