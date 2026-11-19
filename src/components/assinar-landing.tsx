@@ -82,40 +82,7 @@ const html = `
           <div class="ahero-note">${check} Grátis para sempre no Start · Sem cartão de crédito</div>
         </div>
         <div class="ahero-visual">
-          <div class="ahero-browser">
-            <div class="ahero-browser-top"><i></i><i></i><i></i></div>
-            <div style="padding:16px">
-              <div style="display:flex;justify-content:space-between;align-items:center">
-                <b style="font-size:12px">Minha Loja</b>
-                <span style="background:#111;color:#fff;font-size:9px;font-weight:700;padding:7px 9px;border-radius:8px">Sacola · 2</span>
-              </div>
-              <div style="margin-top:12px;background:#111;border-radius:14px;padding:16px;color:#fff">
-                <small style="font-size:9px;font-weight:700;color:#9ae8c3">COLEÇÃO NOVA</small>
-                <div style="font-size:18px;font-weight:800;margin-top:4px;letter-spacing:-0.03em">Escolha.<br>Peça no WhatsApp.</div>
-              </div>
-              <div style="display:grid;grid-template-columns:1fr 1fr;gap:8px;margin-top:12px">
-                <div style="border:1px solid #eef1ec;border-radius:12px;padding:8px">
-                  <div style="height:70px;border-radius:9px;background:linear-gradient(135deg,#dcebe1,#f3f5f2)"></div>
-                  <b style="display:block;font-size:10px;margin-top:8px">Kit Essencial</b>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><strong style="font-size:11px">R$ 89</strong><span style="background:#0f4d33;color:#fff;font-size:8px;padding:5px 7px;border-radius:7px">Adicionar</span></div>
-                </div>
-                <div style="border:1px solid #eef1ec;border-radius:12px;padding:8px">
-                  <div style="height:70px;border-radius:9px;background:linear-gradient(135deg,#eef1ee,#dde3dd)"></div>
-                  <b style="display:block;font-size:10px;margin-top:8px">Bolsa Minimal</b>
-                  <div style="display:flex;justify-content:space-between;align-items:center;margin-top:6px"><strong style="font-size:11px">R$ 129</strong><span style="background:#0f4d33;color:#fff;font-size:8px;padding:5px 7px;border-radius:7px">Adicionar</span></div>
-                </div>
-              </div>
-            </div>
-          </div>
-          <div class="ahero-phone">
-            <div class="ahero-phone-screen">
-              <div style="text-align:center;font-size:9px;color:#8a938c;font-weight:700">Seu pedido</div>
-              <div style="text-align:center;font-size:24px;font-weight:800;margin:6px 0 10px;letter-spacing:-0.03em">R$ 218</div>
-              <div style="background:#f3f5f2;border-radius:10px;padding:9px;font-size:9px;font-weight:700;display:flex;justify-content:space-between;margin-top:6px"><span>1x Kit Essencial</span><b>R$ 89</b></div>
-              <div style="background:#f3f5f2;border-radius:10px;padding:9px;font-size:9px;font-weight:700;display:flex;justify-content:space-between;margin-top:6px"><span>1x Bolsa Minimal</span><b>R$ 129</b></div>
-              <div style="background:#0f4d33;color:#fff;border-radius:10px;padding:11px;text-align:center;font-size:9px;font-weight:700;margin-top:12px;display:flex;align-items:center;justify-content:center;gap:6px">${waIcon} Enviar no WhatsApp</div>
-            </div>
-          </div>
+          <img class="ahero-shot" src="/images/assinar/hero-pedido.webp" width="1200" height="900" alt="Celular com o catálogo e carrinho do ClickZap ao lado do WhatsApp mostrando o pedido com itens, quantidades e total preenchidos" loading="eager" fetchpriority="high" />
           <div class="achips">
             <span class="achip">${check} Sem taxas sobre as vendas</span>
             <span class="achip">${check} Fácil de montar sozinho</span>
@@ -157,7 +124,7 @@ const html = `
       <div class="astep-line"></div>
       <div class="astep">
         <span class="astep-num">2</span>
-        <div class="astep-icon astep-icon-purple">${iconLink}</div>
+        <div class="astep-shot"><img src="/images/assinar/vitrine-mobile.webp" width="760" height="950" alt="Vitrine pública do ClickZap aberta no celular, com a lista de produtos e o botão de adicionar ao carrinho" loading="lazy" /></div>
         <h3>Compartilhe o link</h3>
         <p>Divulgue o link da sua loja no WhatsApp, Instagram ou onde seus clientes já estão.</p>
       </div>
@@ -192,26 +159,24 @@ const html = `
   <span class="ablob ablob-purple" style="width:260px;height:260px;top:10%;left:-70px"></span>
   <div class="acontainer acenter">
     <span class="akicker" data-reveal>Antes e depois</span>
-    <h2 class="atitle" data-reveal>Pare de perder pedido no <span class="accent">meio da conversa</span></h2>
+    <h2 class="atitle" data-reveal>Veja a diferença quando o pedido já chega <span class="accent">montado</span></h2>
   </div>
   <div class="acontainer acompare-grid" data-reveal-stagger>
     <div class="acompare-col acompare-bad">
       <b>Sem o ClickZap</b>
-      <ul>
-        <li>Cliente manda foto por foto perguntando preço</li>
-        <li>Você perde o fio de vários pedidos ao mesmo tempo</li>
-        <li>Soma o pedido na mão e às vezes erra o valor</li>
-        <li>Catálogo em PDF ou álbum, difícil de manter atualizado</li>
-      </ul>
+      <div class="achat">
+        <span class="abubble">Quanto tá a bolsa?</span>
+        <span class="abubble">Tem em preto?</span>
+        <span class="abubble">Quanto fica tudo?</span>
+      </div>
     </div>
     <div class="acompare-col acompare-good">
       <b>Com o ClickZap</b>
-      <ul>
-        <li>${check} Cliente monta o carrinho sozinho na sua loja</li>
-        <li>${check} Pedido chega pronto, com itens e total já calculados</li>
-        <li>${check} Central de pedidos organiza tudo em um só lugar</li>
-        <li>${check} Catálogo online, você atualiza em segundos</li>
-      </ul>
+      <div class="achat">
+        <span class="abubble-order">1× Kit Essencial · R$ 89</span>
+        <span class="abubble-order">1× Bolsa Minimal · R$ 129</span>
+        <span class="abubble-total">Total: R$ 218</span>
+      </div>
     </div>
   </div>
 </section>
@@ -273,6 +238,21 @@ const html = `
           <article class="aaudience-card"><div class="aaud-ic aaud-ic-blue">${iconTrend}</div><b>Para o catálogo crescer</b><p>Plano Plus, R$ 29,90/mês. Até 100 produtos pra quem já tem clientes.</p></article>
           <article class="aaudience-card"><div class="aaud-ic aaud-ic-coral">${iconRocket}</div><b>Para operar em escala</b><p>Plano Pro, R$ 59,90/mês. Até 1000 produtos pra operações maiores.</p></article>
         </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="astart-banner-section">
+  <div class="acontainer">
+    <div class="astart-banner" data-reveal>
+      <div class="astart-text">
+        <h2>Coloque seus primeiros 10 produtos no ar de graça.</h2>
+        <p>Com o plano Start, você já tem vitrine online, carrinho e pedidos pelo WhatsApp. Comece sem cartão.</p>
+        <a href="/cadastro" class="abtn abtn-white">Começar grátis</a>
+      </div>
+      <div class="astart-shot">
+        <img src="/images/assinar/vitrine-mobile.webp" width="760" height="950" alt="Vitrine pública do ClickZap aberta no celular" loading="lazy" />
       </div>
     </div>
   </div>
@@ -368,16 +348,17 @@ const html = `
 
 <section class="afinal-section">
   <div class="acontainer">
-    <div class="afinal-panel" data-reveal>
-      <span class="ablob ablob-mint" style="width:260px;height:260px;top:-80px;right:10%"></span>
-      <div>
+    <div class="afinal-panel afinal-with-photo" data-reveal>
+      <div class="afinal-text">
         <span class="akicker">Seu próximo pedido pode chegar melhor</span>
-        <h2 class="atitle">Comece a vender pelo <span class="accent">WhatsApp</span> hoje mesmo.</h2>
-        <div class="afinal-note">${check} Grátis para sempre no Start · Sem cartão de crédito · Cancele quando quiser</div>
+        <h2 class="atitle">Sua loja pronta para receber o <span class="accent">próximo pedido</span></h2>
+        <p class="afinal-copy">Crie seu catálogo e compartilhe o link com quem já compra de você.</p>
+        <div class="afinal-actions">
+          <a href="/cadastro" class="abtn abtn-primary abtn-glow">Criar minha conta grátis</a>
+        </div>
       </div>
-      <div class="afinal-actions">
-        <a href="/cadastro" class="abtn abtn-primary abtn-glow">Criar minha conta grátis</a>
-        <a href="#planos" class="abtn abtn-outline">Ver planos</a>
+      <div class="afinal-photo">
+        <img src="/images/assinar/lojista-final.webp" width="1400" height="933" alt="Lojista sorrindo enquanto embala um pedido e confere o pedido no celular" loading="lazy" />
       </div>
     </div>
   </div>
