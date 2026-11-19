@@ -2,6 +2,7 @@
 import { useEffect, useState, type ReactNode } from "react";
 import { createPortal } from "react-dom";
 import { X, PackageOpen, LoaderCircle } from "lucide-react";
+import { friendlyMessage } from "@/lib/action-result";
 export function Modal({
   title,
   onClose,
@@ -79,11 +80,7 @@ export function useTask() {
       await fn();
       setSuccess(message);
     } catch (e) {
-      setError(
-        e instanceof Error
-          ? e.message
-          : "Não foi possível salvar. Tente novamente.",
-      );
+      setError(friendlyMessage(e));
     } finally {
       setBusy(false);
     }

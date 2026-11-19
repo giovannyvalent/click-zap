@@ -2,6 +2,7 @@
 import { useState } from "react";
 import { useForm } from "react-hook-form";
 import { createBusiness } from "@/lib/actions";
+import { unwrap, friendlyMessage } from "@/lib/action-result";
 import { slugify } from "@/lib/utils";
 import { Brand } from "./brand";
 export function Onboarding() {
@@ -27,12 +28,10 @@ export function Onboarding() {
       <form
         onSubmit={handleSubmit(async (v) => {
           try {
-            await createBusiness(v);
+            unwrap(await createBusiness(v));
             window.location.assign("/app/configuracoes?onboarding=1");
           } catch (e) {
-            setError(
-              e instanceof Error ? e.message : "Não foi possível criar a loja.",
-            );
+            setError(friendlyMessage(e, "Não foi possível criar a loja."));
           }
         })}
       >

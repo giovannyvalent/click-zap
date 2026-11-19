@@ -24,6 +24,7 @@ import {
 } from "lucide-react";
 import type { DashboardData, Order } from "@/lib/types";
 import { moveOrder, saveView } from "@/lib/actions";
+import { unwrap } from "@/lib/action-result";
 import { money, dayKey, periodStart, dateTime, statusLabel } from "@/lib/utils";
 import { customerLink } from "@/lib/whatsapp";
 import { Modal, Empty, useTask } from "./ui";
@@ -75,7 +76,7 @@ export function Orders({ data }: { data: DashboardData }) {
       return;
     }
     task.run(async () => {
-      await moveOrder(id, next, null);
+      unwrap(await moveOrder(id, next, null));
       router.refresh();
     });
   }
@@ -315,7 +316,7 @@ export function Orders({ data }: { data: DashboardData }) {
               className="btn primary"
               onClick={() =>
                 task.run(async () => {
-                  await moveOrder(complete, "completed", "sold");
+                  unwrap(await moveOrder(complete, "completed", "sold"));
                   setComplete(null);
                   setDetail(null);
                   router.refresh();
@@ -329,7 +330,7 @@ export function Orders({ data }: { data: DashboardData }) {
               className="btn secondary"
               onClick={() =>
                 task.run(async () => {
-                  await moveOrder(complete, "completed", "not_sold");
+                  unwrap(await moveOrder(complete, "completed", "not_sold"));
                   setComplete(null);
                   setDetail(null);
                   router.refresh();

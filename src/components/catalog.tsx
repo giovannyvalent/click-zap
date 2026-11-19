@@ -30,6 +30,7 @@ import {
 import { money, slugify } from "@/lib/utils";
 import { Modal, Empty, useTask, SaveButton } from "./ui";
 import { uploadImage } from "@/lib/upload";
+import { unwrap } from "@/lib/action-result";
 import { MoneyInput, Select, PhotoDropzone } from "./form-controls";
 export function Categories({ data }: { data: DashboardData }) {
   const [edit, setEdit] = useState<Category | null | undefined>();
@@ -96,10 +97,12 @@ export function Categories({ data }: { data: DashboardData }) {
                         disabled={task.busy}
                         onClick={() =>
                           task.run(async () => {
-                            await saveCategory(c.id, {
-                              ...c,
-                              active: !c.active,
-                            });
+                            unwrap(
+                              await saveCategory(c.id, {
+                                ...c,
+                                active: !c.active,
+                              }),
+                            );
                             router.refresh();
                           })
                         }
@@ -127,7 +130,7 @@ export function Categories({ data }: { data: DashboardData }) {
                               )
                             )
                               task.run(async () => {
-                                await deleteCategory(c.id);
+                                unwrap(await deleteCategory(c.id));
                                 router.refresh();
                               });
                           }}
@@ -183,7 +186,7 @@ function CategoryEditor({
       <form
         onSubmit={handleSubmit((v) =>
           task.run(async () => {
-            await saveCategory(value?.id || null, v);
+            unwrap(await saveCategory(value?.id || null, v));
             router.refresh();
             onClose();
           }),
@@ -361,7 +364,7 @@ export function Products({ data }: { data: DashboardData }) {
                           )
                         )
                           task.run(async () => {
-                            await archiveProduct(p.id);
+                            unwrap(await archiveProduct(p.id));
                             router.refresh();
                           });
                       }}
@@ -476,13 +479,15 @@ function ProductEditor({
       <form
         onSubmit={handleSubmit((v) =>
           task.run(async () => {
-            id.current = await saveProduct(id.current, {
-              ...v,
-              tags: v.tags
-                .split(",")
-                .map((s) => s.trim())
-                .filter(Boolean),
-            });
+            id.current = unwrap(
+              await saveProduct(id.current, {
+                ...v,
+                tags: v.tags
+                  .split(",")
+                  .map((s) => s.trim())
+                  .filter(Boolean),
+              }),
+            );
             let updated = [...photos];
             for (const file of files) {
               const photo = await uploadImage(
@@ -493,9 +498,9 @@ function ProductEditor({
               updated.push(photo);
               setPhotos([...updated]);
               setFiles((prev) => prev.filter((f) => f !== file));
-              await savePhotos(id.current!, updated);
+              unwrap(await savePhotos(id.current!, updated));
             }
-            await savePhotos(id.current!, updated);
+            unwrap(await savePhotos(id.current!, updated));
             router.refresh();
             onClose();
           }),

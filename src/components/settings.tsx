@@ -11,6 +11,7 @@ import {
   saveSettings,
 } from "@/lib/actions";
 import { useTask, SaveButton } from "./ui";
+import { unwrap } from "@/lib/action-result";
 import { Store } from "./store";
 import { uploadImage } from "@/lib/upload";
 import { money } from "@/lib/utils";
@@ -44,12 +45,14 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
     const name = newZoneName.trim();
     if (!name) return;
     await zoneTask.run(async () => {
-      await saveZone(null, {
-        name,
-        fee: Number(newZoneFee || 0),
-        active: true,
-        sort_order: data.zones.length,
-      });
+      unwrap(
+        await saveZone(null, {
+          name,
+          fee: Number(newZoneFee || 0),
+          active: true,
+          sort_order: data.zones.length,
+        }),
+      );
       setNewZoneName("");
       setNewZoneFee("");
       router.refresh();
@@ -81,7 +84,7 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
         className="settings-grid"
         onSubmit={handleSubmit((v) =>
           task.run(async () => {
-            await saveBusiness(v);
+            unwrap(await saveBusiness(v));
             router.refresh();
           }),
         )}
@@ -211,7 +214,7 @@ export function BusinessSettings({ data }: { data: DashboardData }) {
                               onClick={() => {
                                 if (confirm("Excluir este bairro?"))
                                   zoneTask.run(async () => {
-                                    await deleteZone(z.id);
+                                    unwrap(await deleteZone(z.id));
                                     router.refresh();
                                   }, "Bairro removido.");
                               }}
@@ -290,7 +293,7 @@ export function StoreDesigner({ data }: { data: DashboardData }) {
           className="panel padded designer-controls"
           onSubmit={handleSubmit((v) =>
             task.run(async () => {
-              await saveSettings(v);
+              unwrap(await saveSettings(v));
               router.refresh();
             }),
           )}
